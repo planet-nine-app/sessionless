@@ -104,8 +104,6 @@ Associating a public key with a primary system gives the secondary system the ab
 
 At its core, sessionless is a loose wrapper around the secp256k1 elliptic curve used by Bitcoin and Ethereum. Though the cryptography itself is hard, the methods we need to use to use it are just a few. Since this is a multi-language repo, the below is written in pseudocode. For language-specific typing please refer to the README's in the language directories themselves. 
 
-####
-
 `generateKeys()`: generates a private/public keypair and stores it in the platform's secure storage
 
 `registerUser(path: String, additionalPayload: [String: JSONable], headers: String[])`: registers a new user in a primary system.
@@ -115,3 +113,11 @@ At its core, sessionless is a loose wrapper around the secp256k1 elliptic curve 
 `verifySignature(message: String, signature: String, publicKey: String)`: verifies a given signature with a public key
 
 `createUUID()`: creates a unique UUID for a user 
+
+### Contributing
+
+To add to this repo, feel free to make a pull request. The following criteria will be used to determine whether to mergeor not:
+
+* Are there comprehensive tests for all client and server code that covers the five APIs?
+* Is the crypto library used well known for that language and actively maintained?
+* Has the README been updated for that specific language?
