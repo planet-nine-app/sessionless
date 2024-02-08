@@ -105,6 +105,10 @@ sendMessageToPrimary(bothMessages);
 
 Associating a public key with a primary system gives the secondary system the ability to interact with the primary without additional login or sharing of credentials. If the primary system also returns a UUID then that secondary system can use that as authentication for their system. It could even share that public key with a third system, and make authenticated calls there _without any additional integration_. 
 
+### Message Passing
+
+One of the really interesting features of this protocol is since no sensitive data need be passed for any network call, signed (that is authenticated) messages can be sent via or through untrusted machines. That means you can build a platform where users can make API calls via a second user, and that second user can be notified of the result. For an example of a system that does this please read here <include link to MAGIC>.
+
 ### API
 
 At its core, sessionless is a loose wrapper around the secp256k1 elliptic curve used by Bitcoin and Ethereum. Though the cryptography itself is hard, the methods we need to use to use it are just a few. Since this is a multi-language repo, the below is written in pseudocode. For language-specific typing please refer to the README's in the language directories themselves. 

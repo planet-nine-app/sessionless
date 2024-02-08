@@ -1,25 +1,61 @@
-import sessionless from 'sessionless';
-import * as SecureStore from 'expo-secure-store';
+import { secp256k1 } from 'ethereum-cryptography/secp256k1';
+import { keccak256 } from "ethereum-cryptography/keccak.js";
+import { utf8ToBytes } from "ethereum-cryptography/utils.js";
+import { bytesToHex } from "ethereum-cryptography/utils.js";
+import * as crypto from "expo-crypto";
+import * as SecureStore from "expo-secure-store";
 
-const sless = sessionless;
-console.log(JSON.stringify(sless));
+let getKeysFromDisk;
 
-const generateKeys = () => {
-  sless.generateKeys(async (keys) => {
-    console.log(keys)
-    await SecureStore.setItemAsync(keysToSaveString, JSON.stringify(keys));
-  }, () => {});
+const AsyncFunction = (async () => {}).constructor;
+
+const generateKeys = async (saveKeys, getKeys) => {
+  if(saveKeys || getKeys) {
+    console.warn('It is not recommended to supply saveKeys and/or getKeys in Expo');
+  }
+  const privateKey = secp256k1.utils.randomPrivateKey();
+  const publicKey = secp256k1.getPublicKey(privateKey);
+  saveKeys && (saveKeys instanceof AsyncFunction ? await saveKeys({
+    privateKey,
+    publicKey
+  }) : saveKeys({
+    privateKey,
+    publicKey
+  }));
+  await SecureStore.setItemAsync(keysToSaveString, JSON.stringify(keys));
+  getKeysFromDisk = getKeys;
 };
-
-generateKeys();
 
 const getKeys = async () => {
-  const keyString = await SecureStore.getItemAsync(keysToSaveString);
-  return JSON.parse(keyString);
+  if(!getKeysFromDisk) {
+    return await JSON.parse(SecureStore.getItemAsync(keysToSaveString));
+  } else {
+    return getKeysFromDisk instanceof AsyncFunction ? await getKeysFromDisk() : getKeysFromDisk();
+  }
 };
 
-const sign = sless.sign;
+const sign = async (message) => {
+  const { privateKey } = await getKeys();
+  const messageHash = keccak256(utf8ToBytes(message));
+  return secp256k1.sign(messageHash, privateKey);
+};
 
-const verifySignature = sless.verifySignature;
+const verifySignature = async (signature, message) => {
+  const { publicKey } = await getKeys();
+  const messageHash = keccak256(utf8ToBytes(message));
+  return secp256k1.verify(signature, messageHash, publicKey);
+};
 
-const generateUUID = sless.generateUUID;
+const generateUUID = () => {
+  return  crypto.getRandomBytes(32);
+};
+
+const sessionless = {
+  generateKeys,
+  getKeys,
+  sign,
+  verifySignature,
+  generateUUID
+};
+
+export default sessionless;
