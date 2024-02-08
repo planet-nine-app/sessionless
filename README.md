@@ -21,7 +21,12 @@ sessionless.generateKeys();
 Then when it comes time to register a new user:
 
 ```
-const user = await sessionless.registerUser(path_to_server);
+const publicKey = sessionless.getKeys().publicKey;
+const payload = {
+  publicKey
+};
+payload.signature = sessionless.sign(JSON.stringify(payload));
+const user = await registerUser(payload); // left to the implementer
 saveUser(user); // how you save the user is up to you, and not part of sessionless
 ```
 
@@ -104,9 +109,9 @@ Associating a public key with a primary system gives the secondary system the ab
 
 At its core, sessionless is a loose wrapper around the secp256k1 elliptic curve used by Bitcoin and Ethereum. Though the cryptography itself is hard, the methods we need to use to use it are just a few. Since this is a multi-language repo, the below is written in pseudocode. For language-specific typing please refer to the README's in the language directories themselves. 
 
-`generateKeys()`: generates a private/public keypair and stores it in the platform's secure storage
+`generateKeys(saveKeys?: keys => void, getKeys?: () => Keys)`: generates a private/public keypair and stores it in the platform's secure storage. Takes an optional save keys function for platforms that don't have clear cut secure storage. 
 
-`registerUser(path: String, additionalPayload: [String: JSONable], headers: String[])`: registers a new user in a primary system.
+`getKeys()`: gets keys from secure storage
 
 `sign(message: String)`: signs a message with the user's private key 
 
