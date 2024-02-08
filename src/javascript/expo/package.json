@@ -2,7 +2,7 @@
   "name": "sessionless-expo",
   "version": "0.0.1",
   "description": "React Native Expo implementation for sessionless",
-  "main": "index.js",
+  "main": "sessionless.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
