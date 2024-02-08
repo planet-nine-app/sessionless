@@ -8,11 +8,11 @@ let getKeysFromDisk;
 
 const generateKeys = (saveKeys, getKeys) => {
   if(!saveKeys || !getKeys) {
-    return console.error(`Since this can be run on any machine with node, there is no default secure storage. You will need to provide a saveKeys and getKeys function`);
+    return console.warn(`Since this can be run on any machine with node, there is no default secure storage. You will need to provide a saveKeys and getKeys function`);
   }
   const privateKey = secp256k1.utils.randomPrivateKey();
   const publicKey = secp256k1.getPublicKey(privateKey);
-  saveKeys({
+  saveKeys && saveKeys({
     privateKey,
     publicKey
   });
@@ -39,7 +39,7 @@ const verifySignature = (signature, message) => {
   return secp256k1.verify(signature, messageHash, publicKey);
 };
 
-const createUUID = () => {
+const generateUUID = () => {
   return  bytesToHex(getRandomBytesSync(32));
 };
 
@@ -48,7 +48,7 @@ const sessionless = {
   getKeys,
   sign,
   verifySignature,
-  createUUID
+  generateUUID
 };
 
 export default sessionless;

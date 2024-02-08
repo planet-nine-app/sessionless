@@ -55,7 +55,7 @@ const publicKey = payload.publicKey;
 const message = getMessageForPayload(payload); // This is left to the implementer. getMessage should return the message signed on the client.
 
 if(sessionless.verifySignature(message, signature, publicKey)) {
-  const uuid = sessionless.createUUID();
+  const uuid = sessionless.generateUUID();
   saveUser(uuid, publicKey); // saveUser left to the implementer
   const user = {
     uuid, 
@@ -117,7 +117,7 @@ At its core, sessionless is a loose wrapper around the secp256k1 elliptic curve 
 
 `verifySignature(message: String, signature: String, publicKey: String)`: verifies a given signature with a public key
 
-`createUUID()`: creates a unique UUID for a user 
+`generateUUID()`: creates a unique UUID for a user 
 
 ### Contributing
 

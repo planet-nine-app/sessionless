@@ -1,0 +1,16 @@
+{
+  "name": "sessionless-expo",
+  "version": "0.0.1",
+  "description": "React Native Expo implementation for sessionless",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zach Babb",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "expo-secure-store": "^12.8.1",
+    "sessionless": "^0.0.1"
+  }
+}
