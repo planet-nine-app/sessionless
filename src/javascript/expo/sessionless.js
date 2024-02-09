@@ -7,13 +7,16 @@ import * as SecureStore from "expo-secure-store";
 
 let getKeysFromDisk;
 
+const keysToSaveString = 'EE305432-6349-44E8-AE9D-193071152FE7';
+
 const AsyncFunction = (async () => {}).constructor;
 
-const generateKeys = async (saveKeys, getKeys) => {
+const generateKeys = async (saveKeys, getKeysOverride) => {
   if(saveKeys || getKeys) {
     console.warn('It is not recommended to supply saveKeys and/or getKeys in Expo');
   }
-  const privateKey = secp256k1.utils.randomPrivateKey();
+  const byteArray = new Uint8Array(32);
+  const privateKey = crypto.getRandomValues(byteArray); 
   const publicKey = secp256k1.getPublicKey(privateKey);
   saveKeys && (saveKeys instanceof AsyncFunction ? await saveKeys({
     privateKey,
@@ -22,13 +25,17 @@ const generateKeys = async (saveKeys, getKeys) => {
     privateKey,
     publicKey
   }));
-  await SecureStore.setItemAsync(keysToSaveString, JSON.stringify(keys));
-  getKeysFromDisk = getKeys;
+  await SecureStore.setItemAsync(keysToSaveString, JSON.stringify({
+    privateKey,
+    publicKey
+  }));
+  getKeysFromDisk = getKeysOverride;
 };
 
 const getKeys = async () => {
   if(!getKeysFromDisk) {
-    return await JSON.parse(SecureStore.getItemAsync(keysToSaveString));
+    const keyString = await SecureStore.getItemAsync(keysToSaveString);
+    return await JSON.parse(keyString);
   } else {
     return getKeysFromDisk instanceof AsyncFunction ? await getKeysFromDisk() : getKeysFromDisk();
   }
@@ -59,3 +66,4 @@ const sessionless = {
 };
 
 export default sessionless;
+
