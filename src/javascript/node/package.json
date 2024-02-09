@@ -1,5 +1,5 @@
 {
-  "name": "sessionless-node",
+  "name": "@zachbabb/sessionless-node",
   "version": "0.0.1",
   "description": "Node implementation of the sessionless protocol",
   "main": "sessionless.js",

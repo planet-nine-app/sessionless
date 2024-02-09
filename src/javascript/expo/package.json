@@ -1,5 +1,5 @@
 {
-  "name": "sessionless-expo",
+  "name": "@zachbabb/sessionless-expo",
   "version": "0.0.1",
   "description": "React Native Expo implementation for sessionless",
   "main": "sessionless.js",
