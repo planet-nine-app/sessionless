@@ -1,6 +1,5 @@
 import { secp256k1 } from 'ethereum-cryptography/secp256k1';
 import { keccak256 } from "ethereum-cryptography/keccak.js";
-import { utf8ToBytes } from "ethereum-cryptography/utils.js";
 import { bytesToHex } from "ethereum-cryptography/utils.js";
 import * as crypto from "expo-crypto";
 import * as SecureStore from "expo-secure-store";
@@ -12,7 +11,7 @@ const keysToSaveString = 'EE305432-6349-44E8-AE9D-193071152FE7';
 const AsyncFunction = (async () => {}).constructor;
 
 const generateKeys = async (saveKeys, getKeysOverride) => {
-  if(saveKeys || getKeys) {
+  if(saveKeys || getKeysOverride) {
     console.warn('It is not recommended to supply saveKeys and/or getKeys in Expo');
   }
   const byteArray = new Uint8Array(32);
@@ -43,7 +42,9 @@ const getKeys = async () => {
 
 const sign = async (message) => {
   const { privateKey } = await getKeys();
-  const messageHash = keccak256(utf8ToBytes(message));
+  const messageInBytes = new TextEncoder().encode(message);
+console.log('messageInBytes: ' + messageInBytes);
+//  const messageHash = keccak256(utf8ToBytes(message));
   return secp256k1.sign(messageHash, privateKey);
 };
 

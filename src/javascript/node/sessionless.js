@@ -8,7 +8,7 @@ let getKeysFromDisk;
 
 const AsyncFunction = (async () => {}).constructor;
 
-const generateKeys = (saveKeys, getKeys) => {
+const generateKeys = async (saveKeys, getKeys) => {
   if(!saveKeys || !getKeys) {
     return console.warn(`Since this can be run on any machine with node, there is no default secure storage. You will need to provide a saveKeys and getKeys function`);
   }
@@ -38,8 +38,7 @@ const sign = (message) => {
   return secp256k1.sign(messageHash, privateKey);
 };
 
-const verifySignature = (signature, message) => {
-  const { publicKey } = getKeys();
+const verifySignature = (signature, message, publicKey) => {
   const messageHash = keccak256(utf8ToBytes(message));
   return secp256k1.verify(signature, messageHash, publicKey);
 };
