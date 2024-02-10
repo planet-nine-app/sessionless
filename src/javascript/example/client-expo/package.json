@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@babel/runtime": "^7.23.9",
     "@zachbabb/sessionless-expo": "^0.0.1",
     "expo": "~50.0.6",
     "expo-status-bar": "~1.11.1",

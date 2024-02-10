@@ -34,13 +34,25 @@ const getKeys = async () => {
 
 const sign = (message) => {
   const { privateKey } = getKeys();
-  const messageHash = keccak256(utf8ToBytes(message));
+  const messageHash = keccak256(utf8ToBytes(message.slice(0, 32)));
   return secp256k1.sign(messageHash, privateKey);
+};
+
+const hexToBigInt = (hex) => {
+  if(hex % 2) {
+    hex = '0' + hex;
+  }
+  return BigInt('0x' + hex);
 };
 
 const verifySignature = (signature, message, publicKey) => {
   const messageHash = keccak256(utf8ToBytes(message));
-  return secp256k1.verify(signature, messageHash, publicKey);
+  const signatureWithBigInts = {
+    r: hexToBigInt(signature.r),
+    s: hexToBigInt(signature.s)
+  };
+  const res = secp256k1.verify(signatureWithBigInts, messageHash, publicKey);
+  return res;
 };
 
 const generateUUID = () => {

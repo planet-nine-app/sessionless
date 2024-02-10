@@ -26,7 +26,13 @@ app.put('/register', (req, res) => {
   
   const publicKey = payload.publicKey; 
   
-  const message = JSON.stringify({ enteredText: payload.enteredText, timestamp: payload.timestamp });
+  const message = JSON.stringify({ 
+    publicKey, 
+    enteredText: payload.enteredText, 
+    timestamp: payload.timestamp 
+  });
+
+console.log(message);
 
   if(sessionless.verifySignature(signature, message, publicKey)) {
     const uuid = sessionless.generateUUID();
