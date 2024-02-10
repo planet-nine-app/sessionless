@@ -1,0 +1,3 @@
+${PODS_ROOT}/Target Support Files/Pods-SessionlessExample/Pods-SessionlessExample-frameworks.sh
+${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework
+${BUILT_PRODUCTS_DIR}/secp256k1.swift/secp256k1.framework
