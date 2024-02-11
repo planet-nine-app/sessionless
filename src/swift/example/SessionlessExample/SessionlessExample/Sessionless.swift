@@ -6,8 +6,7 @@
 //
 
 import Foundation
-import secp256k1
-import CryptoSwift
+
 
 /*
  generateKeys(saveKeys?: keys => void, getKeys?: () => Keys): generates a private/public keypair and stores it in the platform's secure storage. Takes an optional save keys function for platforms that don't have clear cut secure storage.
@@ -37,8 +36,13 @@ class Sessionless {
     }
     
     func generateKeys(_ saveKeys: ((_ keys: Keys) -> Void)?, _ getKeys: (() -> Void)?) throws -> String {
-        guard var rand = [UInt8].secureRandom(count: 2)?.bigEndianUInt else {
-            throw InternalErrors.internalError
+        //let a = secp256k1_int(32)
+        //print(a)
+        let ctx = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_VERIFY))
+        //let foo = secp256k1_context_create(0)
+        
+        /*guard var rand = [UInt8].secureRandom(count: 2)?.bigEndianUInt else {
+            throw Inte_secprnalErrors.internalError
         }
         rand += 55
         
@@ -47,7 +51,8 @@ class Sessionless {
         }
         let bytesHash = SHA3(variant: .keccak256).calculate(for: bytes)
         
-        return String(bytes: bytesHash, encoding: .utf8) ?? ""
+        return String(bytes: bytesHash, encoding: .utf8) ?? ""*/
+        return "foo"
     }
 }
 
