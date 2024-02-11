@@ -7,9 +7,6 @@ target 'SessionlessExample' do
 
   # Pods for SessionlessExample
 
-  pod 'secp256k1.swift'
-  pod 'CryptoSwift'
-
   target 'SessionlessExampleTests' do
     inherit! :search_paths
     # Pods for testing
