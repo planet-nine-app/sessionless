@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Pressable, Alert } from 'react-native';
 import sessionless from '@zachbabb/sessionless-expo';
 
 export default function App() {
@@ -39,6 +39,28 @@ export default function App() {
     .catch(err => console.warn(err) );    
 
   };
+
+  const doCoolStuff = async () => {
+    const payload = {
+      coolness: 'max',
+      timestamp: 'right now'
+    };
+    payload.signature = await sessionless.sign(JSON.stringify(payload));
+    
+    await fetch('http://localhost:3000/cool-stuff', {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    })
+    .then((resp) => resp.json())
+    .then(json => {
+      Alert.alert(`The server thinks you\'re ${json.doubleCool}!`);
+    })
+    .catch(console.warn);
+  };
   return (
     <View style={styles.container}>
       <Text style={{padding: 8}}>Welcome to the Expo example app. This will connect to locally run servers on ports 3000
@@ -56,8 +78,16 @@ export default function App() {
         <Text>Register</Text>
       </Pressable>
       { uuid && welcomeMessage ? 
-        <Text>{welcomeMessage}</Text> : null }
-      <StatusBar style="auto" />
+        <>
+	  <Text>{`${welcomeMessage} now you can do cool stuff.`}</Text>
+	  <Pressable style={{
+	    padding: 8,
+	    backgroundColor: 'green'
+	  }} onPress={doCoolStuff}>
+	    <Text>Do Cool Stuff</Text>
+	  </Pressable>
+        </>
+	  : null }
     </View>
   );
 }

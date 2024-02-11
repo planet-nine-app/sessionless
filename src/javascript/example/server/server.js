@@ -54,11 +54,11 @@ app.put('/cool-stuff', (req, res) => {
 
   const publicKey = getUserPublicKey(payload.uuid); 
 
-  const message = JSON.stringify({ coolness: payload.coolness, timestamp: timestamp });
+  const message = JSON.stringify({ coolness: payload.coolness, timestamp: payload.timestamp });
 
-  if(sessionless.verifySignature(message, signature, publicKey)) {
+  if(sessionless.verifySignature(signature, message, publicKey)) {
     res.send({
-      doubleCool: true
+      doubleCool: 'double cool'
     });
   }
 });
