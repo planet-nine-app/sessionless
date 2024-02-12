@@ -137,7 +137,7 @@ To add to this repo, feel free to make a pull request. The following criteria wi
 
 ### Further Reading
 
-* [What makes this an authentication/identity system?]
-* [How does this work, and why should I trust it?]
-* [What's the primary/secondary thing (read this for how this relates to OAuth2.0)?]
-* [Is this secure?]
+* [What makes this an authentication/identity system?](https://github.com/planet-nine-app/sessionless/blob/main/docs/Authentication%20and%20Identity.md)
+* [How does this work, and why should I trust it?](https://github.com/planet-nine-app/sessionless/blob/main/docs/How%20does%20this%20work.md)
+* [What's the primary/secondary thing (read this for how this relates to OAuth2.0)?](https://github.com/planet-nine-app/sessionless/blob/main/docs/Is%20Sessionless%20Secure.md)
+* [Is this secure?](https://github.com/planet-nine-app/sessionless/blob/main/docs/Primary%20and%20Secondary.md)
