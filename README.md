@@ -123,6 +123,10 @@ At its core, sessionless is a loose wrapper around the secp256k1 elliptic curve 
 
 `generateUUID()`: creates a unique UUID for a user 
 
+`associateKeys(associationMessage: String, primarySignature: String, secondarySignature: String, publicKey: String)`: associates a gateway's key with the user's primary key.
+
+`revokeKey(message: String, signature: String, publicKey: String)`: Revokes a gateway's key from the user.
+
 ### Contributing
 
 To add to this repo, feel free to make a pull request. The following criteria will be used to determine whether to mergeor not:
@@ -130,3 +134,10 @@ To add to this repo, feel free to make a pull request. The following criteria wi
 * Are there comprehensive tests for all client and server code that covers the five APIs?
 * Is the crypto library used well known for that language and actively maintained?
 * Has the README been updated for that specific language?
+
+### Further Reading
+
+* [What makes this an authentication/identity system?]
+* [How does this work, and why should I trust it?]
+* [What's the primary/secondary thing (read this for how this relates to OAuth2.0)?]
+* [Is this secure?]
