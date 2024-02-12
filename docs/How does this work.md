@@ -65,4 +65,6 @@ export const ecrecover = function (
   return senderPubKey.toRawBytes(false).slice(1)
 ```
 
-We use a slightly different method to verify the signature, because it's faster, and comes from the underlying crypto libraries that the blockchains use [see more here](https://crypto.stackexchange.com/questions/57718/verification-using-recovered-public-key-from-ecdsa-signature-and-normal-verifica#57725).
+We use a slightly different method to verify the signature, because it's faster, and comes from the underlying crypto libraries that the blockchains use [see more here](https://crypto.stackexchange.com/questions/57718/verification-using-recovered-public-key-from-ecdsa-signature-and-normal-verifica#57725), but the idea is the same. A client sends a signed request, and the server verifies the request with the client's public key. Because we've granted that client a uuid, we have a user id for them, and can maintain account continuity. 
+
+There's nothing Earth shattering here, but its power is in its simplicity. This transactional authentication is what is being used to verify millions of dollars worth of transactions. Sessionless is just a lightweight multi-platform library that enables this type of authentication with traditional centralized databases.
