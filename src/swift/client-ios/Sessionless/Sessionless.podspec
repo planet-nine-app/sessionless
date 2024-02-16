@@ -28,13 +28,14 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/zach-planet-nine/Sessionless.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '15.0'
+  s.ios.deployment_target = '16.0'
 
   s.source_files = 'Sessionless/Classes/**/*'
   
-  # s.resource_bundles = {
+  s.resource_bundles = {
   #   'Sessionless' => ['Sessionless/Assets/*.png']
-  # }
+    'Sessionless' => ['Sessionless/Classes/**/*.js']
+  }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'

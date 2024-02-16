@@ -42,7 +42,7 @@ public struct Signature {
     }
 }
 
-class Sessionless {
+public class Sessionless {
     private var jsContext: JSContext?
     private var generateKeysJS: JSValue?
     private var signMessageJS: JSValue?
@@ -57,12 +57,14 @@ class Sessionless {
     
     func getPathToCrypto() -> String? {
         let sessionlessBundle = Bundle(for: Sessionless.self)
-        guard let cryptoPathURL = sessionlessBundle.url(forResource: "crypto", withExtension: "js") else {
+        guard let resourceURL = sessionlessBundle.resourceURL?.appending(path: "Sessionless.bundle"),
+              let resourceBundle = Bundle(url: resourceURL),
+              let cryptoPathURL = resourceBundle.url(forResource: "crypto", withExtension: "js") else {
             print("no dice")
             return nil
         }
         print(cryptoPathURL.absoluteString)
-        return cryptoPathURL.absoluteString
+        return cryptoPathURL.path()
     }
     
     func getJSContext() -> JSContext? {
