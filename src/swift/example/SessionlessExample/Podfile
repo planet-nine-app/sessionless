@@ -6,6 +6,7 @@ target 'SessionlessExample' do
   use_frameworks!
 
   # Pods for SessionlessExample
+  pod 'Sessionless', :path => '../../client-ios/Sessionless'
 
   target 'SessionlessExampleTests' do
     inherit! :search_paths

@@ -6,25 +6,12 @@
 //
 
 import SwiftUI
+import Sessionless
 
 
 struct ContentView: View {
     
     let sessionless = Sessionless()
-    func generateKeys() {
-        print("generating")
-        var privateKey: String = "foo"
-        do {
-            print("before")
-            privateKey = try sessionless.generateKeys(nil, nil)
-            print("after")
-        } catch {
-            print(error)
-        }
-        
-        print(privateKey)
-    }
-   
     
     var body: some View {
         VStack {
@@ -33,7 +20,13 @@ struct ContentView: View {
                 .foregroundColor(.accentColor)
             Text("Hello, world!")
             Button("Press me") {
-                generateKeys()
+                sessionless.generateKeys()
+                let keys = sessionless.getKeys()
+                print(keys)
+                let sig = sessionless.sign(message: "foobar")
+                print(sig)
+                let verified = sessionless.verifySignature(signature: sig!, message: "foobar", publicKey: keys!.publicKey)
+                print(verified)
             }
         }
         .padding()
