@@ -54,6 +54,7 @@
 		CA7059362B77530D00FBB238 /* SessionlessExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionlessExampleUITests.swift; sourceTree = "<group>"; };
 		CA7059382B77530D00FBB238 /* SessionlessExampleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionlessExampleUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		CA8BF7412B7870DB00FED373 /* SessionlessExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SessionlessExample-Bridging-Header.h"; sourceTree = "<group>"; };
+		CA9D61AB2B7F416A001F5F84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CB36EBB57E910C89D4F5099A /* Pods-SessionlessExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionlessExample.release.xcconfig"; path = "Target Support Files/Pods-SessionlessExample/Pods-SessionlessExample.release.xcconfig"; sourceTree = "<group>"; };
 		F3DF7DFE101F0EDD7124E43D /* Pods_SessionlessExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SessionlessExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6D9CB54AD3DE7263133D1C3 /* Pods-SessionlessExample-SessionlessExampleUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionlessExample-SessionlessExampleUITests.debug.xcconfig"; path = "Target Support Files/Pods-SessionlessExample-SessionlessExampleUITests/Pods-SessionlessExample-SessionlessExampleUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -125,6 +126,7 @@
 		CA70591A2B77530900FBB238 /* SessionlessExample */ = {
 			isa = PBXGroup;
 			children = (
+				CA9D61AB2B7F416A001F5F84 /* Info.plist */,
 				CA70591B2B77530900FBB238 /* SessionlessExampleApp.swift */,
 				CA70591D2B77530900FBB238 /* ContentView.swift */,
 				CA70591F2B77530C00FBB238 /* Assets.xcassets */,
@@ -572,6 +574,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"SessionlessExample/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SessionlessExample/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -609,6 +612,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"SessionlessExample/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SessionlessExample/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

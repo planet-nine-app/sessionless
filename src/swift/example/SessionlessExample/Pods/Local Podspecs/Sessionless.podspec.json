@@ -16,7 +16,12 @@
     "tag": "0.1.0"
   },
   "platforms": {
-    "ios": "15.0"
+    "ios": "16.0"
   },
-  "source_files": "Sessionless/Classes/**/*"
+  "source_files": "Sessionless/Classes/**/*",
+  "resource_bundles": {
+    "Sessionless": [
+      "Sessionless/Classes/**/*.js"
+    ]
+  }
 }

@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../../client-ios/Sessionless"
 
 SPEC CHECKSUMS:
-  Sessionless: c2402a2483532006825c19a7a1942deb74554bda
+  Sessionless: 36abe4e5b0fdd114325efe5e0ec6658132e79c3d
 
 PODFILE CHECKSUM: c0c61da793feaba6d0f679285ffb97d040b84d3f
 
