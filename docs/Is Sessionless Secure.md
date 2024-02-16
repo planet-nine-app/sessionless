@@ -22,4 +22,6 @@ With Sessionless though there's no need for passwords, and no need for sessions 
 
 So from this side of things I feel pretty confident in saying that Sessionless mitigates much of the traditional risk with existing authentication systems. The other side is whether the cryptography used is safe or not. Here we've been careful to use the cryptographic libraries used by Bitcoin and Ethereum as they have been proven in a real world scenario to be reliable many times over. 
 
+Finally there's how the one piece of sensitive data is stored, namely the private key. Fundamentally anything stored in a computer you don't control is insecure. But we're already storing sessions and/or (and worse) user credentials in client applications. Any app where you don't have to login every time is persisting sensitive data about you on your device. There's nothing inherently more sensitive about a private key over a session, and both are preferable to losing a password you might use in other places. 
+
 All of this said though, Sessionless is beta software, and you should use at your own risk. Open sourcing it is just the first step in getting it to a production-ready state.

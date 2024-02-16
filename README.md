@@ -141,3 +141,4 @@ To add to this repo, feel free to make a pull request. The following criteria wi
 * [How does this work, and why should I trust it?](https://github.com/planet-nine-app/sessionless/blob/main/docs/How%20does%20this%20work.md)
 * [What's the primary/secondary thing (read this for how this relates to OAuth2.0)?](https://github.com/planet-nine-app/sessionless/blob/main/docs/Is%20Sessionless%20Secure.md)
 * [Is this secure?](https://github.com/planet-nine-app/sessionless/blob/main/docs/Primary%20and%20Secondary.md)
+* [How does this compare to Web 3.0?](https://github.com/planet-nine-app/sessionless/blob/main/docs/Web%203.md)

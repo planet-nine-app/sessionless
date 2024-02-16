@@ -10,10 +10,10 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@zachbabb/sessionless-node": "^0.0.1",
-    "browserify": "^17.0.0"
+    "@zachbabb/sessionless-node": "^0.0.1"
   },
   "devDependencies": {
-    "babelify": "^10.0.0"
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.0"
   }
 }
