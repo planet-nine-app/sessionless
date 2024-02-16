@@ -37,7 +37,7 @@ console.log(message);
   if(sessionless.verifySignature(signature, message, publicKey)) {
     const uuid = sessionless.generateUUID();
     saveUser(uuid, publicKey);
-    const user = {
+    let user = {
       uuid,
       welcomeMessage: "Welcome to this example!"
     };

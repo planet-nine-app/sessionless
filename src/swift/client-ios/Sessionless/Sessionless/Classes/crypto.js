@@ -3389,12 +3389,34 @@ const getKeys = async () => {
     return getKeysFromDisk instanceof AsyncFunction ? await getKeysFromDisk() : getKeysFromDisk();
   }
 };
+    
+    const decimalToHex = (str) => {
+        let decimal = str.toString().split('');
+        let sum = [];
+        let hex = [];
+        let i;
+        let s;
+        while(decimal.length){
+            s = 1 * decimal.shift()
+            for(i = 0; s || i < sum.length; i++){
+                s += (sum[i] || 0) * 10;
+                sum[i] = s % 16;
+                s = (s - sum[i]) / 16;
+            }
+        }
+        while(sum.length){
+            hex.push(sum.pop().toString(16));
+        }
+        return hex.join('');
+    };
 
 const sign = (message, privateKey) => {
   const messageHash = keccak256(utf8ToBytes(message));
     try {
         let sig = secp256k1.sign(messageHash, privateKey);
         console.log(sig.r);
+        sig.r = decimalToHex(sig.r);
+        sig.s = decimalToHex(sig.s);
         return sig;
     } catch (err) {
         console.log(err);
