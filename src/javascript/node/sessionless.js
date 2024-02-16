@@ -38,7 +38,8 @@ const sign = (message) => {
   return secp256k1.sign(messageHash, privateKey);
 };
 
-const hexToBigInt = (hex) => {
+const hexToBigInt = (hexAsHex) => {
+  let hex = hexAsHex;
   if(hex % 2) {
     hex = '0' + hex;
   }
