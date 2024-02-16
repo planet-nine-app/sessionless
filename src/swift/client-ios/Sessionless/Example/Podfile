@@ -1,0 +1,6 @@
+use_frameworks!
+target 'Sessionless_Tests' do
+  pod 'Sessionless', :path => '../'
+  
+  
+end
