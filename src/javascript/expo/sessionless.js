@@ -11,8 +11,8 @@ const keysToSaveString = 'EE305432-6349-44E8-AE9D-193071152FE7';
 const AsyncFunction = (async () => {}).constructor;
 
 const utf8ToBytes = (stri) => {
-  const str = stri.slice(0, 32);
-  return Uint8Array.from(Array.from(str).map(letter => letter.charCodeAt(0)));
+    const str = stri.slice(0, 32);
+    return Uint8Array.from(Array.from(str).map(letter => letter.charCodeAt(0)));
 };
 
 const decimalToHex = (str) => {
