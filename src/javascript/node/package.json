@@ -1,6 +1,6 @@
 {
   "name": "@zachbabb/sessionless-node",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Node implementation of the sessionless protocol",
   "main": "sessionless.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "exports": {
     "import": "./sessionless.js",
-    "require": "./sessionless.csj"
+    "require": "./sessionless.cjs"
   },
   "author": "Zach Babb",
   "license": "MIT",
