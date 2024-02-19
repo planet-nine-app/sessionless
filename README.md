@@ -1,6 +1,8 @@
 ### Overview
 
-This repository contains implementations in various languages, and on various platforms of the sessionless authentication protocol. Sessionless uses the cryptography employed by bitcoin and ethereum to authenticate messages sent between a client and a server. A private key is created and stored securely on the client, and then used to sign messages, which are then verified by the client via the public key associated with the client. Because this message verifying proves the provinence of the message, no other secret need be shared thus removing the need for sessions. 
+This repository contains implementations in various languages, and on various platforms of the sessionless authentication protocol. Sessionless uses the cryptography employed by bitcoin and ethereum to authenticate messages sent between a client and a server. A private key is created and stored on the client, and then used to sign messages, which are then verified by the server via the public key associated with the client. Because this message verifying proves the provinence of the message, no other secret need be shared thus removing the need for sessions. 
+
+It is a practical implementation of an delegatable anonymous credentials as described [here](https://www.microsoft.com/en-us/research/wp-content/uploads/2009/08/anoncred.pdf), [here](https://www.planetnineapp.com/digital-identity-for-smart-cities), and [here](https://www.sciencedirect.com/science/article/abs/pii/S1389128623005315).
 
 ### Getting Started
 
