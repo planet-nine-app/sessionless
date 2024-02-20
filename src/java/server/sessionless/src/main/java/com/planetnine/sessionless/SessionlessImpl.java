@@ -1,9 +1,8 @@
 package com.planetnine.sessionless;
 import java.lang.reflect.Method;
 
-
 public class SessionlessImpl implements Sessionless {
-    SessionlessImpl() {
+    public SessionlessImpl() {
 
     }
 

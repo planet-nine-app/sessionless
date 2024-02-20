@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.planetnine.sessionless.AppTest" time="0.016" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.planetnine.sessionless.AppTest" time="0.015" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="WF"/>
     <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/21.0.2/libexec/openjdk.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/zachbabb/Work/planet-nine/sessionless/src/java/server/sessionless/target/surefire/surefirebooter8428769622278861625.jar /Users/zachbabb/Work/planet-nine/sessionless/src/java/server/sessionless/target/surefire 2024-02-19T14-50-35_145-jvmRun1 surefire17015490271114637593tmp surefire_06921427547088391543tmp"/>
+    <property name="sun.java.command" value="/Users/zachbabb/Work/planet-nine/sessionless/src/java/server/sessionless/target/surefire/surefirebooter6000826352973581357.jar /Users/zachbabb/Work/planet-nine/sessionless/src/java/server/sessionless/target/surefire 2024-02-19T22-54-20_085-jvmRun1 surefire6912984811341001310tmp surefire_08015052112056856458tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/zachbabb/Work/planet-nine/sessionless/src/java/server/sessionless/target/test-classes:/Users/zachbabb/Work/planet-nine/sessionless/src/java/server/sessionless/target/classes:/Users/zachbabb/.m2/repository/junit/junit/4.11/junit-4.11.jar:/Users/zachbabb/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:"/>
@@ -29,7 +29,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/zachbabb/Work/planet-nine/sessionless/src/java/server/sessionless/target/surefire/surefirebooter8428769622278861625.jar"/>
+    <property name="surefire.real.class.path" value="/Users/zachbabb/Work/planet-nine/sessionless/src/java/server/sessionless/target/surefire/surefirebooter6000826352973581357.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="21.0.2"/>
@@ -58,5 +58,5 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="shouldAnswerWithTrue" classname="com.planetnine.sessionless.AppTest" time="0.001"/>
+  <testcase name="shouldAnswerWithTrue" classname="com.planetnine.sessionless.AppTest" time="0.002"/>
 </testsuite>
