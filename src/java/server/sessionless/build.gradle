@@ -1,0 +1,14 @@
+plugins {
+    id 'java-library'
+}
+
+apply plugin: 'idea'
+apply plugin: 'java'
+
+repositories {
+    maven { url "https://artifacts.consensys.net/public/maven/maven/" }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
