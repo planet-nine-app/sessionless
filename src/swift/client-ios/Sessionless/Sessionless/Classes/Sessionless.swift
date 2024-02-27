@@ -7,28 +7,8 @@
 
 import Foundation
 import JavaScriptCore
-import Sessionless
 
-public struct Keys {
-    public let publicKey: String
-    public let privateKey: String
-    
-    public func toData() -> Data {
-        let data = Data(base64Encoded: "\(publicKey):\(privateKey)", options: [])
-        print("toData")
-        print(data)
-        print("\(publicKey):\(privateKey)".data(using: .utf8))
-        
-        return "\(publicKey):\(privateKey)".data(using: .utf8) ?? Data()
-    }
-    
-    public func toString() -> String {
-        return """
-        {"publicKey":"\(publicKey)","privateKey":"\(privateKey)"}
-        """
-    }
-    
-}
+
 
 public struct Signature {
     public let r: String
@@ -43,6 +23,31 @@ public struct Signature {
 }
 
 public class Sessionless {
+    public struct Keys {
+        public let publicKey: String
+        public let privateKey: String
+        
+        public init(publicKey: String, privateKey: String) {
+            self.publicKey = publicKey
+            self.privateKey = privateKey
+        }
+        
+        public func toData() -> Data {
+            let data = Data(base64Encoded: "\(publicKey):\(privateKey)", options: [])
+            print("toData")
+            print(data)
+            print("\(publicKey):\(privateKey)".data(using: .utf8))
+            
+            return "\(publicKey):\(privateKey)".data(using: .utf8) ?? Data()
+        }
+        
+        public func toString() -> String {
+            return """
+            {"publicKey":"\(publicKey)","privateKey":"\(privateKey)"}
+            """
+        }
+        
+    }
     private var jsContext: JSContext?
     private var generateKeysJS: JSValue?
     private var signMessageJS: JSValue?
@@ -55,7 +60,7 @@ public class Sessionless {
         jsContext = getJSContext()
     }
     
-    func getPathToCrypto() -> String? {
+    func getPathToCrypto() -> URL? {
         let sessionlessBundle = Bundle(for: Sessionless.self)
         guard let resourceURL = sessionlessBundle.resourceURL?.appending(path: "Sessionless.bundle"),
               let resourceBundle = Bundle(url: resourceURL),
@@ -64,14 +69,15 @@ public class Sessionless {
             return nil
         }
         print(cryptoPathURL.absoluteString)
-        return cryptoPathURL.path()
+        return cryptoPathURL
     }
     
     func getJSContext() -> JSContext? {
         var jsSourceContents: String = ""
         if let jsSourcePath = getPathToCrypto() {
             do {
-                jsSourceContents = try String(contentsOfFile: jsSourcePath)
+                print(jsSourcePath)
+                jsSourceContents = try String(contentsOf: jsSourcePath)
             } catch {
                 print(error.localizedDescription)
             }
@@ -116,6 +122,9 @@ public class Sessionless {
         ]
         var result: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &result)
+        if result == nil {
+            return nil
+        }
         if let data = result.unsafelyUnwrapped as? Data,
            let keyString = String(data: data, encoding: .utf8) {
             let keyStringSplit = keyString.split(separator: ":")
@@ -125,7 +134,7 @@ public class Sessionless {
         return nil
     }
     
-    public func generateKeys() {
+    public func generateKeys() -> Keys? {
         var bytes = [UInt8](repeating: 0, count: 32)
         let status = SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
 
@@ -142,7 +151,9 @@ public class Sessionless {
             
             let keysToSave = Keys(publicKey: pubKeyHex, privateKey: keys?.objectForKeyedSubscript("privateKey").toString() ?? "")
             self.saveKeys(data: keysToSave.toData())
+            return keysToSave
         }
+        return nil
     }
     
     public func sign(message: String) -> Signature? {
