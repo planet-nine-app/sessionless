@@ -26,7 +26,7 @@ const generateKeys = async (saveKeys, getKeys) => {
 
 const getKeys = async () => {
   if(!getKeysFromDisk) {
-    return console.error(`Since this can be run on any machine with node, there is no default secure storage. You will need to have your own getKeys function.`);
+    throw console.error(`Since this can be run on any machine with node, there is no default secure storage. You will need to have your own getKeys function.`);
   } else {
     return getKeysFromDisk instanceof AsyncFunction ? await getKeysFromDisk() : getKeysFromDisk();
   }
