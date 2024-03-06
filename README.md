@@ -2,13 +2,15 @@
 
 This repository contains implementations in various languages, and on various platforms of the sessionless authentication protocol. Sessionless uses the cryptography employed by bitcoin and ethereum to authenticate messages sent between a client and a server. A private key is created and stored on the client, and then used to sign messages, which are then verified by the server via the public key associated with the client. Because this message verifying proves the provinence of the message, no other secret need be shared thus removing the need for sessions. 
 
-It is a practical implementation of an delegatable anonymous credentials as described [here](https://www.microsoft.com/en-us/research/wp-content/uploads/2009/08/anoncred.pdf), [here](https://www.planetnineapp.com/digital-identity-for-smart-cities), and [here](https://www.sciencedirect.com/science/article/abs/pii/S1389128623005315).
+It is a practical implementation of delegatable anonymous credentials as described [here](https://www.microsoft.com/en-us/research/wp-content/uploads/2009/08/anoncred.pdf), [here](https://www.planetnineapp.com/digital-identity-for-smart-cities), and [here](https://www.sciencedirect.com/science/article/abs/pii/S1389128623005315).
 
 ### Getting Started
 
-This repo is organized by language, and is a work in progress. The APIs for client and server are defined here <add link>, and see below for how to contribute. If you want to implement this system in your app, you'll likely want to start at your languages package manager (npm, cocoapods, maven, etc). Links for those can be found at the end of this doc. 
+This repo is organized by language, and is a work in progress. The APIs for client and server are defined here <add link>, and see below for how to contribute. If you want to implement this system in your app, you'll likely want to start at your language's package manager (npm, cocoapods, maven, etc). Links for those can be found at the end of this doc. 
 
 The below is written in JavaScript, and is the case for a primary sessionless system. For examples in your language of choice, check the README in the language directory, or the documentation on the package manager's page. 
+
+A note on clients. One of the appeals of Sessionless is that it works on any device that can safely store a secret (yes no client can safely store a secret, but we store sessions all over the place in clients, and in practice there's no real difference in the _storage_ of a session or private key. The benefit of the Sessionless private key is it never has to leave the device, where as a session does. See [is Sessionless secure?](https://github.com/planet-nine-app/sessionless/blob/main/docs/Is%20Sessionless%20Secure.md) for more details). Because Sessionless lets you pass messages through other devices, it can even be used to authenticate devices that aren't connected to the internet. All of this doesn't work on web though, because on web the only "safe" place to store data is in the _server_ generated cookie. To use Sessionless with web you'll want to replace some part of your session with the private key for the user, and do the signing on your server when a client makes a request. Since cookie-based auth has a lot of large entrenched players it may take some time before this functionality works out of the box. The maintainers of Sessionless plan on making this as seemless as possible, but recognize it's an uphill battle. 
 
 #### Client
 
@@ -125,7 +127,7 @@ At its core, sessionless is a loose wrapper around the secp256k1 elliptic curve 
 
 `generateUUID()`: creates a unique UUID for a user 
 
-`associateKeys(associationMessage: String, primarySignature: String, secondarySignature: String, publicKey: String)`: associates a gateway's key with the user's primary key.
+`associateKeys(associationMessage: String, primarySignature: String, secondarySignature: String, publicKey: String)`: associates a secondary's key with the user's primary key.
 
 `revokeKey(message: String, signature: String, publicKey: String)`: Revokes a gateway's key from the user.
 
@@ -141,6 +143,6 @@ To add to this repo, feel free to make a pull request. The following criteria wi
 
 * [What makes this an authentication/identity system?](https://github.com/planet-nine-app/sessionless/blob/main/docs/Authentication%20and%20Identity.md)
 * [How does this work, and why should I trust it?](https://github.com/planet-nine-app/sessionless/blob/main/docs/How%20does%20this%20work.md)
-* [What's the primary/secondary thing (read this for how this relates to OAuth2.0)?](https://github.com/planet-nine-app/sessionless/blob/main/docs/Is%20Sessionless%20Secure.md)
-* [Is this secure?](https://github.com/planet-nine-app/sessionless/blob/main/docs/Primary%20and%20Secondary.md)
+* [What's the primary/secondary thing (read this for how this relates to OAuth2.0)?](https://github.com/planet-nine-app/sessionless/blob/main/docs/Primary%20and%20Secondary.md)
+* [Is this secure?](https://github.com/planet-nine-app/sessionless/blob/main/docs/Is%20Sessionless%20Secure.md)
 * [How does this compare to Web 3.0?](https://github.com/planet-nine-app/sessionless/blob/main/docs/Web%203.md)
