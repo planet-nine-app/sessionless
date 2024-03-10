@@ -1,0 +1,3 @@
+/Users/zachbabb/Work/planet-nine/sessionless/src/cpp/client/mac/CMakeFiles/Sessionless.dir
+/Users/zachbabb/Work/planet-nine/sessionless/src/cpp/client/mac/CMakeFiles/edit_cache.dir
+/Users/zachbabb/Work/planet-nine/sessionless/src/cpp/client/mac/CMakeFiles/rebuild_cache.dir
