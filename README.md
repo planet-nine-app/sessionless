@@ -90,6 +90,12 @@ Private key recovery is important, but in a primary system you have options. You
 
 The real power of sessionless comes from the fact that since no secret is shared with every API call, calls can be passed off to untrusted devices without fear of credentials getting stolen. This means we can combine messages into one, and through that mechanism we can associate a public key in a secondary system with a user in a primary system. 
 
+### A Note On Primary And Secondary Systems And Why Sessionless Is Different
+
+There are a few distributed identity approaches out there, but to my knowledge (and please let me know if I'm wrong since this stuff fascinates me), they're all trying to be a system where you have a singular canonical identity that the other identities tie into. Sessionless doesn't try to do that. The primary/secondary distinction is mostly one regarding whether the system provides account recovery of its own. In fact it's very possible that one primary system may be a secondary system to another primary system and vice versa. 
+
+It's kind of like the matrix where you need a phone to get in or out. The primary systems are your phones where you enter the system, and where you can remove yourself through revokation. The secondary systems just let you do Sessionless things once you're in.
+
 On a client:
 
 ```
