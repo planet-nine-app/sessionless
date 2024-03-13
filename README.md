@@ -1,12 +1,12 @@
 ### Overview
 
-This repository contains implementations in various languages, and on various platforms of the sessionless authentication protocol. Sessionless uses the cryptography employed by bitcoin and ethereum to authenticate messages sent between a client and a server. A private key is created and stored on the client, and then used to sign messages, which are then verified by the server via the public key associated with the client. Because this message verifying proves the provinence of the message, no other secret need be shared thus removing the need for sessions. 
+This repository contains implementations in various languages, and on various platforms of the Sessionless authentication protocol. Sessionless uses the cryptography employed by bitcoin and ethereum to authenticate messages sent between a client and a server. A private key is created and stored on the client, and then used to sign messages, which are then verified by the server via the public key associated with the client. Because this message verifying proves the provinence of the message, no other secret need be shared thus removing the need for sessions. 
 
 It is a practical implementation of delegatable anonymous credentials as described [here](https://www.microsoft.com/en-us/research/wp-content/uploads/2009/08/anoncred.pdf), [here](https://www.planetnineapp.com/digital-identity-for-smart-cities), and [here](https://www.sciencedirect.com/science/article/abs/pii/S1389128623005315).
 
 ### Getting Started
 
-This repo is organized by language, and is a work in progress. The APIs for client and server are defined here <add link>, and see below for how to contribute. If you want to implement this system in your app, you'll likely want to start at your language's package manager (npm, cocoapods, maven, etc). Links for those can be found at the end of this doc. 
+This repo is organized by language, and is a work in progress. The APIs for client and server are defined below. If you'd like to contribute see the section at the bottom of this README. If you want to implement this system in your app, you'll likely want to start at your language's package manager (npm, cocoapods, maven, etc). Links for those can be found at the end of this doc. 
 
 The below is written in JavaScript, and is the case for a primary sessionless system. For examples in your language of choice, check the README in the language directory, or the documentation on the package manager's page. 
 
@@ -37,6 +37,8 @@ saveUser(user); // how you save the user is up to you, and not part of sessionle
 For your api calls you'll want to add a signature:
 ```
 let payload = {
+  timestamp: new Date().gettime() // Replay attacks are the only real attack surface for sessionless requests once they leave the client
+                                  // so giving them a short ttl is suggested. Sessionless doesn't enforce this today, but it might in the future.
   foo: 'bar'
 };
 
@@ -82,7 +84,7 @@ if(sessionless.verifySignature(message, signature, publicKey)) {
 }
 ```
 
-Private key management is important, but in a primary system you have options. You could implement username and password recovery, or SSO, or private key cold storage, or simply not care about persisting a user beyond a single device. 
+Private key recovery is important, but in a primary system you have options. You could implement username and password recovery, or SSO, or private key cold storage, or simply not care about persisting a user beyond a single device. 
 
 ### Secondary Systems
 
@@ -135,12 +137,12 @@ At its core, sessionless is a loose wrapper around the secp256k1 elliptic curve 
 
 To add to this repo, feel free to make a pull request. The following criteria will be used to determine whether to mergeor not:
 
-* Are there comprehensive tests for all client and server code that covers the five APIs?
 * Is the crypto library used well known for that language and actively maintained?
 * Has the README been updated for that specific language?
 
 ### Further Reading
 
+* [What makes cryptography hard, and how does Sessionless make it easier?](https://github.com/planet-nine-app/sessionless/blob/main/docs/Cryptography.md)
 * [What makes this an authentication/identity system?](https://github.com/planet-nine-app/sessionless/blob/main/docs/Authentication%20and%20Identity.md)
 * [How does this work, and why should I trust it?](https://github.com/planet-nine-app/sessionless/blob/main/docs/How%20does%20this%20work.md)
 * [What's the primary/secondary thing (read this for how this relates to OAuth2.0)?](https://github.com/planet-nine-app/sessionless/blob/main/docs/Primary%20and%20Secondary.md)
