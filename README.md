@@ -20,7 +20,7 @@ You can learn more about this in these papers:
 
 > **Note**: This repo is a work in progress.
 
-This repo is organized by language
+This repo is organized by language.
 The APIs for [client](#client) and [server](#server) are defined below.
 If you'd like to contribute, see the [Contributing](#contributing) section at the bottom of this README.
 If you want to implement this system in your app, you'll likely want to start at your language's package manager ([npm], [CocoaPods], [Maven], etc). Links for those can be found at the end of this doc.
