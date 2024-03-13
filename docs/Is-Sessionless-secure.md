@@ -1,3 +1,5 @@
+# Is Sessionless secure?
+
 Before we can answer the question of whether or not Sessionless is secure, we need to get a lay of the land regarding current authentication security. Here's the OWASP page on [session hijacking](https://owasp.org/www-community/attacks/Session_hijacking_attack). Common types of attacks include:
 
 * Predictable session token

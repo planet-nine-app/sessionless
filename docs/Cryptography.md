@@ -1,3 +1,5 @@
+# Cryptography
+
 The entire realm of cryptography is pretty big, and out of scope for this little doc here. I'll focus on the asymmetric cryptography we use in Sessionless. Bare with me, we're gonna do just a little bit of math, but it'll be worth it.
 
 You might remember from algebra an equation that looks like:
