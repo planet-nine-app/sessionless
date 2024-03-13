@@ -185,14 +185,14 @@ The following criteria will be used to determine whether to merge or not:
 * Is the crypto library used well known for that language and actively maintained?
 * Has the README been updated for that specific language?
 
-## Further Reading
+## Further reading
 
 * [What makes cryptography hard, and how does Sessionless make it easier?](./docs/Cryptography.md)
-* [What makes this an authentication/identity system?](./docs/Authentication%20and%20Identity.md)
-* [How does this work, and why should I trust it?](./docs/How%20does%20this%20work.md)
-* [What's the primary/secondary thing (read this for how this relates to OAuth2.0)?](./docs/Primary%20and%20Secondary.md)
-* [Is this secure?](./docs/Is%20Sessionless%20Secure.md)
-* [How does this compare to Web 3.0?](./docs/Web%203.md)
+* [What makes this an authentication/identity system?](./docs/Authentication-and-identity.md)
+* [How does this work, and why should I trust it?](./docs/How-does-this-work.md)
+* [What's the primary/secondary thing (read this for how this relates to OAuth2.0)?](./docs/Primary-and-secondary.md)
+* [Is this secure?](./docs/Is-Sessionless-secure.md)
+* [How does this compare to Web 3.0?](./docs/Web-3.md)
 
 [attribute-based]: https://www.sciencedirect.com/science/article/abs/pii/S1389128623005315
 [cocoapods]: https://cocoapods.org
@@ -201,5 +201,5 @@ The following criteria will be used to determine whether to merge or not:
 [pr]: https://github.com/planet-nine-app/sessionless/pulls
 [randomizable-proofs]: https://www.microsoft.com/en-us/research/wp-content/uploads/2009/08/anoncred.pdf
 [secp256k1]: https://en.bitcoin.it/wiki/Secp256k1
-[secure]: https://github.com/planet-nine-app/sessionless/blob/main/docs/Is%20Sessionless%20Secure.md
+[secure]: ./docs/Is-Sessionless-secure.md
 [smart-cities]: https://static1.squarespace.com/static/5bede41d365f02ab5120b40f/t/65d305f9682e3158ed9386cf/1708328441775/ACM+Identity+Paper.pdf

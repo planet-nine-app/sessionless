@@ -1,3 +1,5 @@
+# How does this work?
+
 For the purposes of this doc, I ask that you put your personal feelings about crypto and blockchains aside. As with all software projects, there're always things to learn both good and bad. 
 
 Here's how the excerpt from Satoshi's original Bitcoin paper begins:
