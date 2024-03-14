@@ -9,6 +9,33 @@ Within this protocol, you create and store a private key on the client and then 
 When you verify a message you also certify its provenance.
 Because no other secret need be shared between client and server, **sessions are wholly unnecessary**.
 
+Here is this in pictures.
+A traditional authentication system looks like this:
+
+```mermaid
+sequenceDiagram
+    Client->>Server: email & password
+    Server->>DB: create user
+    DB->>Server: userId & server creates session
+    Server->>DB: store session
+    Server->>Client: userId & session
+    Client->>Server: makes api call with userId & session
+```
+
+Where Sessionless looks like this:
+
+```mermaid
+sequenceDiagram
+    Client->>Server: registers just with public key
+    Server->>DB: create user
+    DB->>Server: userUUID
+    Server->>Client: userUUID
+    Client->>Server: client signs messages with private key and sends them to server, which verifies with public key
+```
+
+Note in Sessionless that a) no PII is necessary, b) no password is necessary, c) no shared secret (session) is passed between client and server, d) no PII, passwords, or sessions are stored in the database. 
+A quick review of [OWASP's Identification and Authentication Failures] should hopefully illuminate the benefits of not having passwords and sessions. 
+
 Sessionless is a practical implmentation of *delegatable anonymous credentials*.
 You can learn more about this in these papers:
 
@@ -118,7 +145,7 @@ Private key recovery is important, but in a primary system you have options:
 
 ## Secondary systems
 
-The real power of sessionless comes from the fact that since no secret is shared with every API call, calls can be passed off to untrusted devices without fear of credentials getting stolen.
+The real power of sessionless comes from the fact that since no secret is shared with every API call, calls can be passed off to untrusted devices and apps without fear of credentials getting stolen.
 This means we can combine messages into one, and through that mechanism we can associate a public key in a secondary system with a user in a primary system. 
 
 ## Primary and secondary systems and why Sessionless is different
@@ -157,8 +184,20 @@ It could even share that public key with a third system and make authenticated c
 
 ## Message passing
 
-One of the really interesting features of this protocol is that since no sensitive data need be passed for any network call, signed&mdash;that is, authenticated&mdash;messages can be sent via or through untrusted machines.
-That means you can build a platform where users can make API calls via a second user, and that second user can be notified of the result. For an example of a system that does this please read here <include link to MAGIC>.
+But primary/secondary isn't the only benefit to being able to pass messages to untrusted devices and apps.
+You can pass signed API requests off to a second device or app as well.
+That means you can build a platform where users can make API calls via a second user, and that second user can be notified of the result.
+An example here is that any communication between devices done by NFC today (think ApplePay or transit cards), can now be done by a more long range communication protocol like BLE. 
+NFC is used to pass a credential to a payment device, and is used because its low range prevents interception.
+If it is intercepted though, an attacker can use that credential.
+With Sessionless, the passed credential is signed by the receiving device so even if an attacker intercepts the signed message from your device, they won't be able to use it, except on the device you were presumably already trying to use it.
+
+Another use case for message passing is between household devices.
+If you have a TV device of any kind you've probably gone through the flow of scanning a QR code and then logging in on your phone, or typing in some letters and then logging in somewhere.
+All of that nonsense can be gone with Sessionless, which can just log you in **without needing to type anything at all**.
+
+You could even imagine having additional interactive content coming through your TV.
+Something as American as letting you buy from your phone while an ad is playing, to choose your own adventures like [that one Black Mirror one].
 
 ## API
 
@@ -203,3 +242,6 @@ The following criteria will be used to determine whether to merge or not:
 [secp256k1]: https://en.bitcoin.it/wiki/Secp256k1
 [secure]: ./docs/Is-Sessionless-secure.md
 [smart-cities]: https://static1.squarespace.com/static/5bede41d365f02ab5120b40f/t/65d305f9682e3158ed9386cf/1708328441775/ACM+Identity+Paper.pdf
+[that one Black Mirror one]: https://en.wikipedia.org/wiki/Black_Mirror%3A_Bandersnatch
+[OWASP's Identification and Authentication Failures]: https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/
+
