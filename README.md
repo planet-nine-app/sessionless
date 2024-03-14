@@ -36,6 +36,20 @@ sequenceDiagram
 Note in Sessionless that a) no PII is necessary, b) no password is necessary, c) no shared secret (session) is passed between client and server, d) no PII, passwords, or sessions are stored in the database. 
 A quick review of [OWASP's Identification and Authentication Failures] should hopefully illuminate the benefits of not having passwords and sessions. 
 
+## Use cases
+
+* Asking for email account creation before a user really engages with your content is one of the leading causes of bounce rates on web sites. 
+With Sessionless you can provide [account continuity] without asking for email up front, leaving the credential entering for after a user engages with your site.
+Consider an image creation site.
+Use Sessionless to create an account behind the scenes. 
+Save the image to that account, and ask for an email to send it to.
+Now there's no friction to using your site, and users see its value before they have to sign up.
+
+* Any time you want account based behavior on a single device like games on consoles. 
+Remove the need to type out emails and passwords, but still maintain [account continuity].
+
+* Devices that aren't usually connected to the internet like bluetooth devices (controllers, keyboards, headphones, etc).
+
 Sessionless is a practical implmentation of *delegatable anonymous credentials*.
 You can learn more about this in these papers:
 
@@ -155,9 +169,10 @@ Sessionless doesn't try to do that.
 The primary/secondary distinction is mostly one regarding whether the system provides account recovery of its own.
 In fact, it's very possible that one primary system may be a secondary system to another primary system and vice versa. 
 
-It's kind of like the Matrix where you need a phone to get in or out.
-The primary systems are your phones where you enter the system and where you can remove yourself through revocation.
-The secondary systems just let you do Sessionless things once you're in.
+It's kind of like a transit system.
+The primary systems are stations and stops that let you board trains and buses.
+The secondary systems are the buses and trains taking you where you want to go.
+Some stations let you transfer between lines.
 
 On a client:
 
@@ -188,16 +203,17 @@ But primary/secondary isn't the only benefit to being able to pass messages to u
 You can pass signed API requests off to a second device or app as well.
 That means you can build a platform where users can make API calls via a second user, and that second user can be notified of the result.
 An example here is that any communication between devices done by NFC today (think ApplePay or transit cards), can now be done by a more long range communication protocol like BLE. 
-NFC is used to pass a credential to a payment device, and is used because its low range prevents interception.
+
+* NFC is used to pass a credential to a payment device, and is used because its low range prevents interception.
 If it is intercepted though, an attacker can use that credential.
 With Sessionless, the passed credential is signed by the receiving device so even if an attacker intercepts the signed message from your device, they won't be able to use it, except on the device you were presumably already trying to use it.
 
-Another use case for message passing is between household devices.
+* Another use case for message passing is between household devices.
 If you have a TV device of any kind you've probably gone through the flow of scanning a QR code and then logging in on your phone, or typing in some letters and then logging in somewhere.
 All of that nonsense can be gone with Sessionless, which can just log you in **without needing to type anything at all**.
 
-You could even imagine having additional interactive content coming through your TV.
-Something as American as letting you buy from your phone while an ad is playing, to choose your own adventures like [that one Black Mirror one].
+* You could even imagine having additional interactive content coming through your TV.
+Something as simple as letting you buy from your phone while an ad is playing, to choose your own adventures like [that one Black Mirror one].
 
 ## API
 
@@ -244,4 +260,5 @@ The following criteria will be used to determine whether to merge or not:
 [smart-cities]: https://static1.squarespace.com/static/5bede41d365f02ab5120b40f/t/65d305f9682e3158ed9386cf/1708328441775/ACM+Identity+Paper.pdf
 [that one Black Mirror one]: https://en.wikipedia.org/wiki/Black_Mirror%3A_Bandersnatch
 [OWASP's Identification and Authentication Failures]: https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/
+[account continuity]: ./docs/Authentication-and-identity.md
 
