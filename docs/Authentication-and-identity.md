@@ -1,3 +1,5 @@
+# Authentication and identity
+
 If authentication and identity are new to you, please read [this page](https://www.okta.com/identity-101/identification-vs-authentication/#:~:text=Identification%20is%20the%20act%20of,access%20to%20systems%20or%20privileges.), I'll be pulling quotes from it, and talking about them. 
 
 First let's talk about identity. From the Okta link above, "It is necessary to provide personal information to identify a person and then verify this identity." This is patently false. For any digital platform, _who_ you are in the real world, and who you are on that platform need not be the same. Sure there are contexts like banking where you need to tie the two together, but in general the only identity that matters to the digital platform is whether it can tell that you are who you used to be, and to do that it need not know any personal data about you at all. Let's call this property of a digital platform, account continuity. 
