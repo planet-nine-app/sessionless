@@ -1,9 +1,9 @@
 'use strict';
 
+var uuid = require('uuid');
 var secp256k1 = require('ethereum-cryptography/secp256k1');
 var keccak_js = require('ethereum-cryptography/keccak.js');
 var utils_js = require('ethereum-cryptography/utils.js');
-var random_js = require('ethereum-cryptography/random.js');
 
 let getKeysFromDisk;
 
@@ -11,7 +11,7 @@ const AsyncFunction = (async () => {}).constructor;
 
 const generateKeys = async (saveKeys, getKeys) => {
   if(!saveKeys || !getKeys) {
-    return console.warn(`Since this can be run on any machine with node, there is no default secure storage. You will need to provide a saveKeys and getKeys function`);
+    throw new Error(`Since this can be run on any machine with node, there is no default secure storage. You will need to provide a saveKeys and getKeys function`);
   }
   const privateKey = secp256k1.secp256k1.utils.randomPrivateKey();
   const publicKey = secp256k1.secp256k1.getPublicKey(privateKey);
@@ -27,7 +27,7 @@ const generateKeys = async (saveKeys, getKeys) => {
 
 const getKeys = async () => {
   if(!getKeysFromDisk) {
-    throw console.error(`Since this can be run on any machine with node, there is no default secure storage. You will need to have your own getKeys function.`);
+    throw new Error(`Since this can be run on any machine with node, there is no default secure storage. You will need to have your own getKeys function.`);
   } else {
     return getKeysFromDisk instanceof AsyncFunction ? await getKeysFromDisk() : getKeysFromDisk();
   }
@@ -62,7 +62,11 @@ const verifySignature = (signature, message, publicKey) => {
 };
 
 const generateUUID = () => {
-  return  utils_js.bytesToHex(random_js.getRandomBytesSync(32));
+  return  uuid.v4();
+};
+
+const associate = (primarySignature, primaryMessage, primaryPublicKey, secondarySignature, secondaryMessage, secondaryPublicKey) => {
+  return (verifySignature(primarySignature, primaryMessage, primaryPublicKey) && verifySignature(secondarySignature, secondaryMessage, secondaryPublicKey)); 
 };
 
 const sessionless = {
@@ -70,7 +74,8 @@ const sessionless = {
   getKeys,
   sign,
   verifySignature,
-  generateUUID
+  generateUUID,
+  associate
 };
 
 module.exports = sessionless;
