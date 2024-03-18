@@ -8,12 +8,12 @@
 using namespace std;
 
 struct SessionlessKeys {
-  char *public_key = new char[33];
-  char *private_key = new char[32];
+  string public_key;
+  string private_key;
 };
 
 struct Signature {
-  char *signature = new char[250];
+  const string signature;
 };
 
 class Sessionless
@@ -22,11 +22,11 @@ public:
   using GetKeys = SessionlessKeys (*)();
   //SessionlessInterface * makeSessionless();
   Sessionless(GetKeys getKeys) : getKeys_(getKeys) {}
-  SessionlessKeys generateKeys(SessionlessKeys keys);
+  SessionlessKeys generateKeys();
   SessionlessKeys getKeys();
-  Signature sign(char *message, Signature signature);
-  int verifySignature(const char *signature, char *message, const char *publicKey);
-  char *generateUUID();
+  Signature sign(string &message);
+  int verifySignature(const string &signature, string &message, const string &publicKey);
+  string generateUUID();
   //virtual ~SessionlessInterface();
 
 private: 

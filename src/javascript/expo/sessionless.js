@@ -82,10 +82,6 @@ const verifySignature = async (signature, message, publicKey) => {
   return secp256k1.verify(signature, messageHash, publicKey);
 };
 
-const generateUUID = () => {
-  return  crypto.getRandomBytes(32);
-};
-
 const sessionless = {
   generateKeys,
   getKeys,
