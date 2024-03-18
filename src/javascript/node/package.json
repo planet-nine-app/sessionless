@@ -1,6 +1,6 @@
 {
-  "name": "@zachbabb/sessionless-node",
-  "version": "0.0.3",
+  "name": "sessionless-node",
+  "version": "0.0.4",
   "description": "Node implementation of the sessionless protocol",
   "main": "sessionless.js",
   "scripts": {
@@ -13,7 +13,8 @@
   "author": "Zach Babb",
   "license": "MIT",
   "dependencies": {
-    "ethereum-cryptography": "^2.1.3"
+    "ethereum-cryptography": "^2.1.3",
+    "uuid": "^9.0.1"
   },
   "type": "module",
   "devDependencies": {
