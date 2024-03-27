@@ -90,6 +90,7 @@ To do that they built the largest advertising platform to ever exist.
 In doing so they've churned out a series of products designed to capture exactly when and where you do anything online. 
 An overly simplified picture of this is the following:
 
+```mermaid
 erDiagram
     GOOGLE ||--|| GMAIL : has
     GOOGLE ||--o{ APP1 : SSO
@@ -101,11 +102,13 @@ erDiagram
     GOOGLEANALYTICS ||--o{ APP2 : fingerprints
     GOOGLE ||--|{ GOOGLEANALYTICS : tracking
     IDENTITY ||--|{ GOOGLE : monetized
+```
 
 Back in 2001 we all signed up for gmails, used them to login to every new thing to come along for two decades, and now when I talk about my son having a cold, children's tylenol ads pop up. 
 
 As a response to this, a lot has been spun up around so-called distributed identities, or dids. The picture for distributed identities looks like this:
 
+```mermaid
 erDiagram
     GOOGLE ||--|| GMAIL : has
     DID ||--o{ APP1 : login
@@ -117,6 +120,7 @@ erDiagram
     GOOGLEANALYTICS ||--o{ APP2 : fingerprints
     GOOGLE ||--|{ GOOGLEANALYTICS : tracking
     IDENTITY ||--|{ DID : monetized
+```
 
 Here it's a little better, but at the end of the day, Google doesn't see any difference between you being johndoe@gmail.com or RANDOMHEXSTRING@distributed.server. 
 
@@ -132,6 +136,7 @@ But most importantly each primary and secondary private key is used in a single 
 All that's shared between those contexts are anonymized uuids and public keys. 
 Here's what the Sessionless picture looks like:
 
+```mermaid
 erDiagram
     GOOGLE ||--|| GMAIL : has
     GMAIL ||--|| DID : gmail
@@ -147,5 +152,6 @@ erDiagram
     PRIMARY ||--|| IDENTITY3 : anonymized
     PRIMARY ||--|| SECONDARY1 : associated
     PRIMARY ||--|| SECONDARY2 : associated
+```
 
 Now we've got identity on the right side of the diagram. Next we build up our defenses against the adver(ti)sement. But one thing at a time.
