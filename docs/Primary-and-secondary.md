@@ -6,9 +6,7 @@ Often times a platform will need to integrate with third parties to provide some
  
 
 To answer this problem, the OAuth 2.
-0 protocol was developed, which you can [read here](https://datatracker.
-ietf.
-org/doc/html/rfc6749).
+0 protocol was developed, which you can [read here](https://datatracker.ietf.org/doc/html/rfc6749).
  Here's what the solution looks like:
 
 ```
