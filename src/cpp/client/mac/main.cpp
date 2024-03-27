@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string>
 #include <iostream>
+#include <sstream>
 #include "sessionless.hpp"
 
 using namespace std;
@@ -17,8 +18,13 @@ int main(int argc, char* argv[]) {
   //sessionless = interface->makeSessionless();
   //sessionless = makeSessionless();
   Sessionless sessionless(getKeys);
-  keys = sessionless.generateKeys();
-  Signature signature = sessionless.sign("Here is a message");
+  sessionless.generateKeys(keys);
+printf("\npublic key in main -> ");
+printf(keys.public_key);
+  Signature signature;
+  sessionless.sign("Here is a message", signature);
+  printf("\nsignature in main -> ");
+  printf(signature.signature);
   int verified = sessionless.verifySignature((const char *)signature.signature, "Here is a message", sessionless.getKeys().public_key);
   printf("\n\n");
   printf("verified: ");
