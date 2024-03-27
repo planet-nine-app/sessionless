@@ -1,8 +1,7 @@
+import { v4 as uuidv4 } from 'uuid';
 import { secp256k1 } from 'ethereum-cryptography/secp256k1';
 import { keccak256 } from "ethereum-cryptography/keccak.js";
 import { utf8ToBytes } from "ethereum-cryptography/utils.js";
-import { bytesToHex } from "ethereum-cryptography/utils.js";
-import { getRandomBytesSync } from "ethereum-cryptography/random.js";
 
 let getKeysFromDisk;
 
@@ -10,7 +9,7 @@ const AsyncFunction = (async () => {}).constructor;
 
 const generateKeys = async (saveKeys, getKeys) => {
   if(!saveKeys || !getKeys) {
-    return console.warn(`Since this can be run on any machine with node, there is no default secure storage. You will need to provide a saveKeys and getKeys function`);
+    throw new Error(`Since this can be run on any machine with node, there is no default secure storage. You will need to provide a saveKeys and getKeys function`);
   }
   const privateKey = secp256k1.utils.randomPrivateKey();
   const publicKey = secp256k1.getPublicKey(privateKey);
@@ -26,7 +25,7 @@ const generateKeys = async (saveKeys, getKeys) => {
 
 const getKeys = async () => {
   if(!getKeysFromDisk) {
-    throw console.error(`Since this can be run on any machine with node, there is no default secure storage. You will need to have your own getKeys function.`);
+    throw new Error(`Since this can be run on any machine with node, there is no default secure storage. You will need to have your own getKeys function.`);
   } else {
     return getKeysFromDisk instanceof AsyncFunction ? await getKeysFromDisk() : getKeysFromDisk();
   }
@@ -61,7 +60,11 @@ const verifySignature = (signature, message, publicKey) => {
 };
 
 const generateUUID = () => {
-  return  bytesToHex(getRandomBytesSync(32));
+  return  uuidv4();
+};
+
+const associate = (primarySignature, primaryMessage, primaryPublicKey, secondarySignature, secondaryMessage, secondaryPublicKey) => {
+  return (verifySignature(primarySignature, primaryMessage, primaryPublicKey) && verifySignature(secondarySignature, secondaryMessage, secondaryPublicKey)); 
 };
 
 const sessionless = {
@@ -69,7 +72,8 @@ const sessionless = {
   getKeys,
   sign,
   verifySignature,
-  generateUUID
+  generateUUID,
+  associate
 };
 
 export default sessionless;
