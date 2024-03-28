@@ -21,6 +21,10 @@ const generateKeys = async (saveKeys, getKeys) => {
     publicKey
   }));
   getKeysFromDisk = getKeys;
+  return {
+    privateKey,
+    publicKey
+  };
 };
 
 const getKeys = async () => {
@@ -31,8 +35,8 @@ const getKeys = async () => {
   }
 };
 
-const sign = (message) => {
-  const { privateKey } = getKeys();
+const sign = async (message) => {
+  const { privateKey } = await getKeys();
   const messageHash = keccak256(utf8ToBytes(message));
   return secp256k1.sign(messageHash, privateKey);
 };
