@@ -136,3 +136,9 @@ app.put('/cool-stuff', async (req, res) => {
 app.use(express.static('../web'));
 
 app.listen(3000);
+
+
+
+
+
+
