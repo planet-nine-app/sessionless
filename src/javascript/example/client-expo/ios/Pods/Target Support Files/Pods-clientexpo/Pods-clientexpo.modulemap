@@ -1,6 +1,0 @@
-module Pods_clientexpo {
-  umbrella header "Pods-clientexpo-umbrella.h"
-
-  export *
-  module * { export * }
-}
