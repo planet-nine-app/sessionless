@@ -26,11 +26,20 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    liquibaseVersion = '4.24.0'
+    lombokVersion = '1.18.32'
+    mybatisSpringBootVersion = '3.0.2'
+    springBootVersion = '3.2.4'
+}
+
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation "org.liquibase:liquibase-core:${liquibaseVersion}"
+    implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:${mybatisSpringBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
 }
 
 tasks.named('test') {

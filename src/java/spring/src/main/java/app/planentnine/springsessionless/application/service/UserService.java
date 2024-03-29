@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-//TODO: Add user creation
 public class UserService implements CreateUserUseCase {
     private final CreateUserPort createUserPort;
     
