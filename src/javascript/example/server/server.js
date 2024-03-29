@@ -21,17 +21,17 @@ app.use(
   })
 );
 
-const saveUser = (uuid, publicKey) => {
-  fs.writeFileSync('./users.json', JSON.stringify({
-    uuid,
-    publicKey
-  }));
+const saveUser = (userUUID, publicKey) => {
+  const usersString = fs.readFileSync('./users.json');
+  const users = JSON.parse(usersString);
+  users[userUUID] = publicKey;
+  fs.writeFileSync('./users.json', JSON.stringify(users));
 };
 
 const getUserPublicKey = (userUUID) => {
   const usersString = fs.readFileSync('./users.json');
   const users = JSON.parse(usersString);
-  return users[userUUID].publicKey;
+  return users[userUUID];
 };
 
 app.use(expressSession({
@@ -48,13 +48,11 @@ let users = {};
 let keys = {};
 let currentPrivateKey = '';
 let getKeys = () => {
-  return (() => { return currentPrivateKey })();
+  return (() => { return {privateKey: currentPrivateKey} })();
 };
 
 const webSignature = async (req, message) => {
-  console.log(req.sessionOptions);
-  console.log(req.session);
-  currentPrivateKey = req.sessionOptions.keys[1];
+  currentPrivateKey = req.session.user;
   return await sessionless.sign(message);
 };
 
@@ -64,10 +62,12 @@ const handleWebRegistration = async (req, res) => {
     keys[keys.publicKey] = keys.privateKey;
   }, getKeys);
 
-  req.session.cookie.keys = ['key1', keys.privateKey];
+  req.session.user = keys.privateKey;
 
   const userUUID = sessionless.generateUUID();
   users[userUUID] = keys.publicKey;
+
+  saveUser(userUUID, keys.publicKey);
 
   res.send({
     userUUID,
@@ -93,34 +93,36 @@ app.put('/register', (req, res) => {
     timestamp: payload.timestamp 
   });
 
-console.log(message);
-
   if(sessionless.verifySignature(signature, message, publicKey)) {
-    const uuid = sessionless.generateUUID();
-    saveUser(uuid, publicKey);
+    const userUUID = sessionless.generateUUID();
+    saveUser(userUUID, publicKey);
     let user = {
-      uuid,
+      userUUID,
       welcomeMessage: "Welcome to this example!"
     };
-    console.log(chalk.green(`user registered with uuid: ${uuid}`));
+    console.log(chalk.green(`user registered with userUUID: ${userUUID}`));
     res.send(user);
   } else {
     console.log(chalk.red('unverified!'));
   }
 });
 
-app.put('/cool-stuff', (req, res) => {
+app.put('/cool-stuff', async (req, res) => {
   const payload = req.body;
   const message = JSON.stringify({ coolness: payload.coolness, timestamp: payload.timestamp });
-  const signature = payload.signature || webSignature(req, message);
+  let signature = payload.signature;
+  if(!signature) {
+    signature = await webSignature(req, message);
+  }
 
-  const publicKey = getUserPublicKey(payload.uuid); 
+  const publicKey = getUserPublicKey(payload.userUUID); 
 
   if(sessionless.verifySignature(signature, message, publicKey)) {
-    res.send({
+    return res.send({
       doubleCool: 'double cool'
     });
   }
+  return res.send({error: 'auth error'});
 });
 
 app.use(express.static('../web'));

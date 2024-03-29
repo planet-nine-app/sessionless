@@ -7,6 +7,26 @@ let getKeysFromDisk;
 
 const AsyncFunction = (async () => {}).constructor;
 
+const decimalToHex = (str) => {
+    let decimal = str.toString().split('');
+    let sum = [];
+    let hex = [];
+    let i;
+    let s;
+    while(decimal.length){
+        s = 1 * decimal.shift()
+        for(i = 0; s || i < sum.length; i++){
+            s += (sum[i] || 0) * 10;
+            sum[i] = s % 16;
+            s = (s - sum[i]) / 16;
+        }
+    }
+    while(sum.length){
+        hex.push(sum.pop().toString(16));
+    }
+    return hex.join('');
+};
+
 const generateKeys = async (saveKeys, getKeys) => {
   if(!saveKeys || !getKeys) {
     throw new Error(`Since this can be run on any machine with node, there is no default secure storage. You will need to provide a saveKeys and getKeys function`);
@@ -37,8 +57,14 @@ const getKeys = async () => {
 
 const sign = async (message) => {
   const { privateKey } = await getKeys();
-  const messageHash = keccak256(utf8ToBytes(message));
-  return secp256k1.sign(messageHash, privateKey);
+  const messageHash = keccak256(utf8ToBytes(message.slice(0, 32)));
+  const signatureAsBigInts = secp256k1.sign(messageHash, privateKey);
+  const signature = {
+    r: decimalToHex(signatureAsBigInts.r),
+    s: decimalToHex(signatureAsBigInts.s),
+    recovery: signatureAsBigInts.recovery
+  };
+  return signature;
 };
 
 const verifySignature = (signature, message, publicKey) => {

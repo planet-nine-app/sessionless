@@ -13,8 +13,8 @@ window.register = () => {
   }) 
   .then((resp) => resp.json())
   .then(json => {
-    console.log(json.uuid);
-    window.uuid = json.uuid;
+    console.log(json.userUUID);
+    window.userUUID = json.userUUID;
     document.getElementById('welcomeMessage').innerHTML = json.welcomeMessage;
   })
   .catch(err => console.warn(err) );
@@ -22,6 +22,7 @@ window.register = () => {
 
 window.doCoolStuff = () => {
   const payload = {
+    userUUID: window.userUUID,
     coolness: 'max',
     timestamp: 'right now'
   };
