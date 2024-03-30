@@ -24,12 +24,14 @@ configurations {
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 ext {
     liquibaseVersion = '4.24.0'
     lombokVersion = '1.18.32'
     mybatisSpringBootVersion = '3.0.2'
+    sessionlessprotocolVersion = '1.0-SNAPSHOT'
     springBootVersion = '3.2.4'
 }
 
@@ -37,6 +39,7 @@ dependencies {
     implementation "org.liquibase:liquibase-core:${liquibaseVersion}"
     implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:${mybatisSpringBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+    implementation "app.planetnine:sessionless-protocol:${sessionlessprotocolVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
