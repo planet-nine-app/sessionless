@@ -8,22 +8,21 @@ This project a deployable spring server for the sessionless protocol
 
 ---
 
-### api/register
+### api/user/create
 ###  Parameters:
 Content-Type: application/json
 ```
 { 
-    "publicKey": "MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAE1MtHIxlGP5TARqBccrddNm1FnYH1Fp+o
-    nETz5KbXPSeG5FGwKMUXGfAmSZJq2gENULFewwymt+9bTXkjBZhh8A=="
+    "publicKey": "03173db82e5b709bc0dde804f717c05a3e94d83f4e024d6360ca8ce396f38a7de7"
 }
 ```
 ### Response:
-HTTP/1.1 201 Created
+HTTP/1.1 202 Accepted
 
 Content-Type: application/json
 ```
 {
-    "userId": "1db684ea-76bd-467e-afc6-ec06322c1f82"
+    "userUuid": "1db684ea-76bd-467e-afc6-ec06322c1f82"
 }
 ```
 HTTP/1.1 400 bad request
@@ -31,38 +30,33 @@ HTTP/1.1 400 bad request
 Content-Type: application/json
 ```
 {
-    "status: 400,
-    "message": "Invalid request parameters provided",
-    "errorDetails": [
-        "invalid key format"
-    ]
+    "Invalid request parameters provided",
 }
 ```
 
 ---
 
-### api/verify
+### api/message/verify
 ### Parameters:
 Content-Type: application/json
 ```
 {
     "userId": "1db684ea-76bd-467e-afc6-ec06322c1f82",
-    "message": "string",
+    "content": "My message",
     "signature": 
         [
-            r=0xb83380f6e1d09411ebf49afd1a95c738686bfb2b0fe2391134f4ae3d6d77b78a,
-            s=0x6c305afcac930a3ea1721c04d8a1a979016baae011319746323a756fbaee1811
+            7aa8e3512ea528bec690dbddb118425f9f1997bf87f87ada6b96cffe11730f03,
+            226397edd371fd7e8398651c956552f11c1d710a3988e42c02eb24b413a6f8f4
         ]
 }
 ```
 ### Response:
-HTTP/1.1 200 OK
+HTTP/1.1 202 Accepted
 
 Content-Type: application/json
 ```
 {
-    "status": 200,
-    "message": "The message was verified successfully"
+    "The message content was verified successfully"
 }
 ```
 
@@ -71,12 +65,7 @@ HTTP/1.1 400 bad request
 Content-Type: application/json
 ```
 {
-    "status: 400,
-    "message": "Invalid request parameters provided",
-    "errorDetails": [
-        "userId not found",
-        "invalid signature"
-    ]
+    "Invalid request parameters provided",
 }
 ```
 
@@ -95,7 +84,8 @@ This project is built using the following technologies:
 ---
 ## Installation
 To install this project:
-
-With docker & docker-compose installed run the following command from the root project folder: `docker compose up -d`
+1. Clone repository
+2. Modify env/.env_api and .env_db to custom credentials for security
+3. With docker & docker-compose installed run the following command from the root project folder: `docker compose up -d`
 
 

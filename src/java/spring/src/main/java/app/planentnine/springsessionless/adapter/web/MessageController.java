@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping("/api/message")
 @Controller
+@RequestMapping("/api/message")
 public class MessageController {
     
     private final VerifyMessageUseCase verifyMessageUseCase;
@@ -28,9 +28,9 @@ public class MessageController {
     public ResponseEntity<String> verifyMessage(@RequestBody RestMessageDto messageDto){
         boolean verified = verifyMessageUseCase.verifyMessage(messageDtoMapper.map(messageDto));
         if (verified) {
-            return ResponseEntity.accepted().body("Message verified");
+            return ResponseEntity.accepted().body("The message content was verified successfully");
         } else {
-            return ResponseEntity.badRequest().body("Invalid id and signature");
+            return ResponseEntity.badRequest().body("Invalid request parameters provided");
         }
     }
 }

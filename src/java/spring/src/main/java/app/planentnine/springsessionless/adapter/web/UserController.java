@@ -4,7 +4,8 @@ import app.planentnine.springsessionless.adapter.web.dto.RestUserDto;
 import app.planentnine.springsessionless.adapter.web.dto.mapper.RestUserDtoMapper;
 import app.planentnine.springsessionless.application.domain.User;
 import app.planentnine.springsessionless.application.port.incoming.CreateUserUseCase;
-import app.planentnine.springsessionless.application.util.Sessionless;
+import org.bouncycastle.jce.ECNamedCurveTable;
+import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Controller
 @RequestMapping("/api/user")
@@ -30,12 +33,34 @@ public class UserController {
     }
     
     @PostMapping("/create")
-    public ResponseEntity<String> createUser(@RequestBody RestUserDto restUserDto) {
+    public ResponseEntity<Object> createUser(@RequestBody RestUserDto restUserDto) {
         User user = createUserUseCase.createUser(userDtoMapper.map(restUserDto));
-        if (user == null) {
-            return ResponseEntity.badRequest().body("Malformed key, user could not be created");
+
+        if (isValidPublicKey(user.publicKey())) {
+            Map<String, String> responseMap = new HashMap<>();
+            responseMap.put("userUuid", user.userUuid().toString());
+            return ResponseEntity.accepted().body(responseMap);
         } else {
-            return ResponseEntity.accepted().body(user.userUuid().toString());
+            return ResponseEntity.badRequest().body("Invalid request parameters provided");
         }
     }
+    
+    private boolean isValidPublicKey(String publicKey) {
+        try {
+            BigInteger publicKeyFormatted = new BigInteger(publicKey, 16);
+            ECNamedCurveParameterSpec ecNamedCurveParameterSpec =
+                    ECNamedCurveTable.getParameterSpec("secp256k1");
+            
+            org.bouncycastle.math.ec.ECPoint publicKeyPoint =
+                    ecNamedCurveParameterSpec.getCurve().decodePoint(publicKeyFormatted.toByteArray());
+            
+            if (publicKeyPoint != null && publicKeyPoint.isValid()) {
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid Key format"); //TODO throw to log
+        }
+        return false;
+    }
+    
 }
