@@ -11,7 +11,7 @@ This is very much a wip, and, as far as I know, not something that there's an es
 
 | Dev          | UX          | Product     |
 |--------------|-------------|-------------|
-| [README-Dev] | [README-UX] | coming soon |
+| [README-DEV] | [README-UX] | coming soon |
 
-[README-Dev]: ./README-Dev.md
+[README-DEV]: ./README-DEV.md
 [README-UX]: ./README-UX.md
