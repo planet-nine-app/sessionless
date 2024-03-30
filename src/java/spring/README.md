@@ -1,5 +1,5 @@
 # Sessionless Spring Server Implementation
-This project a deployable spring server for the sessionless protocol
+This project is a deployable spring server for the sessionless protocol
 
 ---
 
