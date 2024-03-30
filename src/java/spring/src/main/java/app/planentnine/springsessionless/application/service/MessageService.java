@@ -1,10 +1,10 @@
 package app.planentnine.springsessionless.application.service;
 
+import app.planentnine.springsessionless.application.util.Sessionless;
 import app.planentnine.springsessionless.application.domain.Message;
 import app.planentnine.springsessionless.application.domain.User;
 import app.planentnine.springsessionless.application.port.incoming.VerifyMessageUseCase;
 import app.planentnine.springsessionless.application.port.outgoing.LoadUserByUserUuidPort;
-import app.planetnine.Sessionless;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
