@@ -2,7 +2,6 @@ package app.planentnine.springsessionless.adapter.persistence.entity.mapper;
 
 import app.planentnine.springsessionless.adapter.persistence.entity.PostgresUserEntity;
 import app.planentnine.springsessionless.application.domain.User;
-import app.planentnine.springsessionless.application.util.Sessionless;
 import org.springframework.stereotype.Component;
 
 @Component
