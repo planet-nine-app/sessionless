@@ -7,6 +7,7 @@ use crate::*;
 use error::*;
 use hex_core::*;
 
+/// Type implementing this trait can be encoded into a hex string.
 pub trait IntoHex {
     fn to_hex(&self) -> String;
 
@@ -15,6 +16,7 @@ pub trait IntoHex {
     }
 }
 
+/// Type implementing this trait can be constructed from a hex string.
 pub trait FromHex {
     type Error: std::error::Error;
 

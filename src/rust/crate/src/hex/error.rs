@@ -3,9 +3,12 @@ use super::*;
 
 pub use hex_core::FromHexError;
 
+/// Possible errors when decoding a hex string into a specific type.
 #[derive(Debug)]
 pub enum HexError<E: std::error::Error> {
+    /// Invalid hex string format.
     HexFormat(FromHexError),
+    /// Some error with constructing the requested type.
     Other(E),
 }
 
