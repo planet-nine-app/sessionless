@@ -4,8 +4,8 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="create_user_table" author="daniel-j-mason">
-        <createTable tableName="user">
+    <changeSet id="create_account_table" author="daniel-j-mason">
+        <createTable tableName="account">
             <column name="id" type="uuid">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
