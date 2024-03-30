@@ -31,17 +31,26 @@ ext {
     liquibaseVersion = '4.24.0'
     lombokVersion = '1.18.32'
     mybatisSpringBootVersion = '3.0.2'
-    sessionlessprotocolVersion = '1.0-SNAPSHOT'
+    postgresqlVersion = '42.6.0'
     springBootVersion = '3.2.4'
+    swaggerAnnotationsVersion = "2.1.13"
 }
 
 dependencies {
+    //Remove with Sessionless
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.77'
+    implementation 'commons-codec:commons-codec:1.15'
+    implementation 'org.apache.commons:commons-lang3:3.0'
+    //
     implementation "org.liquibase:liquibase-core:${liquibaseVersion}"
     implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:${mybatisSpringBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
-    implementation "app.planetnine:sessionless-protocol:${sessionlessprotocolVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations-jakarta:${swaggerAnnotationsVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    runtimeOnly "org.postgresql:postgresql:${postgresqlVersion}"
+
     testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
 }
 
