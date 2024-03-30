@@ -12,9 +12,9 @@ public class RestUserDtoMapper {
     public User map(RestUserDto restUserDto){
         return new User(
                 null,
-                Sessionless.generateUuid(), //TODO move
+                null, //TODO move
                 restUserDto.publicKey(),
-                LocalDateTime.now()
+                null
         );
     }
 }

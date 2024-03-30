@@ -4,8 +4,6 @@ import app.planentnine.springsessionless.adapter.web.dto.RestMessageDto;
 import app.planentnine.springsessionless.application.domain.Message;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
 @Component
 public class RestMessageDtoMapper {
     public Message map(RestMessageDto restMessageDto){
@@ -13,7 +11,7 @@ public class RestMessageDtoMapper {
                 restMessageDto.userUuid(),
                 restMessageDto.content(),
                 restMessageDto.signature(),
-                LocalDateTime.now() //TODO move
+                null //TODO: implementation on uuid/timestamp
         );
     }
 }
