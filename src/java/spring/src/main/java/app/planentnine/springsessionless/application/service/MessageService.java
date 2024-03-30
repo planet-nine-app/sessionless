@@ -4,11 +4,11 @@ import app.planentnine.springsessionless.application.domain.Message;
 import app.planentnine.springsessionless.application.domain.User;
 import app.planentnine.springsessionless.application.port.incoming.VerifyMessageUseCase;
 import app.planentnine.springsessionless.application.port.outgoing.LoadUserByUserUuidPort;
+import app.planetnine.Sessionless;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-//TODO add and implement verification protocols
 public class MessageService implements VerifyMessageUseCase {
     private final LoadUserByUserUuidPort loadUserByUserUuidPort;
     
@@ -21,7 +21,9 @@ public class MessageService implements VerifyMessageUseCase {
     public boolean verifyMessage(Message message) {
         User user = loadUserByUserUuidPort.loadByUserUuid(message.userUuid())
                 .orElseThrow(() -> new RuntimeException("User with id: " + message.userUuid() + "could not be found from message"));
-        
-        return false;
+        String publicKey = user.publicKey();
+        String[] signature = message.signature();
+        String messageContent = message.content();
+        return Sessionless.verify(publicKey, signature, messageContent);
     }
 }
