@@ -1,5 +1,5 @@
 # The first stage of the Dockerfile executes the Gradle build
-FROM gradle:8.4-jdk21-alpine as builder
+FROM gradle:8.7-jdk21-alpine as builder
 
 # Copy your source code into the Docker image
 COPY --chown=gradle:gradle . /home/gradle/src
