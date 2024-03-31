@@ -1,8 +1,8 @@
 package com.planetnine.sessionless
 
 interface ISessionless {
-    /** Key vault to store and retrieve key pairs */
-    var vault: IVault
+    /** The way to store and retrieve key pairs */
+    val vault: IVault
 
     /** Generates a private/public key pair and stores it.
      * - Uses [vault] if available
