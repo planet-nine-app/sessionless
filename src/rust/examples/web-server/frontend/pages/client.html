@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="web_client.js"></script>
+</head>
+<body>
+
+Sessionless Initialized: <a id="txt-init">false</a> <br>
+UUID: <a id="txt-uuid">N/A</a> <br>
+Private Key: <a id="txt-private-key">N/A</a> <br>
+<br>
+<button onclick="register()">Register</button> <br>
+<button onclick="coolStuff()">Cool Stuff</button> <br>
+
+<script>
+    const { init, get_public_key, get_private_key, sign } = wasm_bindgen;
+
+    const txtInit = document.getElementById('txt-init');
+    const txtUUID = document.getElementById('txt-uuid');
+    const txtPrivateKey = document.getElementById('txt-private-key');
+
+    const storageKeyUUID = 'uuid';
+    const storageKeyPrivateKey = 'private-key';
+
+    window.isInitialized = false;
+
+    async function run() {
+        await wasm_bindgen();
+
+        init();
+
+        window.isInitialized = true;
+        txtInit.innerText = 'true';
+        txtPrivateKey.innerText = get_private_key();
+    }
+
+    function main() {
+        let uuid = sessionStorage.getItem(storageKeyUUID);
+        if (uuid) {
+            txtUUID.innerText = uuid;
+        }
+
+        let privateKey = sessionStorage.getItem(storageKeyPrivateKey);
+        if (privateKey) {
+            txtPrivateKey.innerText = privateKey;
+        }
+    }
+
+    async function register() {
+        if (!window.isInitialized) {
+            alert('Sessionless was not yet initialized!');
+        }
+
+        let payload = {
+            publicKey: get_public_key(),
+            enteredText: 'Foo',
+            timestamp: 'right now',
+        }
+
+        console.log(JSON.stringify(payload));
+
+        payload.signature = sign(JSON.stringify(payload));
+
+        await fetch('http://localhost:3000/register', {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        })
+            .then((resp) => resp.json())
+            .then(json => {
+                console.log('resp: ' + json.uuid);
+
+                if (json.uuid) {
+                    sessionStorage.setItem(storageKeyUUID, json.uuid);
+                    txtUUID.innerText = json.uuid;
+                }
+
+                if (json.welcomeMessage) {
+                    alert(json.welcomeMessage);
+                }
+            })
+            .catch(err => console.warn(err) );
+    }
+
+    async function coolStuff() {
+        if (!window.isInitialized) {
+            alert('Sessionless was not yet initialized!');
+        }
+
+        const payload = {
+            coolness: 'max',
+            timestamp: 'right now'
+        };
+        payload.signature = sign(JSON.stringify(payload));
+        payload.uuid = sessionStorage.getItem(storageKeyUUID);
+
+        await fetch('http://localhost:3000/cool-stuff', {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        })
+            .then((resp) => resp.json())
+            .then(json => {
+                alert(`The server thinks you\'re ${json.doubleCool}!`);
+            })
+            .catch(console.warn);
+    }
+
+    run();
+    main();
+</script>
+
+</body>
+</html>
