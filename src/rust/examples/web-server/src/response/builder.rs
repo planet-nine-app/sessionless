@@ -3,6 +3,7 @@ use http_body_util::Full;
 use hyper::body::Bytes;
 use hyper::header::CONTENT_TYPE;
 use erased_serde::Serialize;
+use hyper::http::{HeaderName, HeaderValue};
 use hyper::Response;
 
 static JSON_EMPTY: &str = "{}";
@@ -10,6 +11,7 @@ static JSON_EMPTY: &str = "{}";
 pub struct Builder {
     builder: hyper::http::response::Builder,
     body: Option<Box<dyn Serialize + 'static + Send + Sync>>,
+    body_raw: Option<Cow<'static, [u8]>>,
     pub status: u16,
 }
 
@@ -21,6 +23,7 @@ impl Builder {
         Self {
             builder,
             body: None,
+            body_raw: None,
             status: 200,
         }
     }
@@ -30,7 +33,36 @@ impl Builder {
         self
     }
 
-    pub fn build(self) -> Response<Full<Bytes>> {
+    pub fn set_body_raw_static(&mut self, body: &'static [u8]) -> &mut Self {
+        self.body_raw = Some(Cow::Borrowed(body));
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn set_body_raw(&mut self, body: Vec<u8>) -> &mut Self {
+        self.body_raw = Some(Cow::Owned(body));
+        self
+    }
+
+    pub fn set_header(&mut self, header: HeaderName, value: HeaderValue) -> &mut Self {
+        if let Some(map) = self.builder.headers_mut() {
+            map.insert(header, value);
+        }
+
+        self
+    }
+
+    pub fn build(mut self) -> Response<Full<Bytes>> {
+        self.builder = self.builder
+            .status(self.status);
+
+        if let Some(body_raw) = self.body_raw {
+            return self.builder.body(Full::new(match body_raw {
+                Cow::Borrowed(data) => Bytes::from_static(data),
+                Cow::Owned(data) => Bytes::from(data),
+            })).unwrap();
+        }
+
         let body_json = self.body.map(|obj| {
             serde_json::to_string(obj.as_ref())
                 .map(|json| Cow::Owned(json))
@@ -42,9 +74,6 @@ impl Builder {
             Cow::Owned(data) => Bytes::from(data.into_bytes()),
         });
 
-        self.builder
-            .status(self.status)
-            .body(body)
-            .unwrap()
+        self.builder.body(body).unwrap()
     }
 }
