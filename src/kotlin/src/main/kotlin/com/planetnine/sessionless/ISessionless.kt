@@ -1,31 +1,30 @@
 package com.planetnine.sessionless
 
 interface ISessionless {
+    /** Key vault to store and retrieve key pairs */
+    var vault: IKeyVault
 
-    /** Generates a private/public key pair and stores it in the platform's secure storage.
-     * - ⚠️ with custom [getKeys]/[saveKeys] functions.
-     * @param saveKeys custom way to save keys.
-     * @param getKeys custom way to get keys. */
-    fun generateKeys(
-        saveKeys: ((keys: SimpleKeyPair) -> Unit),
-        getKeys: (() -> SimpleKeyPair)
-    )
-
+    /** Generates a private/public key pair and stores it.
+     * - Uses [vault] if available
+     * - Otherwise it will use [java.security.KeyStore] */
+    fun generateKeys()
 
     /** Retrieves keys from secure storage.
+     * - This should use [vault] if available, otherwise [java.security.KeyStore] as the default storage
      * @return The retrieved keys object. */
     fun getKeys(): SimpleKeyPair
 
     /** Signs a message with the user's private key.
      * @param message The message to be signed.
-     * @return The signed message. */
+     * @return Signature as a [String]. */
     fun sign(message: String): String
 
     /** Verifies a given signature with a public key.
-     * @param message The message that was signed.
+     * @param message The message that was signed earlier (ideally signed with [sign]).
      * @param signature The signature to be verified.
      * @param publicKey The public key to use for verification.
-     * @return True if the signature is valid, false otherwise. */
+     * @return True if the [signature] is valid for the given [message] and [publicKey].
+     * @see sign*/
     fun verifySignature(message: String, signature: String, publicKey: String): Boolean
 
     /** Creates a unique UUID for a user.
