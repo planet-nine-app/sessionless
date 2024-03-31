@@ -49,23 +49,27 @@ const sign = async (message) => {
 };
 
 const verifySignature = (signature, message, publicKey) => {
-  const signatureHexString = signature.r + signature.s;
   const messageHash = keccak256(utf8ToBytes(message.slice(0,32)));
+  
   let hex = signature.r;
-  if (hex.length % 2) { hex = '0' + hex; }
+  if (hex.length % 2) { 
+    hex = '0' + hex; 
+  }
 
-  var bn = BigInt('0x' + hex);
+  const bn = BigInt('0x' + hex);
 
-  var d = bn.toString(10);
   let hex2 = signature.s;
-  if (hex2.length % 2) { hex2 = '0' + hex2; }
+  if (hex2.length % 2) { 
+    hex2 = '0' + hex2; 
+  }
 
-  var bn2 = BigInt('0x' + hex2);
+  const bn2 = BigInt('0x' + hex2);
 
   const signature2 = {
     r: bn,
     s: bn2
   };
+  
   const res = secp256k1.verify(signature2, messageHash, publicKey);
   return res;
 };
