@@ -1,38 +1,19 @@
 import { v4 as uuidv4 } from 'uuid';
 import { secp256k1 } from 'ethereum-cryptography/secp256k1';
 import { keccak256 } from "ethereum-cryptography/keccak.js";
+import { bytesToHex } from "ethereum-cryptography/utils.js";
 import { utf8ToBytes } from "ethereum-cryptography/utils.js";
 
 let getKeysFromDisk;
 
 const AsyncFunction = (async () => {}).constructor;
 
-const bigIntToHex = (bigInt) => {
-    let decimal = bigInt.toString().split('');
-    let sum = [];
-    let hex = [];
-    let i;
-    let s;
-    while(decimal.length){
-        s = 1 * decimal.shift()
-        for(i = 0; s || i < sum.length; i++){
-            s += (sum[i] || 0) * 10;
-            sum[i] = s % 16;
-            s = (s - sum[i]) / 16;
-        }
-    }
-    while(sum.length){
-        hex.push(sum.pop().toString(16));
-    }
-    return hex.join('');
-};
-
 const generateKeys = async (saveKeys, getKeys) => {
   if(!saveKeys || !getKeys) {
     throw new Error(`Since this can be run on any machine with node, there is no default secure storage. You will need to provide a saveKeys and getKeys function`);
   }
-  const privateKey = secp256k1.utils.randomPrivateKey();
-  const publicKey = secp256k1.getPublicKey(privateKey);
+  const privateKey = bytesToHex(secp256k1.utils.randomPrivateKey());
+  const publicKey = bytesToHex(secp256k1.getPublicKey(privateKey));
   saveKeys && (saveKeys instanceof AsyncFunction ? await saveKeys({
     privateKey,
     publicKey
@@ -60,8 +41,8 @@ const sign = async (message) => {
   const messageHash = keccak256(utf8ToBytes(message.slice(0, 32)));
   const signatureAsBigInts = secp256k1.sign(messageHash, privateKey);
   const signature = {
-    r: bigIntToHex(signatureAsBigInts.r),
-    s: bigIntToHex(signatureAsBigInts.s),
+    r: signatureAsBigInts.r.toString(16),
+    s: signatureAsBigInts.s.toString(16),
     recovery: signatureAsBigInts.recovery
   };
   return signature;
