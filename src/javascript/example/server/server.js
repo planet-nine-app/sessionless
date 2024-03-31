@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import chalk from 'chalk';
 import sessionless from '@zachbabb/sessionless-node';
 import fs from 'fs';
+import { readFile } from 'node:fs/promises';
 import path from 'path';
 import url from 'url';
 
@@ -21,17 +22,23 @@ app.use(
   })
 );
 
-const saveUser = (userUUID, publicKey) => {
+const saveUser = async (userUUID, publicKey) => {
 
  /**
   * This is a contrived example for this example, which should be run locally. 
   * In an actual implementation your user store should be a database.
   */ 
 
-  const usersString = fs.readFileSync('./users.json');
-  const users = JSON.parse(usersString);
-  users[userUUID] = publicKey;
-  fs.writeFileSync('./users.json', JSON.stringify(users));
+  try {
+    const usersString = await readFile('./users.json');
+    const users = JSON.parse(usersString);
+    users[userUUID] = publicKey;
+    fs.writeFileSync('./users.json', JSON.stringify(users));
+  } catch(err) {
+    let users = {};
+    users[userUUID] = publicKey;
+    fs.writeFileSync('./users.json', JSON.stringify(users), { flag: 'w' });
+  }
 };
 
 const getUserPublicKey = (userUUID) => {
@@ -51,7 +58,6 @@ app.use(expressSession({
 }));
 
 let users = {};
-let keys = {};
 let currentPrivateKey = '';
 let getKeys = () => {
   return (() => { return {privateKey: currentPrivateKey} })();
@@ -73,7 +79,7 @@ const handleWebRegistration = async (req, res) => {
   const userUUID = sessionless.generateUUID();
   users[userUUID] = keys.publicKey;
 
-  saveUser(userUUID, keys.publicKey);
+  await saveUser(userUUID, keys.publicKey);
 
   res.send({
     userUUID,
@@ -83,7 +89,7 @@ const handleWebRegistration = async (req, res) => {
 
 app.use(bodyParser.json());
 
-app.put('/register', (req, res) => {
+app.put('/register', async (req, res) => {
   const payload = req.body;
   const signature = payload.signature;
 
@@ -101,7 +107,7 @@ app.put('/register', (req, res) => {
 
   if(sessionless.verifySignature(signature, message, publicKey)) {
     const userUUID = sessionless.generateUUID();
-    saveUser(userUUID, publicKey);
+    await saveUser(userUUID, publicKey);
     const user = {
       userUUID,
       welcomeMessage: "Welcome to this example!"
