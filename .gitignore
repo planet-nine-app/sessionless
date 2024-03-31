@@ -2,3 +2,5 @@ node_modules
 .DS_Store
 
 src/javascript/example/client-expo/ios
+src/javascript/example/server/users.json
+
