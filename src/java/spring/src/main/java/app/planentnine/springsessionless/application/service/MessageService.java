@@ -1,6 +1,6 @@
 package app.planentnine.springsessionless.application.service;
 
-import app.planentnine.springsessionless.application.util.Sessionless;
+import app.planentnine.springsessionless.application.encryption.Sessionless;
 import app.planentnine.springsessionless.application.domain.Message;
 import app.planentnine.springsessionless.application.domain.User;
 import app.planentnine.springsessionless.application.port.incoming.VerifyMessageUseCase;

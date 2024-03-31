@@ -1,4 +1,4 @@
-package app.planentnine.springsessionless.application.util;
+package app.planentnine.springsessionless.application.encryption;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.crypto.params.ECDomainParameters;

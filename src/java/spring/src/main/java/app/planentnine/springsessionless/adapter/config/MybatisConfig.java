@@ -1,7 +1,7 @@
 package app.planentnine.springsessionless.adapter.config;
 
 import app.planentnine.springsessionless.adapter.persistence.mybatis.PostgresUserRepository;
-import app.planentnine.springsessionless.application.util.UuidTypeHandler;
+import app.planentnine.springsessionless.adapter.util.UuidTypeHandler;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperFactoryBean;

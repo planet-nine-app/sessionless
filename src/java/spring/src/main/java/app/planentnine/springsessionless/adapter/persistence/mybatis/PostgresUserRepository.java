@@ -1,7 +1,7 @@
 package app.planentnine.springsessionless.adapter.persistence.mybatis;
 
 import app.planentnine.springsessionless.adapter.persistence.entity.PostgresUserEntity;
-import app.planentnine.springsessionless.application.util.UuidTypeHandler;
+import app.planentnine.springsessionless.adapter.util.UuidTypeHandler;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;

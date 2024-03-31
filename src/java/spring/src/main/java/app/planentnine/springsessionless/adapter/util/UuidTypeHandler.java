@@ -1,4 +1,4 @@
-package app.planentnine.springsessionless.application.util;
+package app.planentnine.springsessionless.adapter.util;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;

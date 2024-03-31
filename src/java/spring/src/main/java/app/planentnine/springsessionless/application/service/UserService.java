@@ -3,7 +3,7 @@ package app.planentnine.springsessionless.application.service;
 import app.planentnine.springsessionless.application.domain.User;
 import app.planentnine.springsessionless.application.port.incoming.CreateUserUseCase;
 import app.planentnine.springsessionless.application.port.outgoing.CreateUserPort;
-import app.planentnine.springsessionless.application.util.Sessionless;
+import app.planentnine.springsessionless.application.encryption.Sessionless;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
