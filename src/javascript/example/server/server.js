@@ -22,6 +22,12 @@ app.use(
 );
 
 const saveUser = (userUUID, publicKey) => {
+
+ /**
+  * This is a contrived example for this example, which should be run locally. 
+  * In an actual implementation your user store should be a database.
+  */ 
+
   const usersString = fs.readFileSync('./users.json');
   const users = JSON.parse(usersString);
   users[userUUID] = publicKey;
@@ -96,7 +102,7 @@ app.put('/register', (req, res) => {
   if(sessionless.verifySignature(signature, message, publicKey)) {
     const userUUID = sessionless.generateUUID();
     saveUser(userUUID, publicKey);
-    let user = {
+    const user = {
       userUUID,
       welcomeMessage: "Welcome to this example!"
     };
@@ -110,12 +116,8 @@ app.put('/register', (req, res) => {
 app.put('/cool-stuff', async (req, res) => {
   const payload = req.body;
   const message = JSON.stringify({ coolness: payload.coolness, timestamp: payload.timestamp });
-  let signature = payload.signature;
-  if(!signature) {
-    signature = await webSignature(req, message);
-  }
-
   const publicKey = getUserPublicKey(payload.userUUID); 
+  const signature = payload.signature || (await webSignature(req, message));
 
   if(sessionless.verifySignature(signature, message, publicKey)) {
     return res.send({

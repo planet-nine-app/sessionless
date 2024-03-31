@@ -7,8 +7,8 @@ let getKeysFromDisk;
 
 const AsyncFunction = (async () => {}).constructor;
 
-const decimalToHex = (str) => {
-    let decimal = str.toString().split('');
+const bigIntToHex = (bigInt) => {
+    let decimal = bigInt.toString().split('');
     let sum = [];
     let hex = [];
     let i;
@@ -60,8 +60,8 @@ const sign = async (message) => {
   const messageHash = keccak256(utf8ToBytes(message.slice(0, 32)));
   const signatureAsBigInts = secp256k1.sign(messageHash, privateKey);
   const signature = {
-    r: decimalToHex(signatureAsBigInts.r),
-    s: decimalToHex(signatureAsBigInts.s),
+    r: bigIntToHex(signatureAsBigInts.r),
+    s: bigIntToHex(signatureAsBigInts.s),
     recovery: signatureAsBigInts.recovery
   };
   return signature;
