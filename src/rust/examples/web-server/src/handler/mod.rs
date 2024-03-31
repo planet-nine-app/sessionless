@@ -1,4 +1,5 @@
 mod api;
+mod resources;
 
 use api::*;
 
@@ -20,6 +21,10 @@ pub async fn service(request: hyper::Request<Incoming>) -> Result<Response<Full<
         "/register" => register(&head, body, &mut builder).await,
         "/cool-stuff" => cool_stuff(&head, body, &mut builder).await,
         _ => {
+            if resources::load(&head, body, &mut builder).await.is_ok() {
+                return Ok(builder.build());
+            }
+
             builder.status = 404;
             Err(anyhow!("Endpoint '{}' not found!", path))
         }
