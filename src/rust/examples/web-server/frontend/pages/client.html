@@ -62,15 +62,12 @@ Private Key: <a id="txt-private-key">N/A</a> <br>
             timestamp: 'right now',
         }
 
-        console.log(JSON.stringify(payload));
-
-        payload.signature = sign(JSON.stringify(payload));
-
         await fetch('http://localhost:3000/register', {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
+                'signature': sign(JSON.stringify(payload)),
             },
             body: JSON.stringify(payload)
         })
@@ -97,16 +94,16 @@ Private Key: <a id="txt-private-key">N/A</a> <br>
 
         const payload = {
             coolness: 'max',
-            timestamp: 'right now'
+            timestamp: 'right now',
+            uuid: sessionStorage.getItem(storageKeyUUID),
         };
-        payload.signature = sign(JSON.stringify(payload));
-        payload.uuid = sessionStorage.getItem(storageKeyUUID);
 
         await fetch('http://localhost:3000/cool-stuff', {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
+                'Signature': sign(JSON.stringify(payload)),
             },
             body: JSON.stringify(payload)
         })
