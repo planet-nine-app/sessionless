@@ -11,22 +11,30 @@ lazy_static! {
     static ref DATABASE: Mutex<HashMap<String, PublicKey>> = Mutex::new(HashMap::new());
 }
 
-async fn load_payload<P: DeserializeOwned>(body: Incoming) -> anyhow::Result<P> {
+fn get_header<'a>(head: &'a Parts, key: &str) -> anyhow::Result<&'a str> {
+    head.headers
+        .get(key)
+        .ok_or_else(|| anyhow!("Missing 'signature' header!"))?
+        .to_str()
+        .map_err(|err| anyhow!("Invalid 'signature' header: {}", err))
+}
+
+async fn load_payload<P: DeserializeOwned>(data: impl AsRef<[u8]>) -> anyhow::Result<P> {
     serde_json::from_slice::<P>(
-        &*body.collect().await?.to_bytes()
+        data.as_ref()
     ).map_err(|err| anyhow!("Invalid payload: {}", err))
 }
 
-pub async fn register(_head: &Parts, body: Incoming, builder: &mut response::Builder) -> anyhow::Result<()> {
+pub async fn register(head: &Parts, body: Incoming, builder: &mut response::Builder) -> anyhow::Result<()> {
+    let body = &*body.collect().await?.to_bytes();
     let payload = load_payload::<request::PayloadRegister>(body).await?;
 
     let public_key = PublicKey::from_hex(payload.public_key.as_bytes())?;
-    let signature = Signature::from_hex(payload.signature.as_bytes())?;
-    let message = serde_json::to_string(&payload).unwrap();
+    let signature = Signature::from_hex(get_header(head, "signature")?)?;
 
     SESSIONLESS.get()
         .ok_or_else(|| anyhow!("Sessionless was not initialized!"))?
-        .verify(message, &public_key, &signature)
+        .verify(body, &public_key, &signature)
         .map_err(|err| anyhow!("Failed to verify the payload: {}", err))?;
 
     let uuid = Sessionless::generate_uuid().to_string();
@@ -44,7 +52,8 @@ pub async fn register(_head: &Parts, body: Incoming, builder: &mut response::Bui
     Ok(())
 }
 
-pub async fn cool_stuff(_head: &Parts, body: Incoming, builder: &mut response::Builder) -> anyhow::Result<()> {
+pub async fn cool_stuff(head: &Parts, body: Incoming, builder: &mut response::Builder) -> anyhow::Result<()> {
+    let body = &*body.collect().await?.to_bytes();
     let payload = load_payload::<request::PayloadCoolStuff>(body).await?;
     
     let public_key = DATABASE.lock().await
@@ -52,12 +61,11 @@ pub async fn cool_stuff(_head: &Parts, body: Incoming, builder: &mut response::B
         .map(|pub_key| *pub_key)
         .ok_or_else(|| anyhow!("User {} not found!", payload.uuid))?;
 
-    let signature = Signature::from_hex(payload.signature.as_bytes())?;
-    let message = serde_json::to_string(&payload).unwrap();
+    let signature = Signature::from_hex(get_header(head, "signature")?)?;
 
     SESSIONLESS.get()
         .ok_or_else(|| anyhow!("Sessionless was not initialized!"))?
-        .verify(message, &public_key, &signature)
+        .verify(body, &public_key, &signature)
         .map_err(|err| anyhow!("Failed to verify the payload: {}", err))?;
 
     builder.status = 200;
