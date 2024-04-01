@@ -20,6 +20,11 @@ interface ISessionless {
          * @return The [KeyPair] that was generated then stored with [vault] */
         fun generateKeys(keyAccessInfo: KeyAccessInfo): KeyPair
 
+        /** Generates a private/public key pair and stores it using [vault]
+         * @param keyAccessInfo Info required to access the stored key
+         * @return The [KeyPair] that was generated then stored with [vault] */
+        suspend fun generateKeysAsync(keyAccessInfo: KeyAccessInfo): KeyPair
+
         /** Retrieves keys using [vault]
          * @param keyAccessInfo Info required to access the stored key
          * @return Key pair as objects ([KeyPair]) */
@@ -38,6 +43,10 @@ interface ISessionless {
         /** Generates a private/public key pair and stores it using [vault]
          * @return A simplified ([SimpleKeyPair]) version of the key pair that was generated then stored with [vault] */
         fun generateKeys(): SimpleKeyPair
+
+        /** Generates a private/public key pair and stores it using [vault]
+         * @return A simplified ([SimpleKeyPair]) version of the key pair that was generated then stored with [vault] */
+        suspend fun generateKeysAsync(): SimpleKeyPair
 
         /** Retrieves keys using [vault]
          * @return Key pair as [String]s ([SimpleKeyPair]). */
