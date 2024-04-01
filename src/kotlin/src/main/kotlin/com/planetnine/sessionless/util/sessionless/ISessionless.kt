@@ -83,14 +83,5 @@ interface ISessionless {
      * @param signature Signature using user's private key.
      * @param publicKey Gateway's public key. */
     fun revokeKey(message: String, signature: String, publicKey: String)
-
-    companion object {
-        const val KEY_PROVIDER = "sessionless"
-        const val KEY_ALGORITHM = "RSA"
-        const val SIGNATURE_ALGORITHM = "SHA256withRSA"
-        const val KEY_SIZE = 1024
-        const val RANDOM_ALGORITHM = "SHA1PRNG"
-        const val CERTIFICATE_TYPE = "X.509"
-    }
 }
 
