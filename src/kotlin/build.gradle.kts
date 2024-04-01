@@ -23,6 +23,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    implementation("org.bouncycastle:bcprov-jdk18on:1.77")
 }
 
 tasks.withType<KotlinCompile> {
