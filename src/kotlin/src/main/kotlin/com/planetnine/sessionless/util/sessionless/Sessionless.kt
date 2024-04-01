@@ -101,4 +101,11 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         TODO("Not yet implemented")
     }
 
+    companion object {
+        const val KEY_ALGORITHM = "ECDSA"
+        const val KEY_SPEC_NAME = "secp256k1"
+        const val KEY_PROVIDER = "BC"
+        const val SIGNATURE_ALGORITHM = "SHA256withRSA"
+        const val RANDOM_ALGORITHM = "SHA1PRNG"
+        const val CERTIFICATE_TYPE = "X.509"
 }
