@@ -19,12 +19,14 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.session:spring-session-core:3.2.2")
+    implementation("org.bouncycastle:bcprov-jdk18on:1.77")
+    implementation("org.json:json:20240303")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    implementation("org.bouncycastle:bcprov-jdk18on:1.77")
 }
 
 tasks.withType<KotlinCompile> {
