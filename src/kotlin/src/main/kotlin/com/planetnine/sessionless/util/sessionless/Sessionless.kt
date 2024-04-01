@@ -87,14 +87,17 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
 
     override fun generateUUID(): String = UUID.randomUUID().toString()
 
-    //TODO: implement the rest
-    override fun associateKeys(
-        associationMessage: String,
+    override fun associate(
         primarySignature: String,
+        primaryMessage: String,
+        primaryPublicKey: String,
         secondarySignature: String,
-        publicKey: String
-    ) {
-        TODO("Not yet implemented")
+        secondaryMessage: String,
+        secondaryPublicKey: String
+    ): Boolean {
+        val verified1 = verifySignature(primarySignature, primaryMessage, primaryPublicKey)
+        val verified2 = verifySignature(secondarySignature, secondaryMessage, secondaryPublicKey)
+        return verified1 && verified2
     }
 
     override fun revokeKey(message: String, signature: String, publicKey: String) {
