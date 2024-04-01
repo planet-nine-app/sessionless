@@ -76,25 +76,25 @@ async function registerUser(ctx) {
 
     const message = JSON.stringify({
       publicKey,
-      enteredText: payload.enteredText,
+      content: payload.content,
       timestamp: payload.timestamp,
     });
-
-    let user = { uuid: "", welcomeMessage: "" };
 
     if (sessionless.verifySignature(signature, message, publicKey)) {
       const uuid = sessionless.generateUUID();
       await saveUser(uuid, publicKey);
-      user = {
+      let user = {
         uuid,
         welcomeMessage: "Welcome to this example!",
       };
+      ctx.status = 201;
+      ctx.body = JSON.stringify(user);
     } else {
       throw new Error("Something went wrong. Please try again later.");
     }
-    ctx.body = JSON.stringify(user);
   } catch (error) {
-    ctx.throw(500, error);
+    ctx.status = 400;
+    ctx.body = JSON.stringify({ Error: error.message });
   }
 }
 
@@ -108,11 +108,12 @@ async function verifyMessage(ctx) {
     const publicKey = await findPublicKeyFromUuid(uuid);
 
     const message = JSON.stringify({
-      enteredText: payload.enteredText,
+      content: payload.content,
       timestamp: payload.timestamp,
     });
 
     if (sessionless.verifySignature(signature, message, publicKey)) {
+      ctx.status = 202;
       ctx.body = JSON.stringify(
         "The message content was verified successfully"
       );
@@ -120,11 +121,10 @@ async function verifyMessage(ctx) {
       throw new Error("Invalid request parameters provided");
     }
   } catch (error) {
-    ctx.throw(500, error);
+    ctx.status = 400;
+    ctx.body = JSON.stringify({ Error: error.message });
   }
 }
-
-//verify message
 
 //Start server
 app.listen(3000);
