@@ -1,50 +1,60 @@
-package com.planetnine.sessionless
+package com.planetnine.sessionless.util.sessionless
 
-import com.planetnine.sessionless.Sessionless.WithCustomVault
-import com.planetnine.sessionless.Sessionless.WithKeyStore
+import com.planetnine.sessionless.util.sessionless.Sessionless.WithCustomVault
+import com.planetnine.sessionless.util.sessionless.Sessionless.WithKeyStore
+import com.planetnine.sessionless.util.sessionless.keys.KeyAccessInfo
+import com.planetnine.sessionless.util.sessionless.keys.SimpleKeyPair
+import com.planetnine.sessionless.util.sessionless.vaults.ICustomVault
+import com.planetnine.sessionless.util.sessionless.vaults.IKeyStoreVault
+import com.planetnine.sessionless.util.sessionless.vaults.IVault
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.bouncycastle.jce.ECNamedCurveTable
+import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.KeyFactory
 import java.security.KeyPair
+import java.security.KeyPairGenerator
 import java.security.PrivateKey
+import java.security.SecureRandom
+import java.security.Security
 import java.security.Signature
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import java.util.Base64
 import java.util.UUID
+import kotlin.coroutines.CoroutineContext
 
-/** [Sessionless] implementation (sealed)
+/** [Sessionless] implementation (sealed, check the subclasses)
  * @see WithKeyStore
  * @see WithCustomVault */
 sealed class Sessionless(override val vault: IVault) : ISessionless {
-    /** [Sessionless.WithKeyStore] implementation */
+    /** [ISessionless.WithKeyStore] implementation with [Sessionless] as superclass */
     class WithKeyStore(override val vault: IKeyStoreVault) :
         Sessionless(vault),
         ISessionless.WithKeyStore {
-        override fun generateKeys(info: KeyInfo.ForKeyStore): KeyPair {
-            val pair = info.generateKeyPair()
-            vault.save(
-                info.accessInfo.alias,
-                pair,
-                info.accessInfo.password,
-                info.certificateFactory
-            )
+
+        override fun generateKeys(keyAccessInfo: KeyAccessInfo): KeyPair {
+            val pair = generateKeyPair()
+            vault.save(pair, keyAccessInfo)
             return pair
         }
 
-        override fun getKeys(accessInfo: KeyInfo.ForKeyStore.AccessInfo): KeyPair =
-            vault.get(accessInfo.alias, accessInfo.password)
+        override fun getKeys(keyAccessInfo: KeyAccessInfo): KeyPair =
+            vault.get(keyAccessInfo.alias, keyAccessInfo.password)
 
-        override fun sign(message: String, keyAccessInfo: KeyInfo.ForKeyStore.AccessInfo): String {
+        override fun sign(message: String, keyAccessInfo: KeyAccessInfo): String {
             val privateKey = getKeys(keyAccessInfo).private
             return sign(message, privateKey)
         }
     }
 
-    /** [Sessionless.WithCustomVault] implementation */
+    /** [ISessionless.WithCustomVault] implementation with [Sessionless] as superclass */
     class WithCustomVault(override val vault: ICustomVault) :
         Sessionless(vault),
         ISessionless.WithCustomVault {
-        override fun generateKeys(info: KeyInfo.ForCustom): SimpleKeyPair {
-            val pair = info.generateKeyPair()
+
+        override fun generateKeys(): SimpleKeyPair {
+            val pair = generateKeyPair()
             val simple = SimpleKeyPair.from(pair)
             vault.save(simple)
             return simple
