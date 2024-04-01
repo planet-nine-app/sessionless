@@ -98,7 +98,7 @@ async function registerUser(ctx) {
   }
 }
 
-//Verify that a message 
+//Validate message on behalf of a signer
 async function verifyMessage(ctx) {
   try {
     const payload = ctx.request.body;
