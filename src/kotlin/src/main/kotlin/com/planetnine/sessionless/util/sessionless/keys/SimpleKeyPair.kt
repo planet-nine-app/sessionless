@@ -1,4 +1,4 @@
-package com.planetnine.sessionless
+package com.planetnine.sessionless.util.sessionless.keys
 
 import java.security.KeyPair
 import java.util.Base64
