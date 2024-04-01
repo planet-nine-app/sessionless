@@ -108,4 +108,24 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         const val SIGNATURE_ALGORITHM = "SHA256withRSA"
         const val RANDOM_ALGORITHM = "SHA1PRNG"
         const val CERTIFICATE_TYPE = "X.509"
+
+        /** Generate a new [KeyPair] based on the provided info in this [KeyInfo]
+         * @return public/private [KeyPair]
+         * @see generateKeyPairAsync */
+        fun generateKeyPair(): KeyPair {
+            //? This will add the provider once even if called twice
+            Security.addProvider(BouncyCastleProvider())
+            val spec = ECNamedCurveTable.getParameterSpec(KEY_SPEC_NAME)
+            val generator = KeyPairGenerator.getInstance(KEY_ALGORITHM, KEY_PROVIDER)
+            val random = SecureRandom.getInstance(RANDOM_ALGORITHM)
+            generator.initialize(spec, random)
+            return generator.generateKeyPair()
+        }
+
+        /** Generate a new [KeyPair] asynchronously based on the provided info in this [KeyInfo]
+         * @return public/private [KeyPair]
+         * @see generateKeyPair */
+        suspend fun generateKeyPairAsync(context: CoroutineContext = Dispatchers.IO): KeyPair =
+            withContext(context) { generateKeyPair() }
+    }
 }
