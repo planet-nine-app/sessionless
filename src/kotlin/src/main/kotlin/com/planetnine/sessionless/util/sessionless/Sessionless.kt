@@ -39,6 +39,12 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
             return pair
         }
 
+        override suspend fun generateKeysAsync(keyAccessInfo: KeyAccessInfo): KeyPair {
+            val pair = generateKeyPairAsync()
+            vault.save(pair, keyAccessInfo)
+            return pair
+        }
+
         override fun getKeys(keyAccessInfo: KeyAccessInfo): KeyPair =
             vault.get(keyAccessInfo.alias, keyAccessInfo.password)
 
@@ -55,6 +61,13 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
 
         override fun generateKeys(): SimpleKeyPair {
             val pair = generateKeyPair()
+            val simple = SimpleKeyPair.from(pair)
+            vault.save(simple)
+            return simple
+        }
+
+        override suspend fun generateKeysAsync(): SimpleKeyPair {
+            val pair = generateKeyPairAsync()
             val simple = SimpleKeyPair.from(pair)
             vault.save(simple)
             return simple
