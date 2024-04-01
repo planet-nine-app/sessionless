@@ -110,9 +110,9 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         return verified1 && verified2
     }
 
-    override fun revokeKey(message: String, signature: String, publicKey: String) {
-        TODO("Not yet implemented")
-    }
+//    override fun revokeKey(message: String, signature: String, publicKey: String) {
+//        TODO("Not yet implemented")
+//    }
 
     companion object {
         const val KEY_ALGORITHM = "ECDSA"

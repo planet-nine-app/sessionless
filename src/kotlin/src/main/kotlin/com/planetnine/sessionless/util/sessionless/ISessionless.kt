@@ -74,10 +74,10 @@ interface ISessionless {
         secondarySignature: String, secondaryMessage: String, secondaryPublicKey: String
     ): Boolean
 
-    /** Revokes a gateway's key from the user.
-     * @param message Message for revocation.
-     * @param signature Signature using user's private key.
-     * @param publicKey Gateway's public key. */
-    fun revokeKey(message: String, signature: String, publicKey: String)
+//    /** Revokes a gateway's key from the user.
+//     * @param message Message for revocation.
+//     * @param signature Signature using user's private key.
+//     * @param publicKey Gateway's public key. */
+//    fun revokeKey(message: String, signature: String, publicKey: String)
 }
 
