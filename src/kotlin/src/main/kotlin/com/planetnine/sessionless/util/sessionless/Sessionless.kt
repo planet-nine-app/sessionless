@@ -122,7 +122,7 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         const val RANDOM_ALGORITHM = "SHA1PRNG"
         const val CERTIFICATE_TYPE = "X.509"
 
-        /** Generate a new [KeyPair] based on the provided info in this [KeyInfo]
+        /** Generate a new [KeyPair] based on the defaults defined in [Companion]
          * @return public/private [KeyPair]
          * @see generateKeyPairAsync */
         fun generateKeyPair(): KeyPair {
@@ -135,7 +135,7 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
             return generator.generateKeyPair()
         }
 
-        /** Generate a new [KeyPair] asynchronously based on the provided info in this [KeyInfo]
+        /** Generate a new [KeyPair] asynchronously based on the defaults defined in [Companion]
          * @return public/private [KeyPair]
          * @see generateKeyPair */
         suspend fun generateKeyPairAsync(context: CoroutineContext = Dispatchers.IO): KeyPair =
