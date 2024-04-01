@@ -70,15 +70,13 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         return String(bytes, Charsets.UTF_8)
     }
 
-    override fun verifySignature(message: String, signature: String, publicKey: String): Boolean {
-        val kf = KeyFactory.getInstance(ISessionless.KEY_ALGORITHM)
+    override fun verifySignature(signature: String, message: String, publicKey: String): Boolean {
         val kf = KeyFactory.getInstance(KEY_SPEC_NAME)
         val decoder = Base64.getDecoder()
         val publicKeyBytes = decoder.decode(publicKey)
         val publicKeySpec = X509EncodedKeySpec(publicKeyBytes)
         val pubKey = kf.generatePublic(publicKeySpec)
 
-        val signatureObj = Signature.getInstance(ISessionless.SIGNATURE_ALGORITHM)
         val signatureObj = Signature.getInstance(SIGNATURE_ALGORITHM)
         signatureObj.initVerify(pubKey)
         signatureObj.update(message.toByteArray())
