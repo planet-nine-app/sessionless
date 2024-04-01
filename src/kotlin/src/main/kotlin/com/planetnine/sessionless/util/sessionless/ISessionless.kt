@@ -66,17 +66,13 @@ interface ISessionless {
      * @return The generated UUID. */
     fun generateUUID(): String
 
-    /** Associates a secondary's key with the user's primary key.
-     * @param associationMessage Additional message for association.
-     * @param primarySignature Signature using user's private key.
-     * @param secondarySignature Signature using secondary's private key.
-     * @param publicKey Secondary's public key. */
-    fun associateKeys(
-        associationMessage: String,
-        primarySignature: String,
-        secondarySignature: String,
-        publicKey: String
-    )
+    /** Associates 2 message signatures with their respective public keys
+     * @return true if both signatures were verified successfully
+     * @see verifySignature */
+    fun associate(
+        primarySignature: String, primaryMessage: String, primaryPublicKey: String,
+        secondarySignature: String, secondaryMessage: String, secondaryPublicKey: String
+    ): Boolean
 
     /** Revokes a gateway's key from the user.
      * @param message Message for revocation.
