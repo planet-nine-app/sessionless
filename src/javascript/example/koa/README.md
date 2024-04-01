@@ -38,7 +38,7 @@ Content-Type: application/json
 ```
 {
     "uuid": "1db684ea-76bd-467e-afc6-ec06322c1f82",
-    "welcomeMessage": ""
+    "welcomeMessage": "Welcome to this example!"
 }
 ```
 
