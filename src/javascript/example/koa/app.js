@@ -1,7 +1,6 @@
 import Koa from "koa";
 import json from "koa-json";
 import KoaRouter from "koa-router";
-import KoaBody from "koa-body";
 import bodyParser from "koa-bodyparser";
 import sessionless from "sessionless-node";
 import fs from "fs/promises";
@@ -12,13 +11,11 @@ const router = new KoaRouter();
 //JSON Prettier Middleware
 app.use(json());
 
-
 //Bodypaser Middleware
-app.use(bodyParser({ enableTypes: ["json", "text", 'form', 'xml'] }));
+app.use(bodyParser({ enableTypes: ["json", "text", "form", "xml"] }));
 
 //Router Middleware
 app.use(router.routes()).use(router.allowedMethods());
-
 
 //Helper methods
 const getUsers = async () => {
@@ -50,9 +47,9 @@ const findUserFromPublicKey = async (publicKey) => {
   }
 };
 
-const findUserFromUuid = (uuid) => {
+const findPublicKeyFromUuid = async (uuid) => {
   try {
-    const usersString = fs.readFileSync("./users.json", "utf8");
+    const usersString = await fs.readFile("./users.json", "utf8");
     const users = JSON.parse(usersString);
 
     const targetUser = users.find((user) => user.uuid === uuid);
@@ -66,54 +63,68 @@ const findUserFromUuid = (uuid) => {
   }
 };
 
-const saveUserPost = (uuid, post) => {
-  try {
-    const user = findUserFromUuid(user);
-    fs.writeFileSync("./posts.json", JSON.stringify({ uuid, post }));
-  } catch (error) {
-    console.error("Error: ", error);
-  }
-};
-const findUserPosts = (uuid) => {
-  try {
-    const postsString = fs.readFileSync("./posts.json", "utf8");
-    const posts = JSON.parse(postsString);
-
-    const postsByUser = posts.find((post) => post.uuid === uuid);
-    if (postsByUser) {
-      return postsByUser;
-    } else {
-      throw new Error("User has not posted.");
-    }
-  } catch (error) {
-    console.error("Error: ", error);
-  }
-};
-
 //Server routes
-router.get("/users", getAllUsers);
 router.post("/register", registerUser);
-
-//Retrieves all users
-async function getAllUsers(ctx) {
-  try {
-    const allUsers = await getUsers();
-    ctx.body = allUsers;
-  } catch (error) {
-    ctx.throw(404, "No users found");
-  }
-}
+router.get("/message/verify", verifyMessage);
 
 //Register user
 async function registerUser(ctx) {
   try {
     const payload = ctx.request.body;
-    console.log(payload);
-    ctx.body = payload;
+    const signature = payload.signature;
+    const publicKey = payload.publicKey;
+
+    const message = JSON.stringify({
+      publicKey,
+      enteredText: payload.enteredText,
+      timestamp: payload.timestamp,
+    });
+
+    let user = { uuid: "", welcomeMessage: "" };
+
+    if (sessionless.verifySignature(signature, message, publicKey)) {
+      const uuid = sessionless.generateUUID();
+      await saveUser(uuid, publicKey);
+      user = {
+        uuid,
+        welcomeMessage: "Welcome to this example!",
+      };
+    } else {
+      throw new Error("Something went wrong. Please try again later.");
+    }
+    ctx.body = JSON.stringify(user);
   } catch (error) {
     ctx.throw(500, error);
   }
 }
+
+//Verify that a message 
+async function verifyMessage(ctx) {
+  try {
+    const payload = ctx.request.body;
+    const signature = payload.signature;
+    const uuid = payload.uuid;
+
+    const publicKey = await findPublicKeyFromUuid(uuid);
+
+    const message = JSON.stringify({
+      enteredText: payload.enteredText,
+      timestamp: payload.timestamp,
+    });
+
+    if (sessionless.verifySignature(signature, message, publicKey)) {
+      ctx.body = JSON.stringify(
+        "The message content was verified successfully"
+      );
+    } else {
+      throw new Error("Invalid request parameters provided");
+    }
+  } catch (error) {
+    ctx.throw(500, error);
+  }
+}
+
+//verify message
 
 //Start server
 app.listen(3000);
