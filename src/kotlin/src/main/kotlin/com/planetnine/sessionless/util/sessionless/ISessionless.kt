@@ -1,5 +1,10 @@
-package com.planetnine.sessionless
+package com.planetnine.sessionless.util.sessionless
 
+import com.planetnine.sessionless.util.sessionless.keys.KeyAccessInfo
+import com.planetnine.sessionless.util.sessionless.keys.SimpleKeyPair
+import com.planetnine.sessionless.util.sessionless.vaults.ICustomVault
+import com.planetnine.sessionless.util.sessionless.vaults.IKeyStoreVault
+import com.planetnine.sessionless.util.sessionless.vaults.IVault
 import java.security.KeyPair
 import java.security.PrivateKey
 
@@ -10,41 +15,37 @@ interface ISessionless {
     interface WithKeyStore : ISessionless {
         override val vault: IKeyStoreVault
 
-        /** Generates a private/public key pair and stores it.
-         * - Uses [vault] if available
-         * - Otherwise it will use [java.security.KeyStore]
-         * @param info info about key pair generation */
-        fun generateKeys(info: KeyInfo.ForKeyStore): KeyPair
+        /** Generates a private/public key pair and stores it using [vault]
+         * @param keyAccessInfo Info required to access the stored key
+         * @return The [KeyPair] that was generated then stored with [vault] */
+        fun generateKeys(keyAccessInfo: KeyAccessInfo): KeyPair
 
-        /** Retrieves keys from secure storage.
-         * - This should use [vault] if available, otherwise [java.security.KeyStore] as the default storage
-         * @return The retrieved keys object. */
-        fun getKeys(accessInfo: KeyInfo.ForKeyStore.AccessInfo): KeyPair
+        /** Retrieves keys using [vault]
+         * @param keyAccessInfo Info required to access the stored key
+         * @return Key pair as objects ([KeyPair]) */
+        fun getKeys(keyAccessInfo: KeyAccessInfo): KeyPair
 
-        /** Signs a [message] with the user's stored private key (from [vault]).
+        /** Signs a [message] with the user's stored private key (from [vault])
          * @param message The message to be signed.
-         * @param keyAccessInfo Info about accessing the key
-         * @return Signature as a [String]. */
-        fun sign(message: String, keyAccessInfo: KeyInfo.ForKeyStore.AccessInfo): String
+         * @param keyAccessInfo Info required to access the stored key
+         * @return Signature as a [String] */
+        fun sign(message: String, keyAccessInfo: KeyAccessInfo): String
     }
 
     interface WithCustomVault : ISessionless {
         override val vault: ICustomVault
 
-        /** Generates a private/public key pair and stores it.
-         * - Uses [vault] if available
-         * - Otherwise it will use [java.security.KeyStore]
-         * @param info info about key pair generation */
-        fun generateKeys(info: KeyInfo.ForCustom): SimpleKeyPair
+        /** Generates a private/public key pair and stores it using [vault]
+         * @return A simplified ([SimpleKeyPair]) version of the key pair that was generated then stored with [vault] */
+        fun generateKeys(): SimpleKeyPair
 
-        /** Retrieves keys from secure storage.
-         * - This should use [vault] if available, otherwise [java.security.KeyStore] as the default storage
-         * @return The retrieved keys object. */
+        /** Retrieves keys using [vault]
+         * @return Key pair as [String]s ([SimpleKeyPair]). */
         fun getKeys(): SimpleKeyPair
 
         /** Signs a [message] with the user's stored private key (from [vault]).
          * @param message The message to be signed.
-         * @return Signature as a [String]. */
+         * @return Signature as a [String] */
         fun sign(message: String): String
     }
 
@@ -54,12 +55,12 @@ interface ISessionless {
     fun sign(message: String, privateKey: PrivateKey): String
 
     /** Verifies a given signature with a public key.
-     * @param message The message that was signed earlier (ideally signed with [sign]).
      * @param signature The signature to be verified.
+     * @param message The message that was signed earlier (ideally signed with [sign]).
      * @param publicKey The public key to use for verification.
      * @return True if the [signature] is valid for the given [message] and [publicKey].
-     * @see sign*/
-    fun verifySignature(message: String, signature: String, publicKey: String): Boolean
+     * @see sign */
+    fun verifySignature(signature: String, message: String, publicKey: String): Boolean
 
     /** Creates a unique UUID for a user.
      * @return The generated UUID. */
