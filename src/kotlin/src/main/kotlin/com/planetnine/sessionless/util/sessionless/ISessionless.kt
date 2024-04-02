@@ -1,5 +1,6 @@
 package com.planetnine.sessionless.util.sessionless
 
+import com.planetnine.sessionless.util.sessionless.keys.HexMessageSignature
 import com.planetnine.sessionless.util.sessionless.keys.KeyAccessInfo
 import com.planetnine.sessionless.util.sessionless.keys.SimpleKeyPair
 import com.planetnine.sessionless.util.sessionless.vaults.ICustomVault
@@ -34,7 +35,7 @@ interface ISessionless {
          * @param message The message to be signed.
          * @param keyAccessInfo Info required to access the stored key
          * @return Signature as a [String] */
-        fun sign(message: String, keyAccessInfo: KeyAccessInfo): String
+        fun sign(message: String, keyAccessInfo: KeyAccessInfo): HexMessageSignature
     }
 
     interface WithCustomVault : ISessionless {
@@ -55,21 +56,21 @@ interface ISessionless {
         /** Signs a [message] with the user's stored private key (from [vault]).
          * @param message The message to be signed.
          * @return Signature as a [String] */
-        fun sign(message: String): String
+        fun sign(message: String): HexMessageSignature
     }
 
     /** Signs a [message] using the provided [privateKey].
      * @param message The message to be signed.
      * @return Signature as a [String]. */
-    fun sign(message: String, privateKey: PrivateKey): String
+    fun sign(message: String, privateKey: PrivateKey): HexMessageSignature
 
     /** Verifies a given signature with a public key.
+     * @param publicKey The public key to use for verification.
      * @param signature The signature to be verified.
      * @param message The message that was signed earlier (ideally signed with [sign]).
-     * @param publicKey The public key to use for verification.
      * @return True if the [signature] is valid for the given [message] and [publicKey].
      * @see sign */
-    fun verifySignature(signature: String, message: String, publicKey: String): Boolean
+    fun verify(publicKey: String, signature: HexMessageSignature, message: String): Boolean
 
     /** Creates a unique UUID for a user.
      * @return The generated UUID. */
