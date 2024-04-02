@@ -5,7 +5,7 @@ import {
   Res
 } from "@nestjs/common";
 import { CreateUserDto } from "../dtos";
-import sessionless from "sessionless-node";
+import * as sessionless from "sessionless-node";
 import { UserRepository } from "../repositories";
 import { Response } from 'express';
 
@@ -22,7 +22,6 @@ export class UserController {
         content: payload.content,
         timestamp: payload.timestamp,
       });
-      console.log(sessionless)
       if (sessionless.verifySignature(signature, message, publicKey)) {
         const uuid = sessionless.generateUUID();
         await UserRepository.saveUser(uuid, publicKey);
