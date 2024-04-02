@@ -1,7 +1,8 @@
-package com.planetnine.sessionless.util.sessionless.vaults
+package com.planetnine.sessionless.util.sessionless.impl
 
-import com.planetnine.sessionless.util.sessionless.keys.KeyAccessInfo
-import com.planetnine.sessionless.util.sessionless.keys.KeyUtils
+import com.planetnine.sessionless.util.sessionless.models.KeyAccessInfo
+import com.planetnine.sessionless.util.sessionless.models.vaults.IKeyStoreVault
+import com.planetnine.sessionless.util.sessionless.util.KeyUtils
 import java.security.KeyPair
 import java.security.KeyStore
 import java.security.PrivateKey
@@ -9,7 +10,7 @@ import java.security.cert.Certificate
 import java.security.cert.CertificateFactory
 
 /** [IVault] which uses [KeyStore] to securely get and save [KeyPair] */
-class IKeyStoreVault(private val keyStore: KeyStore) : IVault {
+class KeyStoreVault(override val keyStore: KeyStore) : IKeyStoreVault {
     @Throws(java.security.cert.CertificateException::class)
     fun save(
         pair: KeyPair,
@@ -24,7 +25,7 @@ class IKeyStoreVault(private val keyStore: KeyStore) : IVault {
     }
 
     @Throws(java.security.KeyStoreException::class)
-    fun save(
+    override fun save(
         pair: KeyPair,
         accessInfo: KeyAccessInfo,
         certificate: Certificate
@@ -42,7 +43,7 @@ class IKeyStoreVault(private val keyStore: KeyStore) : IVault {
         java.security.NoSuchAlgorithmException::class,
         java.security.UnrecoverableKeyException::class
     )
-    fun get(accessInfo: KeyAccessInfo): KeyPair {
+    override fun get(accessInfo: KeyAccessInfo): KeyPair {
         val privateKey = keyStore.getKey(accessInfo.alias, accessInfo.password) as PrivateKey
         val publicKey = keyStore.getCertificate(accessInfo.alias).publicKey
         return KeyPair(publicKey, privateKey)

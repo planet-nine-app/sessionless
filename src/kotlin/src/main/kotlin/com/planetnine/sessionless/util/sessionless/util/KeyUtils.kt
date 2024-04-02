@@ -1,5 +1,6 @@
-package com.planetnine.sessionless.util.sessionless.keys
+package com.planetnine.sessionless.util.sessionless.util
 
+import com.planetnine.sessionless.util.sessionless.models.SimpleKeyPair
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.bouncycastle.crypto.params.ECDomainParameters
