@@ -15,7 +15,8 @@ class KeyStoreVault(override val keyStore: KeyStore) : IKeyStoreVault {
     fun save(
         pair: KeyPair,
         accessInfo: KeyAccessInfo,
-        certificateFactory: CertificateFactory = KeyUtils.Defaults.certificateFactory
+        /** Will use the default factory from [KeyUtils.generateCertificate] if not specified */
+        certificateFactory: CertificateFactory? = null
     ) {
         save(
             pair,
