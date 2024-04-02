@@ -34,9 +34,8 @@ public class UserController {
     
     @PostMapping("/create")
     public ResponseEntity<Object> createUser(@RequestBody RestUserDto restUserDto) {
-        User user = createUserUseCase.createUser(userDtoMapper.map(restUserDto));
-
-        if (isValidPublicKey(user.publicKey())) {
+        if (isValidPublicKey(restUserDto.publicKey())) {
+            User user = createUserUseCase.createUser(userDtoMapper.map(restUserDto));
             Map<String, String> responseMap = new HashMap<>();
             responseMap.put("userUuid", user.userUuid().toString());
             return ResponseEntity.accepted().body(responseMap);

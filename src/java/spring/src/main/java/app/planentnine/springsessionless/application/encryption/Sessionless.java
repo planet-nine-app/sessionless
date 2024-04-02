@@ -27,7 +27,7 @@ import java.util.UUID;
 //TODO: upload artifact and reimport
 public class Sessionless {
     
-    public static String[] generateKeysAsHex() {
+    public static String[] generateKeys() {
         KeyPairGenerator generator;
         Security.addProvider(new BouncyCastleProvider());
         ECNamedCurveParameterSpec ecNamedCurveParameterSpec =
@@ -52,7 +52,7 @@ public class Sessionless {
         return new String[]{privateKeyHex, publicKeyHex};
     }
     
-    public static String[] signMessage(String privateKey, String message) {
+    public static String[] sign(String privateKey, String message) {
         ECNamedCurveParameterSpec ecNamedCurveParameterSpec =
                 ECNamedCurveTable.getParameterSpec("secp256k1");
         ECDomainParameters domain =
@@ -74,7 +74,7 @@ public class Sessionless {
         return new String[]{signature[0].toString(16), signature[1].toString(16)};
     }
     
-    public static boolean verify(String publicKey, String[] signature, String message) {
+    public static boolean verifySignature(String publicKey, String[] signature, String message) {
         BigInteger publicKeyFormatted = new BigInteger(publicKey, 16);
         ECNamedCurveParameterSpec ecNamedCurveParameterSpec =
                 ECNamedCurveTable.getParameterSpec("secp256k1");
@@ -98,8 +98,8 @@ public class Sessionless {
     
     public static boolean associate(String primaryPublicKey, String[] primarySignature, String primaryMessage,
                                     String secondaryPublicKey, String[] secondarySignature, String secondaryMessage) {
-        return verify(primaryPublicKey, primarySignature, primaryMessage)
-                && verify(secondaryPublicKey, secondarySignature, secondaryMessage);
+        return verifySignature(primaryPublicKey, primarySignature, primaryMessage)
+                && verifySignature(secondaryPublicKey, secondarySignature, secondaryMessage);
     }
     
     public static UUID generateUuid() {

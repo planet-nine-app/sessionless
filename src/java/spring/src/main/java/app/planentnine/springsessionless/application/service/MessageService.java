@@ -24,6 +24,6 @@ public class MessageService implements VerifyMessageUseCase {
         String publicKey = user.publicKey();
         String[] signature = message.signature();
         String messageContent = message.content();
-        return Sessionless.verify(publicKey, signature, messageContent);
+        return Sessionless.verifySignature(publicKey, signature, messageContent);
     }
 }
