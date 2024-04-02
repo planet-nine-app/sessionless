@@ -2,12 +2,14 @@ package com.planetnine.sessionless.util.sessionless
 
 import com.planetnine.sessionless.util.sessionless.Sessionless.WithCustomVault
 import com.planetnine.sessionless.util.sessionless.Sessionless.WithKeyStore
+import com.planetnine.sessionless.util.sessionless.keys.HexMessageSignature
 import com.planetnine.sessionless.util.sessionless.keys.KeyAccessInfo
 import com.planetnine.sessionless.util.sessionless.keys.KeyUtils
 import com.planetnine.sessionless.util.sessionless.keys.KeyUtils.domainParameters
 import com.planetnine.sessionless.util.sessionless.keys.KeyUtils.toECHex
 import com.planetnine.sessionless.util.sessionless.keys.KeyUtils.toECPrivateKey
 import com.planetnine.sessionless.util.sessionless.keys.KeyUtils.toHex
+import com.planetnine.sessionless.util.sessionless.keys.MessageSignature
 import com.planetnine.sessionless.util.sessionless.keys.SimpleKeyPair
 import com.planetnine.sessionless.util.sessionless.vaults.ICustomVault
 import com.planetnine.sessionless.util.sessionless.vaults.IKeyStoreVault
