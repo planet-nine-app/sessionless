@@ -58,9 +58,13 @@ object KeyUtils {
 
     fun generateCertificate(
         publicKey: PublicKey,
-        certificateFactory: CertificateFactory = Defaults.certificateFactory
+        certificateFactory: CertificateFactory? = null
     ): Certificate {
-        return certificateFactory.generateCertificate(
+        //? This shall add the provider once even if called twice
+        Security.addProvider(BouncyCastleProvider())
+        //? not using default param to avoid getting the factory before adding BC provider
+        val factory = certificateFactory ?: Defaults.certificateFactory
+        return factory.generateCertificate(
             ByteArrayInputStream(publicKey.encoded)
         )
     }
