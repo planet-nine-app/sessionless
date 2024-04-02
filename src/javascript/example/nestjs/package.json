@@ -4,7 +4,7 @@
   "description": "Example nestJS server using sessionless.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --watch src/**/*.ts --exec 'ts-node' src/main.ts"
+    "start": "nodemon --verbose --watch src/**.ts --exec ts-node src/main.ts"
   },
   "keywords": [],
   "author": "",
@@ -13,11 +13,12 @@
     "@nestjs/common": "^10.3.7",
     "@nestjs/core": "^10.3.7",
     "@nestjs/platform-express": "^10.3.7",
+    "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "fs": "^0.0.1-security",
     "nestjs": "^0.0.1",
     "reflect-metadata": "^0.2.2",
-    "sessionless-node": "^0.0.6"
+    "sessionless-node": "^0.0.5"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.21.0",
