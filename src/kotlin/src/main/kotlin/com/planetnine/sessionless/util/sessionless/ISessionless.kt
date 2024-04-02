@@ -78,10 +78,14 @@ interface ISessionless {
 
     /** Associates 2 message signatures with their respective public keys
      * @return true if both signatures were verified successfully
-     * @see verifySignature */
+     * @see verify */
     fun associate(
-        primarySignature: String, primaryMessage: String, primaryPublicKey: String,
-        secondarySignature: String, secondaryMessage: String, secondaryPublicKey: String
+        primaryPublicKey: String,
+        primaryMessage: String,
+        primarySignature: HexMessageSignature,
+        secondaryPublicKey: String,
+        secondaryMessage: String,
+        secondarySignature: HexMessageSignature,
     ): Boolean
 
 //    /** Revokes a gateway's key from the user.
