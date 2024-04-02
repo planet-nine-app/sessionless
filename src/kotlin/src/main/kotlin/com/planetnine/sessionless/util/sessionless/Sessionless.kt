@@ -34,21 +34,22 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         ISessionless.WithKeyStore {
 
         override fun generateKeys(keyAccessInfo: KeyAccessInfo): KeyPair {
-            val pair = generateKeyPair()
+            val pair = KeyUtils.generateKeyPair()
             vault.save(pair, keyAccessInfo)
             return pair
         }
 
         override suspend fun generateKeysAsync(keyAccessInfo: KeyAccessInfo): KeyPair {
-            val pair = generateKeyPairAsync()
+            val pair = KeyUtils.generateKeyPairAsync()
             vault.save(pair, keyAccessInfo)
             return pair
         }
 
-        override fun getKeys(keyAccessInfo: KeyAccessInfo): KeyPair =
-            vault.get(keyAccessInfo.alias, keyAccessInfo.password)
+        override fun getKeys(keyAccessInfo: KeyAccessInfo): KeyPair {
+            return vault.get(keyAccessInfo)
+        }
 
-        override fun sign(message: String, keyAccessInfo: KeyAccessInfo): String {
+        override fun sign(message: String, keyAccessInfo: KeyAccessInfo): HexMessageSignature {
             val privateKey = getKeys(keyAccessInfo).private
             return sign(message, privateKey)
         }
@@ -60,20 +61,22 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         ISessionless.WithCustomVault {
 
         override fun generateKeys(): SimpleKeyPair {
-            val pair = generateKeyPair()
-            val simple = SimpleKeyPair.from(pair)
+            val pair = KeyUtils.generateKeyPair()
+            val simple = pair.toECHex()
             vault.save(simple)
             return simple
         }
 
         override suspend fun generateKeysAsync(): SimpleKeyPair {
-            val pair = generateKeyPairAsync()
-            val simple = SimpleKeyPair.from(pair)
+            val pair = KeyUtils.generateKeyPairAsync()
+            val simple = pair.toECHex()
             vault.save(simple)
             return simple
         }
 
-        override fun getKeys(): SimpleKeyPair = vault.get()
+        override fun getKeys(): SimpleKeyPair {
+            return vault.get()
+        }
 
         override fun sign(message: String): String {
             val privateString = getKeys().privateKey
