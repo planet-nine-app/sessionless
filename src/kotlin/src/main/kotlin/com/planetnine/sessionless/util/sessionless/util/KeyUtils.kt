@@ -45,6 +45,9 @@ object KeyUtils {
             get() = CertificateFactory.getInstance(CERTIFICATE_TYPE, KEY_PROVIDER)
         val signature: Signature
             get() = Signature.getInstance(SIGNATURE_ALGORITHM)
+
+        val keyPairGenerator: KeyPairGenerator
+            get() = KeyPairGenerator.getInstance(KEY_ALGORITHM, KEY_PROVIDER)
     }
 
     val ECNamedCurveParameterSpec.domainParameters
@@ -78,7 +81,7 @@ object KeyUtils {
         val spec = Defaults.parameterSpec
         val generator: KeyPairGenerator
         try {
-            generator = KeyPairGenerator.getInstance(Defaults.KEY_ALGORITHM, Defaults.KEY_PROVIDER)
+            generator = Defaults.keyPairGenerator
             generator.initialize(spec, SecureRandom())
         } catch (e: NoSuchAlgorithmException) {
             throw RuntimeException(e)
