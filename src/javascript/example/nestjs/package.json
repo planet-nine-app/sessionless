@@ -2,7 +2,7 @@
   "name": "nestjs",
   "version": "1.0.0",
   "description": "Example nestJS server using sessionless.",
-  "main": "index.js",
+  "main": "src/main.ts",
   "scripts": {
     "start": "nodemon --verbose --watch src/**.ts --exec ts-node src/main.ts"
   },

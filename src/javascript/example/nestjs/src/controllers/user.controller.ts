@@ -22,7 +22,7 @@ export class UserController {
         content: payload.content,
         timestamp: payload.timestamp,
       });
-
+      console.log(sessionless)
       if (sessionless.verifySignature(signature, message, publicKey)) {
         const uuid = sessionless.generateUUID();
         await UserRepository.saveUser(uuid, publicKey);
