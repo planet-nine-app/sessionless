@@ -10,7 +10,7 @@ This is a simple implementation of sessionless in a Nest.JS server.
 
 ---
 
-### api/register
+### api/user/register
 
 ### Parameters:
 
@@ -54,7 +54,7 @@ Content-Type: application/json
 
 ---
 
-### api/message/verify
+### api/validate/message
 
 ### Parameters:
 
