@@ -43,9 +43,9 @@ class IKeyStoreVault(private val keyStore: KeyStore) : IVault {
         java.security.NoSuchAlgorithmException::class,
         java.security.UnrecoverableKeyException::class
     )
-    fun get(alias: String, password: CharArray?): KeyPair {
-        val privateKey = keyStore.getKey(alias, password) as PrivateKey
-        val publicKey = keyStore.getCertificate(alias).publicKey
+    fun get(accessInfo: KeyAccessInfo): KeyPair {
+        val privateKey = keyStore.getKey(accessInfo.alias, accessInfo.password) as PrivateKey
+        val publicKey = keyStore.getCertificate(accessInfo.alias).publicKey
         return KeyPair(publicKey, privateKey)
     }
 }
