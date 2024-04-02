@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { secp256k1 } from 'ethereum-cryptography/secp256k1';
 import { keccak256 } from "ethereum-cryptography/keccak.js";
+import { bytesToHex } from "ethereum-cryptography/utils.js";
 import { utf8ToBytes } from "ethereum-cryptography/utils.js";
 
 let getKeysFromDisk;
@@ -11,8 +12,8 @@ const generateKeys = async (saveKeys, getKeys) => {
   if(!saveKeys || !getKeys) {
     throw new Error(`Since this can be run on any machine with node, there is no default secure storage. You will need to provide a saveKeys and getKeys function`);
   }
-  const privateKey = secp256k1.utils.randomPrivateKey();
-  const publicKey = secp256k1.getPublicKey(privateKey);
+  const privateKey = bytesToHex(secp256k1.utils.randomPrivateKey());
+  const publicKey = bytesToHex(secp256k1.getPublicKey(privateKey));
   saveKeys && (saveKeys instanceof AsyncFunction ? await saveKeys({
     privateKey,
     publicKey
@@ -21,6 +22,10 @@ const generateKeys = async (saveKeys, getKeys) => {
     publicKey
   }));
   getKeysFromDisk = getKeys;
+  return {
+    privateKey,
+    publicKey
+  };
 };
 
 const getKeys = async () => {
@@ -31,30 +36,40 @@ const getKeys = async () => {
   }
 };
 
-const sign = (message) => {
-  const { privateKey } = getKeys();
-  const messageHash = keccak256(utf8ToBytes(message));
-  return secp256k1.sign(messageHash, privateKey);
+const sign = async (message) => {
+  const { privateKey } = await getKeys();
+  const messageHash = keccak256(utf8ToBytes(message.slice(0, 32)));
+  const signatureAsBigInts = secp256k1.sign(messageHash, privateKey);
+  const signature = {
+    r: signatureAsBigInts.r.toString(16),
+    s: signatureAsBigInts.s.toString(16),
+    recovery: signatureAsBigInts.recovery
+  };
+  return signature;
 };
 
 const verifySignature = (signature, message, publicKey) => {
-  const signatureHexString = signature.r + signature.s;
   const messageHash = keccak256(utf8ToBytes(message.slice(0,32)));
+  
   let hex = signature.r;
-  if (hex.length % 2) { hex = '0' + hex; }
+  if (hex.length % 2) { 
+    hex = '0' + hex; 
+  }
 
-  var bn = BigInt('0x' + hex);
+  const bn = BigInt('0x' + hex);
 
-  var d = bn.toString(10);
   let hex2 = signature.s;
-  if (hex2.length % 2) { hex2 = '0' + hex2; }
+  if (hex2.length % 2) { 
+    hex2 = '0' + hex2; 
+  }
 
-  var bn2 = BigInt('0x' + hex2);
+  const bn2 = BigInt('0x' + hex2);
 
   const signature2 = {
     r: bn,
     s: bn2
   };
+  
   const res = secp256k1.verify(signature2, messageHash, publicKey);
   return res;
 };
