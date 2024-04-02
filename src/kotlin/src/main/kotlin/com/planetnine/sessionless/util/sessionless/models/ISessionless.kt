@@ -52,13 +52,13 @@ interface ISessionless {
 
         /** Signs a [message] with the user's stored private key (from [vault]).
          * @param message The message to be signed.
-         * @return Signature as a [String] */
+         * @return Signature as a [MessageSignature] */
         fun sign(message: String): MessageSignature
     }
 
     /** Signs a [message] using the provided [privateKey].
      * @param message The message to be signed.
-     * @return Signature as a [String]. */
+     * @return Signature as a [MessageSignature]. */
     fun sign(message: String, privateKey: PrivateKey): MessageSignature
 
     /** Verifies a given signature with a public key.
