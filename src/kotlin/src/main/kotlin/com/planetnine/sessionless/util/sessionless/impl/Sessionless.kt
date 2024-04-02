@@ -1,23 +1,22 @@
-package com.planetnine.sessionless.util.sessionless
+package com.planetnine.sessionless.util.sessionless.impl
 
-import com.planetnine.sessionless.util.sessionless.Sessionless.WithCustomVault
-import com.planetnine.sessionless.util.sessionless.Sessionless.WithKeyStore
-import com.planetnine.sessionless.util.sessionless.keys.HexMessageSignature
-import com.planetnine.sessionless.util.sessionless.keys.KeyAccessInfo
-import com.planetnine.sessionless.util.sessionless.keys.KeyUtils
-import com.planetnine.sessionless.util.sessionless.keys.KeyUtils.domainParameters
-import com.planetnine.sessionless.util.sessionless.keys.KeyUtils.toECHex
-import com.planetnine.sessionless.util.sessionless.keys.KeyUtils.toECPrivateKey
-import com.planetnine.sessionless.util.sessionless.keys.KeyUtils.toHex
-import com.planetnine.sessionless.util.sessionless.keys.MessageSignature
-import com.planetnine.sessionless.util.sessionless.keys.SimpleKeyPair
-import com.planetnine.sessionless.util.sessionless.vaults.ICustomVault
-import com.planetnine.sessionless.util.sessionless.vaults.IKeyStoreVault
-import com.planetnine.sessionless.util.sessionless.vaults.IVault
+import com.planetnine.sessionless.util.sessionless.impl.Sessionless.WithCustomVault
+import com.planetnine.sessionless.util.sessionless.impl.Sessionless.WithKeyStore
+import com.planetnine.sessionless.util.sessionless.models.ISessionless
+import com.planetnine.sessionless.util.sessionless.models.KeyAccessInfo
+import com.planetnine.sessionless.util.sessionless.models.MessageSignature
+import com.planetnine.sessionless.util.sessionless.models.SimpleKeyPair
+import com.planetnine.sessionless.util.sessionless.models.vaults.ICustomVault
+import com.planetnine.sessionless.util.sessionless.models.vaults.IVault
+import com.planetnine.sessionless.util.sessionless.util.KeyUtils
+import com.planetnine.sessionless.util.sessionless.util.KeyUtils.domainParameters
+import com.planetnine.sessionless.util.sessionless.util.KeyUtils.toECHex
+import com.planetnine.sessionless.util.sessionless.util.KeyUtils.toECPrivateKey
+import com.planetnine.sessionless.util.sessionless.util.KeyUtils.toHex
+import com.planetnine.sessionless.util.sessionless.util.hashKeccak256
 import org.bouncycastle.crypto.params.ECPrivateKeyParameters
 import org.bouncycastle.crypto.params.ECPublicKeyParameters
 import org.bouncycastle.crypto.signers.ECDSASigner
-import org.bouncycastle.jcajce.provider.digest.Keccak
 import java.math.BigInteger
 import java.security.KeyPair
 import java.security.PrivateKey
@@ -30,7 +29,7 @@ import java.util.UUID
  * @see WithCustomVault */
 sealed class Sessionless(override val vault: IVault) : ISessionless {
     /** [ISessionless.WithKeyStore] implementation with [Sessionless] as superclass */
-    class WithKeyStore(override val vault: IKeyStoreVault) :
+    class WithKeyStore(override val vault: KeyStoreVault) :
         Sessionless(vault),
         ISessionless.WithKeyStore {
 
@@ -50,7 +49,7 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
             return vault.get(keyAccessInfo)
         }
 
-        override fun sign(message: String, keyAccessInfo: KeyAccessInfo): HexMessageSignature {
+        override fun sign(message: String, keyAccessInfo: KeyAccessInfo): MessageSignature {
             val privateKey = getKeys(keyAccessInfo).private
             return sign(message, privateKey)
         }
@@ -79,14 +78,14 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
             return vault.get()
         }
 
-        override fun sign(message: String): HexMessageSignature {
+        override fun sign(message: String): MessageSignature {
             val privateString = getKeys().privateKey
             val privateKey = privateString.toECPrivateKey(KeyUtils.Defaults.parameterSpec)
             return sign(message, privateKey)
         }
     }
 
-    override fun sign(message: String, privateKey: PrivateKey): HexMessageSignature {
+    override fun sign(message: String, privateKey: PrivateKey): MessageSignature {
         val signer = ECDSASigner().apply {
             val privateHex = (privateKey as ECPrivateKey).toHex()
             val privateKeyFormatted = BigInteger(privateHex)
@@ -96,14 +95,14 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
             )
             init(true, privateKeyParameters)
         }
-        val messageHash = keccak256Hash(message)
+        val messageHash = hashKeccak256(message)
         val signature = signer.generateSignature(messageHash)
-        return MessageSignature.from(signature)!!.toHex()
+        return MessageSignature.from(signature)!!
     }
 
     override fun verify(
         publicKey: String,
-        signature: HexMessageSignature,
+        signature: MessageSignature,
         message: String
     ): Boolean {
         val signer = ECDSASigner().apply {
@@ -116,10 +115,9 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
             )
             init(false, publicKeyParameters)
         }
-        val messageHash = keccak256Hash(message)
-        val signatureInts = signature.toBigInt()
+        val messageHash = hashKeccak256(message)
         return signer.verifySignature(
-            messageHash, signatureInts.r, signatureInts.s
+            messageHash, signature.r, signature.s
         )
     }
 
@@ -130,17 +128,13 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
     override fun associate(
         primaryPublicKey: String,
         primaryMessage: String,
-        primarySignature: HexMessageSignature,
+        primarySignature: MessageSignature,
         secondaryPublicKey: String,
         secondaryMessage: String,
-        secondarySignature: HexMessageSignature,
+        secondarySignature: MessageSignature,
     ): Boolean {
         val verified1 = verify(primaryPublicKey, primarySignature, primaryMessage)
         val verified2 = verify(secondaryPublicKey, secondarySignature, secondaryMessage)
         return verified1 && verified2
-    }
-
-    companion object {
-        fun keccak256Hash(message: String) = Keccak.Digest256().digest(message.toByteArray())
     }
 }
