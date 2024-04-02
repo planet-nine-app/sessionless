@@ -3,8 +3,11 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Pressable, Alert } from 'react-native';
 import sessionless from '@zachbabb/sessionless-expo';
 
+const baseURL = 'https://rare-robin-97.deno.dev';
+//const baseURL = 'http://localhost:3000';
+
 export default function App() {
-  const [uuid, setUUID] = useState();
+  const [userUUID, setUserUUID] = useState();
   const [welcomeMessage, setWelcomeMessage] = useState();
   const [input, setInput] = useState('');
 
@@ -22,7 +25,7 @@ export default function App() {
     };
     payload.signature = await sessionless.sign(JSON.stringify(payload));
 
-    await fetch('http://localhost:3000/register', {
+    await fetch(`${baseURL}/register`, {
       method: 'PUT',
       headers: {
 	Accept: 'application/json',
@@ -32,8 +35,7 @@ export default function App() {
     })
     .then((resp) => resp.json())
     .then(json => {
-      console.log('resp: ' + json.uuid);
-      setUUID(json.uuid);
+      setUserUUID(json.userUUID);
       setWelcomeMessage(json.welcomeMessage);
     })
     .catch(err => console.warn(err) );    
@@ -42,12 +44,13 @@ export default function App() {
 
   const doCoolStuff = async () => {
     const payload = {
+      userUUID,
       coolness: 'max',
       timestamp: 'right now'
     };
     payload.signature = await sessionless.sign(JSON.stringify(payload));
     
-    await fetch('http://localhost:3000/cool-stuff', {
+    await fetch(`${baseURL}/cool-stuff`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
@@ -77,7 +80,7 @@ export default function App() {
       }} onPress={register}>
         <Text>Register</Text>
       </Pressable>
-      { uuid && welcomeMessage ? 
+      { userUUID && welcomeMessage ? 
         <>
 	  <Text>{`${welcomeMessage} now you can do cool stuff.`}</Text>
 	  <Pressable style={{
