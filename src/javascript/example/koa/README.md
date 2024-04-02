@@ -62,7 +62,7 @@ Content-Type: application/json
 
 ```
 {
-    "userId": "1db684ea-76bd-467e-afc6-ec06322c1f82",
+    "uuid": "1db684ea-76bd-467e-afc6-ec06322c1f82",
     "content": "This is content.",
     "timestamp": "2024-04-01T12:00:00Z",
     "signature": {
