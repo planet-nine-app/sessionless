@@ -1,13 +1,12 @@
-import { IsString, IsDate, IsObject } from "class-validator";
 import { SignatureDto } from "./shared.dto";
-export class CreateUserDto {
+import { IsString, IsDate, IsObject } from "class-validator";
+
+export class ValidateMessageDto {
   @IsString()
-  publicKey: string;
-  @IsString()
+  uuid: string;
   content: string;
   @IsDate()
   timestamp: Date;
   @IsObject()
   signature: SignatureDto;
 }
-
