@@ -14,22 +14,16 @@ import com.planetnine.sessionless.util.sessionless.keys.SimpleKeyPair
 import com.planetnine.sessionless.util.sessionless.vaults.ICustomVault
 import com.planetnine.sessionless.util.sessionless.vaults.IKeyStoreVault
 import com.planetnine.sessionless.util.sessionless.vaults.IVault
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import org.bouncycastle.jce.ECNamedCurveTable
-import org.bouncycastle.jce.provider.BouncyCastleProvider
-import java.security.KeyFactory
+import org.bouncycastle.crypto.params.ECPrivateKeyParameters
+import org.bouncycastle.crypto.params.ECPublicKeyParameters
+import org.bouncycastle.crypto.signers.ECDSASigner
+import org.bouncycastle.jcajce.provider.digest.Keccak
+import java.math.BigInteger
 import java.security.KeyPair
-import java.security.KeyPairGenerator
 import java.security.PrivateKey
-import java.security.SecureRandom
-import java.security.Security
-import java.security.Signature
-import java.security.spec.PKCS8EncodedKeySpec
-import java.security.spec.X509EncodedKeySpec
+import java.security.interfaces.ECPrivateKey
 import java.util.Base64
 import java.util.UUID
-import kotlin.coroutines.CoroutineContext
 
 /** [Sessionless] implementation (sealed, check the subclasses)
  * @see WithKeyStore
@@ -85,83 +79,68 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
             return vault.get()
         }
 
-        override fun sign(message: String): String {
+        override fun sign(message: String): HexMessageSignature {
             val privateString = getKeys().privateKey
-            val privateBytes = Base64.getDecoder().decode(privateString)
-            val privateSpec = PKCS8EncodedKeySpec(privateBytes)
-            val privateKey = KeyFactory.getInstance(KEY_SPEC_NAME)
-                .generatePrivate(privateSpec)
+            val privateKey = privateString.toECPrivateKey(KeyUtils.Defaults.parameterSpec)
             return sign(message, privateKey)
         }
     }
 
-    override fun sign(message: String, privateKey: PrivateKey): String {
-        val signature = Signature.getInstance(SIGNATURE_ALGORITHM)
-        signature.initSign(privateKey)
-        signature.update(message.toByteArray())
-        val bytes = signature.sign()
-        return String(bytes, Charsets.UTF_8)
+    override fun sign(message: String, privateKey: PrivateKey): HexMessageSignature {
+        val signer = ECDSASigner().apply {
+            val privateHex = (privateKey as ECPrivateKey).toHex()
+            val privateKeyFormatted = BigInteger(privateHex)
+            val privateKeyParameters = ECPrivateKeyParameters(
+                privateKeyFormatted,
+                KeyUtils.Defaults.parameterSpec.domainParameters
+            )
+            init(true, privateKeyParameters)
+        }
+        val messageHash = keccak256Hash(message)
+        val signature = signer.generateSignature(messageHash)
+        return MessageSignature.from(signature)!!.toHex()
     }
 
-    override fun verifySignature(signature: String, message: String, publicKey: String): Boolean {
-        val kf = KeyFactory.getInstance(KEY_SPEC_NAME)
-        val decoder = Base64.getDecoder()
-        val publicKeyBytes = decoder.decode(publicKey)
-        val publicKeySpec = X509EncodedKeySpec(publicKeyBytes)
-        val pubKey = kf.generatePublic(publicKeySpec)
-
-        val signatureObj = Signature.getInstance(SIGNATURE_ALGORITHM)
-        signatureObj.initVerify(pubKey)
-        signatureObj.update(message.toByteArray())
-
-        val signatureBytes = decoder.decode(signature)
-        return signatureObj.verify(signatureBytes)
+    override fun verify(
+        publicKey: String,
+        signature: HexMessageSignature,
+        message: String
+    ): Boolean {
+        val signer = ECDSASigner().apply {
+            val publicBytes = Base64.getDecoder().decode(publicKey)
+            val publicInt = BigInteger(publicBytes)
+            val paramSpec = KeyUtils.Defaults.parameterSpec
+            val publicKeyPoint = paramSpec.curve.decodePoint(publicInt.toByteArray())
+            val publicKeyParameters = ECPublicKeyParameters(
+                publicKeyPoint, paramSpec.domainParameters
+            )
+            init(false, publicKeyParameters)
+        }
+        val messageHash = keccak256Hash(message)
+        val signatureInts = signature.toBigInt()
+        return signer.verifySignature(
+            messageHash, signatureInts.r, signatureInts.s
+        )
     }
 
-    override fun generateUUID(): String = UUID.randomUUID().toString()
+    override fun generateUUID(): String {
+        return UUID.randomUUID().toString()
+    }
 
     override fun associate(
-        primarySignature: String,
-        primaryMessage: String,
         primaryPublicKey: String,
-        secondarySignature: String,
+        primaryMessage: String,
+        primarySignature: HexMessageSignature,
+        secondaryPublicKey: String,
         secondaryMessage: String,
-        secondaryPublicKey: String
+        secondarySignature: HexMessageSignature,
     ): Boolean {
-        val verified1 = verifySignature(primarySignature, primaryMessage, primaryPublicKey)
-        val verified2 = verifySignature(secondarySignature, secondaryMessage, secondaryPublicKey)
+        val verified1 = verify(primaryPublicKey, primarySignature, primaryMessage)
+        val verified2 = verify(secondaryPublicKey, secondarySignature, secondaryMessage)
         return verified1 && verified2
     }
 
-//    override fun revokeKey(message: String, signature: String, publicKey: String) {
-//        TODO("Not yet implemented")
-//    }
-
     companion object {
-        const val KEY_ALGORITHM = "ECDSA"
-        const val KEY_SPEC_NAME = "secp256k1"
-        const val KEY_PROVIDER = "BC"
-        const val SIGNATURE_ALGORITHM = "SHA256withRSA"
-        const val RANDOM_ALGORITHM = "SHA1PRNG"
-        const val CERTIFICATE_TYPE = "X.509"
-
-        /** Generate a new [KeyPair] based on the defaults defined in [Companion]
-         * @return public/private [KeyPair]
-         * @see generateKeyPairAsync */
-        fun generateKeyPair(): KeyPair {
-            //? This will add the provider once even if called twice
-            Security.addProvider(BouncyCastleProvider())
-            val spec = ECNamedCurveTable.getParameterSpec(KEY_SPEC_NAME)
-            val generator = KeyPairGenerator.getInstance(KEY_ALGORITHM, KEY_PROVIDER)
-            val random = SecureRandom.getInstance(RANDOM_ALGORITHM)
-            generator.initialize(spec, random)
-            return generator.generateKeyPair()
-        }
-
-        /** Generate a new [KeyPair] asynchronously based on the defaults defined in [Companion]
-         * @return public/private [KeyPair]
-         * @see generateKeyPair */
-        suspend fun generateKeyPairAsync(context: CoroutineContext = Dispatchers.IO): KeyPair =
-            withContext(context) { generateKeyPair() }
+        fun keccak256Hash(message: String) = Keccak.Digest256().digest(message.toByteArray())
     }
 }
