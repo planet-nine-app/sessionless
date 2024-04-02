@@ -1,9 +1,16 @@
 package com.planetnine.sessionless.util.sessionless.keys
 
+import com.planetnine.sessionless.util.sessionless.models.IMessageSignature
 import java.math.BigInteger
 
-data class MessageSignature(val r: BigInteger, val s: BigInteger) {
-    fun toHex() = HexMessageSignature(r.toString(16), s.toString(16))
+data class MessageSignature(
+    override val r: BigInteger,
+    override val s: BigInteger
+) : IMessageSignature {
+    constructor(rHex: String, sHex: String) : this(
+        rHex.toBigInteger(16),
+        sHex.toBigInteger(16)
+    )
 
     companion object {
         fun from(ints: Array<BigInteger>): MessageSignature? {
@@ -11,8 +18,4 @@ data class MessageSignature(val r: BigInteger, val s: BigInteger) {
             return MessageSignature(ints[0], ints[1])
         }
     }
-}
-
-data class HexMessageSignature(val r: String, val s: String) {
-    fun toBigInt() = MessageSignature(r.toBigInteger(16), s.toBigInteger(16))
 }
