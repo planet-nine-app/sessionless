@@ -1,8 +1,7 @@
 package com.planetnine.sessionless.util.sessionless.vaults
 
-import com.planetnine.sessionless.util.sessionless.Sessionless
 import com.planetnine.sessionless.util.sessionless.keys.KeyAccessInfo
-import java.io.ByteArrayInputStream
+import com.planetnine.sessionless.util.sessionless.keys.KeyUtils
 import java.security.KeyPair
 import java.security.KeyStore
 import java.security.PrivateKey
@@ -15,14 +14,14 @@ class IKeyStoreVault(private val keyStore: KeyStore) : IVault {
     fun save(
         pair: KeyPair,
         accessInfo: KeyAccessInfo,
-        certificateFactory: CertificateFactory = CertificateFactory.getInstance(Sessionless.CERTIFICATE_TYPE)
-    ) = save(
-        pair,
-        accessInfo,
-        certificateFactory.generateCertificate(
-            ByteArrayInputStream(pair.public.encoded)
+        certificateFactory: CertificateFactory = KeyUtils.Defaults.certificateFactory
+    ) {
+        save(
+            pair,
+            accessInfo,
+            KeyUtils.generateCertificate(pair.public, certificateFactory)
         )
-    )
+    }
 
     @Throws(java.security.KeyStoreException::class)
     fun save(
