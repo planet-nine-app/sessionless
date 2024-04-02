@@ -1,0 +1,24 @@
+[package]
+name = "sessionless"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = []
+
+[dependencies]
+sha3 = "0.10"
+hex = "0.4"
+
+[dependencies.secp256k1]
+version = "0.28"
+features = [
+    "rand-std",
+]
+
+[dependencies.uuid]
+version = "1.8"
+optional = true
+features = [
+    "v4",
+]
