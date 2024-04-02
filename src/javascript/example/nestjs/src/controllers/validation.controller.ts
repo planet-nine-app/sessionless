@@ -1,5 +1,5 @@
 import { Controller, Get, Body, Res } from "@nestjs/common";
-import sessionless from "sessionless-node";
+import * as sessionless from "sessionless-node";
 import { ValidateMessageDto } from "../dtos";
 import { UserRepository } from "../repositories";
 import { Response } from "express";
