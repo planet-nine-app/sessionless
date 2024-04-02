@@ -1,19 +1,17 @@
 package com.planetnine.sessionless.util.sessionless.models
 
-import com.planetnine.sessionless.util.sessionless.keys.KeyAccessInfo
-import com.planetnine.sessionless.util.sessionless.keys.SimpleKeyPair
-import com.planetnine.sessionless.util.sessionless.vaults.ICustomVault
-import com.planetnine.sessionless.util.sessionless.vaults.IKeyStoreVault
-import com.planetnine.sessionless.util.sessionless.vaults.IVault
+import com.planetnine.sessionless.util.sessionless.impl.KeyStoreVault
+import com.planetnine.sessionless.util.sessionless.models.vaults.ICustomVault
+import com.planetnine.sessionless.util.sessionless.models.vaults.IVault
 import java.security.KeyPair
 import java.security.PrivateKey
 
 interface ISessionless {
     /** The way to store and retrieve key pairs */
     val vault: IVault
-    
+
     interface WithKeyStore : ISessionless {
-        override val vault: IKeyStoreVault
+        override val vault: KeyStoreVault
 
         /** Generates a private/public key pair and stores it using [vault]
          * @param keyAccessInfo Info required to access the stored key
@@ -34,7 +32,7 @@ interface ISessionless {
          * @param message The message to be signed.
          * @param keyAccessInfo Info required to access the stored key
          * @return Signature as a [String] */
-        fun sign(message: String, keyAccessInfo: KeyAccessInfo): IMessageSignature
+        fun sign(message: String, keyAccessInfo: KeyAccessInfo): MessageSignature
     }
 
     interface WithCustomVault : ISessionless {
@@ -55,13 +53,13 @@ interface ISessionless {
         /** Signs a [message] with the user's stored private key (from [vault]).
          * @param message The message to be signed.
          * @return Signature as a [String] */
-        fun sign(message: String): IMessageSignature
+        fun sign(message: String): MessageSignature
     }
 
     /** Signs a [message] using the provided [privateKey].
      * @param message The message to be signed.
      * @return Signature as a [String]. */
-    fun sign(message: String, privateKey: PrivateKey): IMessageSignature
+    fun sign(message: String, privateKey: PrivateKey): MessageSignature
 
     /** Verifies a given signature with a public key.
      * @param publicKey The public key to use for verification.
@@ -69,7 +67,7 @@ interface ISessionless {
      * @param message The message that was signed earlier (ideally signed with [sign]).
      * @return True if the [signature] is valid for the given [message] and [publicKey].
      * @see sign */
-    fun verify(publicKey: String, signature: IMessageSignature, message: String): Boolean
+    fun verify(publicKey: String, signature: MessageSignature, message: String): Boolean
 
     /** Creates a unique UUID for a user.
      * @return The generated UUID. */
@@ -81,10 +79,10 @@ interface ISessionless {
     fun associate(
         primaryPublicKey: String,
         primaryMessage: String,
-        primarySignature: IMessageSignature,
+        primarySignature: MessageSignature,
         secondaryPublicKey: String,
         secondaryMessage: String,
-        secondarySignature: IMessageSignature,
+        secondarySignature: MessageSignature,
     ): Boolean
 
 //    /** Revokes a gateway's key from the user.

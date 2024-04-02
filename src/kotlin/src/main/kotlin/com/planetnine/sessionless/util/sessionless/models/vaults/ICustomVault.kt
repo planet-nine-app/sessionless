@@ -1,6 +1,6 @@
-package com.planetnine.sessionless.util.sessionless.vaults
+package com.planetnine.sessionless.util.sessionless.models.vaults
 
-import com.planetnine.sessionless.util.sessionless.keys.SimpleKeyPair
+import com.planetnine.sessionless.util.sessionless.models.SimpleKeyPair
 
 /** [IVault] which uses custom [save]/[get] methods */
 interface ICustomVault : IVault {

@@ -1,4 +1,4 @@
-package com.planetnine.sessionless.util.sessionless.keys
+package com.planetnine.sessionless.util.sessionless.models
 
 /** Information about accessing a key in secure storage
  * @param alias Key alias (used in storage)
