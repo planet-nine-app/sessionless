@@ -1,6 +1,7 @@
 package com.planetnine.sessionless.controllers
 
 import com.planetnine.sessionless.util.sessionless.impl.Sessionless
+import com.planetnine.sessionless.util.sessionless.models.IdentifiableMessage
 import com.planetnine.sessionless.util.sessionless.models.KeyAccessInfo
 import com.planetnine.sessionless.util.sessionless.models.MessageSignature
 import com.planetnine.sessionless.util.sessionless.models.vaults.IVault
@@ -117,7 +118,9 @@ class SessionlessController {
             put("enteredText", enteredText)
             put("timestamp", timestamp)
         }.toString()
-        val verified = sessionless.verify(publicKey, signature, message)
+        
+        val idMessage = IdentifiableMessage(message, publicKey, signature)
+        val verified = sessionless.verify(idMessage)
         if (!verified) {
             println("Signature verification failed!")
             return null
@@ -151,7 +154,8 @@ class SessionlessController {
             body.signature ?: webSignature(req, message)
             ?: return CoolStuffResponse(null, "Signature error")
 
-        val verified = sessionless.verify(message, signature, publicKey)
+        val idMessage = IdentifiableMessage(message, publicKey, signature)
+        val verified = sessionless.verify(idMessage)
         return if (verified)
             CoolStuffResponse("double cool", null)
         else CoolStuffResponse(null, "Auth error")
