@@ -12,7 +12,7 @@ import java.math.BigInteger
 
 
 @SpringBootTest
-class SessionlessTests1 {
+class SessionlessGeneralTests {
 
     @DisplayName("Generate and Retrieve Keys with KeyStore")
     @Test
