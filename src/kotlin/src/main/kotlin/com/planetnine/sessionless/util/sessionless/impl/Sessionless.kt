@@ -118,6 +118,13 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         )
     }
 
+    /** Verifies a given signature with a public key
+     * - This calls [verify] with [IdentifiableMessage] out of the provided parameters
+     * @see verify */
+    fun verify(message: String, publicKey: String, signature: MessageSignature): Boolean {
+        return verify(IdentifiableMessage(message, publicKey, signature))
+    }
+
     override fun generateUUID(): String {
         return UUID.randomUUID().toString()
     }
