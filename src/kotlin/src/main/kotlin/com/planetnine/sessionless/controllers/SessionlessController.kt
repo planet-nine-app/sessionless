@@ -118,9 +118,8 @@ class SessionlessController {
             put("enteredText", enteredText)
             put("timestamp", timestamp)
         }.toString()
-        
-        val idMessage = IdentifiableMessage(message, publicKey, signature)
-        val verified = sessionless.verify(idMessage)
+
+        val verified = sessionless.verify(message, publicKey, signature)
         if (!verified) {
             println("Signature verification failed!")
             return null
@@ -153,9 +152,8 @@ class SessionlessController {
         val signature =
             body.signature ?: webSignature(req, message)
             ?: return CoolStuffResponse(null, "Signature error")
-
-        val idMessage = IdentifiableMessage(message, publicKey, signature)
-        val verified = sessionless.verify(idMessage)
+ 
+        val verified = sessionless.verify(message, publicKey, signature)
         return if (verified)
             CoolStuffResponse("double cool", null)
         else CoolStuffResponse(null, "Auth error")
