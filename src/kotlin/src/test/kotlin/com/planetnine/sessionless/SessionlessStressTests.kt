@@ -4,6 +4,7 @@ import com.planetnine.sessionless.util.sessionless.impl.Sessionless
 import com.planetnine.sessionless.util.sessionless.models.KeyAccessInfo
 import com.planetnine.sessionless.util.sessionless.models.SimpleKeyPair
 import com.planetnine.sessionless.util.sessionless.models.vaults.ICustomVault
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
@@ -17,26 +18,42 @@ class SessionlessStressTests {
         }
     )
 
+    @DisplayName("Generate keys 1 time (with no storage)")
     @Test
-    fun generateKeysNoStorageTimes1000() {
-        for (i in 1..1000) sessionlessC.generateKeys()
+    fun generateKeysNoStorageTimes1() {
+        sessionlessC.generateKeys()
     }
 
+    @DisplayName("Generate keys 10000 times (with no storage)")
     @Test
-    fun generateKeysNoStorageTimes1000Recursive() {
-        (1..1000).forEach { _ -> sessionlessC.generateKeys() }
+    fun generateKeysNoStorageTimes10000() {
+        for (i in 1..10000) sessionlessC.generateKeys()
+    }
+
+    @DisplayName("Generate keys 10000 times (recursive) (with no storage)")
+    @Test
+    fun generateKeysNoStorageTimes10000Recursive() {
+        (1..10000).forEach { _ -> sessionlessC.generateKeys() }
     }
 
     private val sessionless = Common.sessionlessKS
     private val access = KeyAccessInfo("test")
 
+    @DisplayName("Generate keys 1 time (+ store into KeyStore)")
     @Test
-    fun generateKeysTimes1000() {
-        for (i in 1..1000) sessionless.generateKeys(access)
+    fun generateKeysTimes1() {
+        sessionless.generateKeys(access)
     }
 
+    @DisplayName("Generate keys 10000 times (+ store into KeyStore)")
     @Test
-    fun generateKeysTimes1000Recursive() {
-        (1..1000).forEach { _ -> sessionless.generateKeys(access) }
+    fun generateKeysTimes10000() {
+        for (i in 1..10000) sessionless.generateKeys(access)
+    }
+
+    @DisplayName("Generate keys 10000 times (recursive) (+ store into KeyStore)")
+    @Test
+    fun generateKeysTimes10000Recursive() {
+        (1..10000).forEach { _ -> sessionless.generateKeys(access) }
     }
 }
