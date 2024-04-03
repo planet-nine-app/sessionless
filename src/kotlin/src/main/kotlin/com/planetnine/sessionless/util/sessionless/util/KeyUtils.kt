@@ -3,31 +3,34 @@ package com.planetnine.sessionless.util.sessionless.util
 import com.planetnine.sessionless.util.sessionless.models.SimpleKeyPair
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.bouncycastle.asn1.x509.X509Name
 import org.bouncycastle.crypto.params.ECDomainParameters
 import org.bouncycastle.jce.ECNamedCurveTable
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec
 import org.bouncycastle.jce.spec.ECParameterSpec
 import org.bouncycastle.jce.spec.ECPrivateKeySpec
-import java.io.ByteArrayInputStream
+import org.bouncycastle.x509.X509V3CertificateGenerator
 import java.math.BigInteger
 import java.security.InvalidAlgorithmParameterException
+import java.security.InvalidKeyException
 import java.security.KeyFactory
 import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.NoSuchAlgorithmException
 import java.security.NoSuchProviderException
 import java.security.PrivateKey
-import java.security.PublicKey
 import java.security.SecureRandom
 import java.security.Security
 import java.security.Signature
-import java.security.cert.Certificate
-import java.security.cert.CertificateFactory
+import java.security.SignatureException
+import java.security.cert.X509Certificate
 import java.security.interfaces.ECPrivateKey
 import java.security.interfaces.ECPublicKey
+import java.util.Date
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
+
 
 object KeyUtils {
     object Defaults {
@@ -36,13 +39,18 @@ object KeyUtils {
         const val KEY_SPEC_NAME = "secp256k1"
         const val SIGNATURE_ALGORITHM = "SHA256withECDSA"
         const val CERTIFICATE_TYPE = "X.509"
+        const val KEY_SIZE = 256
+        const val CERTIFICATE_ISSUER = "CN=Sessionless"
+        const val CERTIFICATE_SUBJECT = "CN=Sessionless"
+        const val CERTIFICATE_VALIDITY_MS = 1000L * 60 * 60 * 24 * 365
+
+        val certificateSerialNumberNow
+            get() = BigInteger.valueOf(System.currentTimeMillis())
 
         val keyFactory: KeyFactory
             get() = KeyFactory.getInstance(KEY_ALGORITHM)
         val parameterSpec: ECNamedCurveParameterSpec
             get() = ECNamedCurveTable.getParameterSpec(KEY_SPEC_NAME)
-        val certificateFactory: CertificateFactory
-            get() = CertificateFactory.getInstance(CERTIFICATE_TYPE, KEY_PROVIDER)
         val signature: Signature
             get() = Signature.getInstance(SIGNATURE_ALGORITHM)
 
@@ -59,17 +67,39 @@ object KeyUtils {
         return ECPrivateKeySpec((this as ECPrivateKey).s, parameterSpec)
     }
 
-    fun generateCertificate(
-        publicKey: PublicKey,
-        certificateFactory: CertificateFactory? = null
-    ): Certificate {
+    @Throws(
+        java.security.cert.CertificateEncodingException::class,
+        IllegalStateException::class,
+        RuntimeException::class
+    )
+    @Suppress("DEPRECATION") //? this works... but it's deprecated.. I didn't find another way
+    fun generateSelfSignedCertificate(pair: KeyPair): X509Certificate {
         //? This shall add the provider once even if called twice
         Security.addProvider(BouncyCastleProvider())
-        //? not using default param to avoid getting the factory before adding BC provider
-        val factory = certificateFactory ?: Defaults.certificateFactory
-        return factory.generateCertificate(
-            ByteArrayInputStream(publicKey.encoded)
-        )
+        val startDate = Date()
+        val endDate = Date().apply { time += Defaults.CERTIFICATE_VALIDITY_MS }
+        try {
+            val generator = X509V3CertificateGenerator().apply {
+                setSerialNumber(Defaults.certificateSerialNumberNow)
+                setIssuerDN(X509Name(Defaults.CERTIFICATE_ISSUER))
+                setNotBefore(startDate)
+                setNotAfter(endDate)
+                setSubjectDN(X509Name(Defaults.CERTIFICATE_SUBJECT))
+                setPublicKey(pair.public)
+                setSignatureAlgorithm(Defaults.SIGNATURE_ALGORITHM)
+            }
+            val certificate = generator.generate(pair.private, SecureRandom()).apply {
+                checkValidity(startDate)
+                verify(this.publicKey)
+            }
+            return certificate
+        } catch (e: NoSuchAlgorithmException) {
+            throw RuntimeException(e)
+        } catch (e: SignatureException) {
+            throw RuntimeException(e)
+        } catch (e: InvalidKeyException) {
+            throw RuntimeException(e)
+        }
     }
 
     /** Generate a new [KeyPair] based on the defaults defined in [KeyUtils]
