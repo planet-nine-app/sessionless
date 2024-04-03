@@ -62,28 +62,21 @@ interface ISessionless {
     fun sign(message: String, privateKey: PrivateKey): MessageSignature
 
     /** Verifies a given signature with a public key.
-     * @param publicKey The public key to use for verification.
-     * @param signature The signature to be verified.
-     * @param message The message that was signed earlier (ideally signed with [sign]).
-     * @return True if the [signature] is valid for the given [message] and [publicKey].
+     * @param identifiableMessage message that was signed
+     * @return True if the [IdentifiableMessage.signature] is valid
+     * for the given [IdentifiableMessage.message] and [IdentifiableMessage.publicKey].
      * @see sign */
-    fun verify(publicKey: String, signature: MessageSignature, message: String): Boolean
+    fun verify(identifiableMessage: IdentifiableMessage): Boolean
 
     /** Creates a unique UUID for a user.
      * @return The generated UUID. */
     fun generateUUID(): String
 
-    /** Associates 2 message signatures with their respective public keys
-     * @return true if both signatures were verified successfully
+    /** Associates [identifiableMessages] signatures with their respective public keys
+     * @return true if all were successfully verified
+     * @throws java.lang.IllegalArgumentException if array size<2
      * @see verify */
-    fun associate(
-        primaryPublicKey: String,
-        primaryMessage: String,
-        primarySignature: MessageSignature,
-        secondaryPublicKey: String,
-        secondaryMessage: String,
-        secondarySignature: MessageSignature,
-    ): Boolean
+    fun associate(vararg identifiableMessages: IdentifiableMessage): Boolean
 
 //    /** Revokes a gateway's key from the user.
 //     * @param message Message for revocation.
