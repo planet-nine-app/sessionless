@@ -3,6 +3,7 @@ package com.planetnine.sessionless.util.sessionless.impl
 import com.planetnine.sessionless.util.sessionless.impl.Sessionless.WithCustomVault
 import com.planetnine.sessionless.util.sessionless.impl.Sessionless.WithKeyStore
 import com.planetnine.sessionless.util.sessionless.models.ISessionless
+import com.planetnine.sessionless.util.sessionless.models.IdentifiableMessage
 import com.planetnine.sessionless.util.sessionless.models.KeyAccessInfo
 import com.planetnine.sessionless.util.sessionless.models.MessageSignature
 import com.planetnine.sessionless.util.sessionless.models.SimpleKeyPair
@@ -21,7 +22,6 @@ import java.math.BigInteger
 import java.security.KeyPair
 import java.security.PrivateKey
 import java.security.interfaces.ECPrivateKey
-import java.util.Base64
 import java.util.UUID
 
 /** [Sessionless] implementation (sealed, check the subclasses)
@@ -100,14 +100,9 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         return MessageSignature.from(signature)!!
     }
 
-    override fun verify(
-        publicKey: String,
-        signature: MessageSignature,
-        message: String
-    ): Boolean {
+    override fun verify(identifiableMessage: IdentifiableMessage): Boolean {
         val signer = ECDSASigner().apply {
-            val publicBytes = Base64.getDecoder().decode(publicKey)
-            val publicInt = BigInteger(publicBytes)
+            val publicInt = BigInteger(identifiableMessage.publicKey, 16)
             val paramSpec = KeyUtils.Defaults.parameterSpec
             val publicKeyPoint = paramSpec.curve.decodePoint(publicInt.toByteArray())
             val publicKeyParameters = ECPublicKeyParameters(
@@ -115,9 +110,11 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
             )
             init(false, publicKeyParameters)
         }
-        val messageHash = hashKeccak256(message)
+        val messageHash = hashKeccak256(identifiableMessage.message)
         return signer.verifySignature(
-            messageHash, signature.r, signature.s
+            messageHash,
+            identifiableMessage.signature.r,
+            identifiableMessage.signature.s
         )
     }
 
@@ -125,16 +122,10 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         return UUID.randomUUID().toString()
     }
 
-    override fun associate(
-        primaryPublicKey: String,
-        primaryMessage: String,
-        primarySignature: MessageSignature,
-        secondaryPublicKey: String,
-        secondaryMessage: String,
-        secondarySignature: MessageSignature,
-    ): Boolean {
-        val verified1 = verify(primaryPublicKey, primarySignature, primaryMessage)
-        val verified2 = verify(secondaryPublicKey, secondarySignature, secondaryMessage)
-        return verified1 && verified2
+    override fun associate(vararg identifiableMessages: IdentifiableMessage): Boolean {
+        if (identifiableMessages.size < 2) {
+            throw IllegalArgumentException("Must have at least two messages to associate")
+        }
+        return identifiableMessages.all { verify(it) }
     }
 }
