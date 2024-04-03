@@ -7,11 +7,9 @@ import com.planetnine.sessionless.util.sessionless.util.KeyUtils.toECHex
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
 import java.math.BigInteger
 
 
-@SpringBootTest
 class SessionlessGeneralTests {
 
     @DisplayName("Generate and Retrieve Keys with KeyStore")
