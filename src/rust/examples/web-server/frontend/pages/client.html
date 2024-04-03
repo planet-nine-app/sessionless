@@ -27,6 +27,9 @@ Private Key: <a id="txt-private-key">N/A</a> <br>
     const storageKeyUUID = 'uuid';
     const storageKeyPrivateKey = 'private-key';
 
+    //const baseURL = 'http://localhost:3000';
+    const baseURL = 'http://104.236.198.131';
+
     window.isInitialized = false;
 
     async function run() {
@@ -62,7 +65,7 @@ Private Key: <a id="txt-private-key">N/A</a> <br>
             timestamp: 'right now',
         }
 
-        await fetch('http://localhost:3000/register', {
+        await fetch(`${baseURL}/register`, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -98,7 +101,7 @@ Private Key: <a id="txt-private-key">N/A</a> <br>
             uuid: sessionStorage.getItem(storageKeyUUID),
         };
 
-        await fetch('http://localhost:3000/cool-stuff', {
+        await fetch(`${baseURL}/cool-stuff`, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
