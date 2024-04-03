@@ -6,9 +6,7 @@ import com.planetnine.sessionless.util.sessionless.models.SimpleKeyPair
 import com.planetnine.sessionless.util.sessionless.models.vaults.ICustomVault
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
 
-@SpringBootTest
 class SessionlessStressTests {
 
     private val sessionlessC = Sessionless.WithCustomVault(
