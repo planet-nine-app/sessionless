@@ -1,0 +1,70 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <style>
+      .circle-1-1 {
+        background-color: #ff6600;
+        border-radius: 50%;
+        width: 200px;
+        height: 200px;
+        position: fixed;
+        top: calc(200px - 6px);
+        left: calc(80px - 6px);
+        animation: glow 2s infinite alternate;
+        border: 6px solid #ff6600;
+      }
+      .connector {
+        background-color: #ff6600;
+        width: 200px;
+        height: 20px;
+        position: fixed;
+        top: 210px;
+        left: 200px;
+        transform: rotate(-39deg);
+      }
+      .circle-1-2 {
+        background-color: #ff6600;
+        border-radius: 50%;
+        width: 140px;
+        height: 140px;
+        position: fixed;
+        top: calc(110px - 6px);
+        left: calc(290px - 6px);
+        animation: glow 2s infinite alternate;
+        border: 6px solid #ff6600;
+      }
+      .circle-2-1 {
+        background-color: #171717;
+        border-radius: 50%;
+        width: 200px;
+        height: 200px;
+        position: fixed;
+        top: 200px;
+        left: 80px;
+        box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.5) inset;
+      }
+      .circle-2-2 {
+        background-color: #171717;
+        border-radius: 50%;
+        width: 140px;
+        height: 140px;
+        position: fixed;
+        top: 110px;
+        left: 290px;
+        box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.5) inset;
+      }
+      @keyframes glow {
+        0% {
+          box-shadow: 0 0 5px rgba(243, 238, 22, 0.5);
+        }
+        100% {
+          box-shadow: 0 0 31px rgba(243, 238, 22, 0.8);
+        }
+      }
+    </style>
+  <foreignObject x="0" y="0" width="512" height="512">
+    <div class="circle-1-1" xmlns="http://www.w3.org/1999/xhtml"></div>
+    <div class="circle-1-2" xmlns="http://www.w3.org/1999/xhtml"></div>
+    <div class="connector" xmlns="http://www.w3.org/1999/xhtml"></div>
+    <div class="circle-2-1" xmlns="http://www.w3.org/1999/xhtml"></div>
+    <div class="circle-2-2" xmlns="http://www.w3.org/1999/xhtml"></div>
+  </foreignObject>
+</svg>
