@@ -88,7 +88,7 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
     override fun sign(message: String, privateKey: PrivateKey): MessageSignature {
         val signer = ECDSASigner().apply {
             val privateHex = (privateKey as ECPrivateKey).toHex()
-            val privateKeyFormatted = BigInteger(privateHex)
+            val privateKeyFormatted = BigInteger(privateHex, 16)
             val privateKeyParameters = ECPrivateKeyParameters(
                 privateKeyFormatted,
                 KeyUtils.Defaults.parameterSpec.domainParameters
