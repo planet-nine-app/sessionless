@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class SessionlessTests2 {
+class SessionlessStressTests {
 
     private val sessionlessC = Sessionless.WithCustomVault(
         object : ICustomVault {
