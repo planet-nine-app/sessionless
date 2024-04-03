@@ -7,21 +7,15 @@ import java.security.KeyPair
 import java.security.KeyStore
 import java.security.PrivateKey
 import java.security.cert.Certificate
-import java.security.cert.CertificateFactory
 
 /** [IVault] which uses [KeyStore] to securely get and save [KeyPair] */
 class KeyStoreVault(override val keyStore: KeyStore) : IKeyStoreVault {
     @Throws(java.security.cert.CertificateException::class)
-    fun save(
-        pair: KeyPair,
-        accessInfo: KeyAccessInfo,
-        /** Will use the default factory from [KeyUtils.generateCertificate] if not specified */
-        certificateFactory: CertificateFactory? = null
-    ) {
+    fun save(pair: KeyPair, accessInfo: KeyAccessInfo) {
         save(
             pair,
             accessInfo,
-            KeyUtils.generateCertificate(pair.public, certificateFactory)
+            KeyUtils.generateSelfSignedCertificate(pair)
         )
     }
 
