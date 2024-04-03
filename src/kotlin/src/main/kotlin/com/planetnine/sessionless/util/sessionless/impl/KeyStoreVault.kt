@@ -8,7 +8,7 @@ import java.security.KeyStore
 import java.security.PrivateKey
 import java.security.cert.Certificate
 
-/** [IVault] which uses [KeyStore] to securely get and save [KeyPair] */
+/** [IKeyStoreVault] implementation */
 class KeyStoreVault(override val keyStore: KeyStore) : IKeyStoreVault {
     @Throws(java.security.cert.CertificateException::class)
     fun save(pair: KeyPair, accessInfo: KeyAccessInfo) {
