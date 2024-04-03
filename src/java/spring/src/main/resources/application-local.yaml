@@ -1,0 +1,9 @@
+spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/changelog.xml
+  datasource:
+    url: jdbc:postgresql://localhost:26370/sessionless
+    username: sessionless_api
+    password: sessionless_api
+    driver-class-name: org.postgresql.Driver
