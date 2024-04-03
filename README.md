@@ -1,4 +1,11 @@
-# Sessionless
+<div align="center">
+    <h1> Sessionless </h1>
+    <a href="https://sessionless.org/" aria-label="Visit Sessionless Dot Org">
+        <img src="assets/sessionless.svg" alt="Sessionless Logo" width="50%" height="50%"></img>
+    </a>
+</div>
+
+## Sessionless
 
 *Sessionless* is an attempt to make authentication handling easier for developers and users, while also enabling interesting behavior not possible with traditional sessions.
 
