@@ -1,7 +1,6 @@
 import sessionless from "npm:sessionless-node";
+import { getUser, saveUser } from "src/persistence/user";
 console.log(sessionless);
-
-const kv = await Deno.openKv();
 
 const ResponseError = (code, error) => {
   return new Response(error, {
@@ -21,42 +20,33 @@ const dispatch = async (request: Request): Response | Error => {
   }
 };
 
-const saveUser = async (userUUID, publicKey) => {
-  await kv.set([userUUID], publicKey);
-  await kv.set([publicKey], userUUID);
-};
-
-const getUser = async (userUUID) => {
-  return await kv.get([userUUID]);
-};
-
 const register = async (request: Request): Response | Error => {
   const payload = await request.json();
   const signature = payload.signature;
 
   const message = JSON.stringify({
-    publicKey: payload.publicKey,
+    pubKey: payload.pubKey,
     enteredText: payload.enteredText,
     timestamp: payload.timestamp
   });
 
-  if(!signature || !sessionless.verifySignature(signature, message, payload.publicKey)) {
+  if(!signature || !sessionless.verifySignature(signature, message, payload.pubKey)) {
     return ResponseError(401, 'Auth error');
   }
 
-  const userUUID = sessionless.generateUUID();
-  await saveUser(userUUID, payload.publicKey);
-  return {userUUID, welcomeMessage: "Welcome to Sessionless"};
+  const uuid = sessionless.generateUUID();
+  await saveUser(uuid, payload.pubKey);
+  return {uuid, welcomeMessage: "Welcome to Sessionless"};
 };
 
 const doCoolStuff = async (request: Request): Response | Error => {
   const payload = await request.json();
   const signature = payload.signature;
 
-  const user = await getUser(payload.userUUID);
+  const user = await getUser(payload.uuid);
 
   const message = JSON.stringify({
-    userUUID: payload.userUUID,
+    uuid: payload.uuid,
     coolness: payload.coolness,
     timestamp: payload.timestamp
   });

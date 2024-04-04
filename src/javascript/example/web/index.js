@@ -4,7 +4,7 @@ window.register = () => {
     timestamp: new Date().getTime() + ''
   };
   fetch('http://localhost:3000/register', {
-    method: 'PUT',
+    method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ window.doCoolStuff = () => {
   };
 
   fetch('http://localhost:3000/cool-stuff', {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
