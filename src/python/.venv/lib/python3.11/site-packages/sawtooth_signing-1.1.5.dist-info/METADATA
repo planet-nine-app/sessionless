@@ -1,0 +1,14 @@
+Metadata-Version: 2.0
+Name: sawtooth-signing
+Version: 1.1.5
+Summary: Sawtooth Signing Library
+Home-page: https://github.com/hyperledger/sawtooth-core
+Author: Hyperledger Sawtooth
+Author-email: UNKNOWN
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Dist: secp256k1
+
+UNKNOWN
+
+
