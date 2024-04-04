@@ -1,26 +1,35 @@
-from sawtooth_signing.secp256k1 import Secp256k1PublicKey, Secp256k1Context
-from eth_hash.auto import keccak
+import secp256k1
 
 class SessionlessSecp256k1():
     def __init__(self) -> None:
         pass
+    
+    def generateRandomPrivateKeyHex(self, saveKeys, getKeys):
+        if callable(saveKeys) and callable(getKeys):
+            return secp256k1.PrivateKey().serialize().hex()
+        return 'Not compatiable with...'
+    
+    def generateRandomPrivateKeySerialized(self, saveKeys, getKeys):
+        if callable(saveKeys) and callable(getKeys):
+            return secp256k1.PrivateKey().serialize()
+        return 'Not compatiable with...'
+    
+    def generatePublicKeyFromPrivateKeyHex(self, privateKey):
+        if isinstance(privateKey, str) and all(c in '0123456789abcdefABCDEF' for c in privateKey):
+            deserializedPrivateKey = bytes.fromhex(privateKey)
+            newPrivateKey = secp256k1.PrivateKey()
+            newPrivateKey.deserialize(deserializedPrivateKey)
+            return newPrivateKey.pubkey.serialize().hex()
+        raise ValueError("Value not provided in correct format. Private key expected to be in hex format.")
+    
+    def generatePublicKeyFromPrivateKeySerialized(self, privateKey):
+        newPrivateKey = secp256k1.PrivateKey()
+        newPrivateKey.deserialize(privateKey)
+        return newPrivateKey.pubkey.serialize().hex()
+    
+    def verifySignature(self, signature, message, publicKey):
+        pass
+      
+print(secp256k1.PrivateKey().pubkey.serialize().hex())
 
-    def verifySignature(signature, message, publicKey):
-        context = Secp256k1Context()
-        messageHash = keccak(bytearray(message[:32]))
-        hex = signature.r
-        hex2 = signature.s
-        if len(hex) % 2:
-            hex = '0x' + hex
-        if len(hex2) % 2:
-            hex2 = '0x' + hex2
-        hexBn = int(hex, 16)
-        hex2Bn = int(hex2, 16)
-    
-        signatureHexBn = {
-        "r": hexBn, 
-        "s": hex2Bn
-        }
-    
-        res = context.verify(signatureHexBn, messageHash, publicKey)
     

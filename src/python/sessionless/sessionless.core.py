@@ -4,7 +4,7 @@ class SessionlessCore():
     def __init__(self) -> None:
         pass
 
-    def generateUUID():
+    def generateUUID(self):
         return uuid.uuid4().hex
 
     
