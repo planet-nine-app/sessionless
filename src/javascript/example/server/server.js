@@ -3,49 +3,18 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import chalk from 'chalk';
-import sessionless from '@zachbabb/sessionless-node';
+import sessionless from 'sessionless-node';
 import fs from 'fs';
 import { readFile } from 'node:fs/promises';
 import path from 'path';
 import url from 'url';
+import { getUser, saveUser } from './src/persistence/user.js';
+import { addRoutes } from './src/demo/demo.js';
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
-    credentials: true,
-  })
-);
-
-const saveUser = async (userUUID, publicKey) => {
-
- /**
-  * This is a contrived example for this example, which should be run locally. 
-  * In an actual implementation your user store should be a database.
-  */ 
-
-  try {
-    const usersString = await readFile('./users.json');
-    const users = JSON.parse(usersString);
-    users[userUUID] = publicKey;
-    fs.writeFileSync('./users.json', JSON.stringify(users));
-  } catch(err) {
-    let users = {};
-    users[userUUID] = publicKey;
-    fs.writeFileSync('./users.json', JSON.stringify(users), { flag: 'w' });
-  }
-};
-
-const getUserPublicKey = (userUUID) => {
-  const usersString = fs.readFileSync('./users.json');
-  const users = JSON.parse(usersString);
-  return users[userUUID];
-};
 
 app.use(expressSession({
   secret: 'foo bar baz',
@@ -89,7 +58,7 @@ const handleWebRegistration = async (req, res) => {
 
 app.use(bodyParser.json());
 
-app.put('/register', async (req, res) => {
+app.post('/register', async (req, res) => {
   const payload = req.body;
   const signature = payload.signature;
 
@@ -119,7 +88,7 @@ app.put('/register', async (req, res) => {
   }
 });
 
-app.put('/cool-stuff', async (req, res) => {
+app.post('/cool-stuff', async (req, res) => {
   const payload = req.body;
   const message = JSON.stringify({ coolness: payload.coolness, timestamp: payload.timestamp });
   const publicKey = getUserPublicKey(payload.userUUID); 
