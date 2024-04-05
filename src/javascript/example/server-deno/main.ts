@@ -1,6 +1,6 @@
 import sessionless from "npm:sessionless-node";
 import { getUser, saveUser } from "src/persistence/user";
-console.log(sessionless);
+import { associate, getValue, saveValue } from "src/demo/demo";
 
 const ResponseError = (code, error) => {
   return new Response(error, {
@@ -17,6 +17,15 @@ const dispatch = async (request: Request): Response | Error => {
   }
   if(request.url.indexOf('cool-stuff') > -1) {
     return await doCoolStuff(request);
+  }
+  if(request.url.indexOf('value') > -1) {
+    if(request.method === 'GET') {
+      return await getValue(request);
+    }
+    return await saveValue(request);
+  }
+  if(request.url.indexOf('associate') > -1) {
+    return await associate(request);
   }
 };
 
