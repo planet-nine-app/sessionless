@@ -45,13 +45,13 @@ const handleWebRegistration = async (req, res) => {
 
   req.session.user = keys.privateKey;
 
-  const userUUID = sessionless.generateUUID();
-  users[userUUID] = keys.publicKey;
+  const uuid = sessionless.generateUUID();
+  users[uuid] = keys.publicKey;
 
-  await saveUser(userUUID, keys.publicKey);
+  await saveUser(uuid, keys.publicKey);
 
   res.send({
-    userUUID,
+    uuid,
     welcomeMessage: "Welcome to Sessionless!"
   });
 };
@@ -75,13 +75,13 @@ app.post('/register', async (req, res) => {
   });
 
   if(sessionless.verifySignature(signature, message, publicKey)) {
-    const userUUID = sessionless.generateUUID();
-    await saveUser(userUUID, publicKey);
+    const uuid = sessionless.generateUUID();
+    await saveUser(uuid, publicKey);
     const user = {
-      userUUID,
+      uuid,
       welcomeMessage: "Welcome to this example!"
     };
-    console.log(chalk.green(`user registered with userUUID: ${userUUID}`));
+    console.log(chalk.green(`user registered with uuid: ${uuid}`));
     res.send(user);
   } else {
     console.log(chalk.red('unverified!'));
@@ -91,7 +91,7 @@ app.post('/register', async (req, res) => {
 app.post('/cool-stuff', async (req, res) => {
   const payload = req.body;
   const message = JSON.stringify({ coolness: payload.coolness, timestamp: payload.timestamp });
-  const publicKey = getUserPublicKey(payload.userUUID); 
+  const publicKey = getUserPublicKey(payload.uuid); 
   const signature = payload.signature || (await webSignature(req, message));
 
   if(sessionless.verifySignature(signature, message, publicKey)) {
