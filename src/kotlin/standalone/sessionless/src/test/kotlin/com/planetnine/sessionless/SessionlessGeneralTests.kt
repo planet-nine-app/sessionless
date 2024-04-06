@@ -1,13 +1,12 @@
 package com.planetnine.sessionless
 
 import com.planetnine.sessionless.impl.KeyAccessInfo
-import com.planetnine.sessionless.impl.MessageSignature
+import com.planetnine.sessionless.impl.MessageSignatureHex
 import com.planetnine.sessionless.impl.SignedMessage
 import com.planetnine.sessionless.util.KeyUtils.toECHex
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import java.math.BigInteger
 
 
 class SessionlessGeneralTests {
@@ -50,14 +49,14 @@ class SessionlessGeneralTests {
         val sessionless = Common.sessionlessKS
         val access = KeyAccessInfo("test1")
         val generated = sessionless.generateKeys(access)
-        val signature: MessageSignature = sessionless.sign(
+        val signature = sessionless.sign(
             message = text,
             keyAccessInfo = access,
         )
         // bad signature
-        val signatureBad = MessageSignature(
-            signature.r.add(BigInteger("1")),
-            signature.s.subtract(BigInteger("1"))
+        val signatureBad = MessageSignatureHex(
+            signature.rHex + "1",
+            signature.sHex + "1",
         )
         val publicHex = generated.toECHex().publicKey
         val verified = sessionless.verify(
