@@ -7,8 +7,6 @@
 
 import SwiftUI
 import Sessionless
-import Particles
-import ParticlesPresets
 
 struct User: Codable {
     let uuid: String
@@ -22,13 +20,36 @@ struct Coolness: Codable {
 struct ContentView: View {
     
     let sessionless = Sessionless()
+    let baseURL = "http://localhost:3001"
+    let otherURL = "http://localhost:3000"
     @State var enteredText = ""
     @State var welcomeMessage = ""
+    @State var secondaryButtonTextState = 0
     @State var uuid = ""
     @State private var showingAlert = false
     @State private var associateAlert = false
     @State private var successAlert = false
+    @State private var spreadAlert = false
     @State private var coolness = Coolness(doubleCool: "foo")
+    @State private var associated = false
+    @State private var accentColor = 0
+    
+    func secondaryButtonText() -> String {
+        switch secondaryButtonTextState {
+        case 0: return "Join Green"
+        case 1: return "Spread Blue"
+        default: return "Join Green"
+        }
+    }
+    
+    func changeBackgroundColor() -> Color {
+        switch accentColor {
+        case 0: return Color.purple
+        case 1: return Color.green
+        case 2: return Color.blue
+        default: return Color.purple
+        }
+    }
     
     struct ExampleTextField: View {
         @Binding var enteredText: String
@@ -46,8 +67,19 @@ struct ContentView: View {
                  (primary) and 3001 (secondary).
                 """
             ).padding(.all, 8)
+                .alert("Blue has been spread!", isPresented: $spreadAlert) {
+                    Button("OK") {
+                        
+                    }
+                }
+                .alert("Keys Associated!", isPresented: $successAlert) {
+                    Button("OK") {
+                        secondaryButtonTextState = 1
+                    }
+                }
                 .alert("The server thinks your \(coolness.doubleCool)", isPresented: $showingAlert) {
-                Button("OK") { }
+                    Button("OK") { }
+                }
                 .alert("Green would like to associate with you. Will you allow it?", isPresented: $associateAlert) {
                     Button("OK") {
                         guard let publicKey = sessionless.getKeys()?.publicKey else { return }
@@ -61,7 +93,7 @@ struct ContentView: View {
                         
                         let urlString =
                         """
-                        green://associate?uuid=\(uuid)&timestamp=\(timestamp)&pubKey=\(publicKey)&signature=\(signature.r)
+                        green://associate?uuid=\(uuid)&timestamp=\(timestamp)&pubKey=\(publicKey)&signature=\(signature)
                         """
                         guard let url = URL(string: urlString) else { return }
                         UIApplication.shared.open(url)
@@ -71,16 +103,13 @@ struct ContentView: View {
                 .alert("Key associated", isPresented: $showingAlert) {
                     Button("OK") { }
                 }
-            }
             Text("Enter some text here.")
                 .padding(.all, 8)
             ExampleTextField(enteredText: $enteredText)
                 .padding(.all, 8)
-            //ParticleSystem {
-              //  Particle {
                     Button("Register") {
                         Task {
-                            await Network.register(enteredText: $enteredText.wrappedValue, callback: { err, data in
+                            await Network.register(baseURL: baseURL, enteredText: $enteredText.wrappedValue, callback: { err, data in
                                 if let err = err {
                                     print("error")
                                     print(err)
@@ -91,19 +120,15 @@ struct ContentView: View {
                                     let user = try JSONDecoder().decode(User.self, from: data)
                                     uuid = user.uuid
                                     welcomeMessage = user.welcomeMessage
+                                    Persistence.saveUUID(uuid: uuid)
                                 } catch {
                                     return
                                 }
                             })
                         }
                     }.padding(.all, 8)
-                        .background(.purple)
+                        .background(changeBackgroundColor())
                         .foregroundColor(.white)
-                        .dissolve(if: {
-                            return welcomeMessage != ""
-                        }())
-              //  }
-            //}.statePersistent("foo", refreshesViews: false)
             
             if uuid.count > 3 && welcomeMessage.count > 3 {
                 Text("\(welcomeMessage) now you can do cool stuff")
@@ -111,7 +136,7 @@ struct ContentView: View {
                 if false {
                     Button("Do Cool Stuff") {
                         Task {
-                            await Network.doCoolStuff { err, data in
+                            await Network.doCoolStuff(baseURL: baseURL) { err, data in
                                 if let err = err {
                                     print("error")
                                     print(err)
@@ -127,12 +152,55 @@ struct ContentView: View {
                                 }
                             }
                         }
-                    }.background(.purple)
+                    }.background(changeBackgroundColor())
                         .foregroundColor(.white)
                 } else {
-                    Button("Join Green") {
-                        guard let url = URL(string: "green://foo?bar=baz") else { return }
-                        UIApplication.shared.open(url)
+                    if !associated {
+                        Button(secondaryButtonText()) {
+                            if secondaryButtonTextState == 0 {
+                                guard let url = URL(string: "green://foo?bar=baz") else { return }
+                                UIApplication.shared.open(url)
+                            } else {
+                                Task {
+                                    await Network.setValue(value: "Blue", baseURL: otherURL) { err, _ in
+                                        if let err = err {
+                                            print(err)
+                                            return
+                                        }
+                                        spreadAlert = true
+                                    }
+                                }
+                            }
+                        }
+                        .background(changeBackgroundColor())
+                        .foregroundColor(.white)
+                    } else {
+                        Button("Spread Blue") {
+                            Task {
+                                await Network.setValue(value: "blue", baseURL: baseURL) { error, data in
+                                    if let error = error {
+                                        print(error)
+                                        return
+                                    }
+                                    print("success")
+                                    spreadAlert = true
+                                }
+                            }
+                        }
+                        .background(changeBackgroundColor())
+                        .foregroundColor(.white)
+                    }
+                    Button("Check For Green") {
+                        Task {
+                            await Network.getValue(baseURL: otherURL) { error, data in
+                                if let error = error {
+                                    print(error)
+                                    return
+                                }
+                                print("success")
+                                accentColor = 1
+                            }
+                        }
                     }
                 }
             }
@@ -140,6 +208,7 @@ struct ContentView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.blue)
         .onOpenURL { url in
+            print(url)
             guard let query = url.query() else { return }
             print(query)
             if query.contains("bar") {
@@ -148,15 +217,15 @@ struct ContentView: View {
                 let params = query.components(separatedBy: "&")
                 let values = params.map { String($0.split(separator: "=")[1]) }
                 let associateKey = AssociateKey(uuid: values[0], timestamp: values[1], pubKey: values[2], signature: values[3])
+                print(associateKey)
                 Task {
-                    await Network.associate(associateKey: associateKey) { error, user in
+                    await Network.associate(baseURL: baseURL, associateKey: associateKey) { error, user in
                         if let error = error {
                             print(error)
                             return
                         }
-                        if let user = user {
-                            successAlert = true
-                        }
+                        associated = true
+                        successAlert = true
                     }
                 }
             }

@@ -9,7 +9,7 @@
   "author": "Zach Babb",
   "license": "MIT",
   "dependencies": {
-    "sessionless-node": "^0.0.6",
+    "sessionless-node": "^0.0.9",
     "body-parser": "^1.20.2",
     "chalk": "^5.3.0",
     "cors": "^2.8.5",

@@ -1,6 +1,7 @@
 import sessionless from "npm:sessionless-node";
-import { getUser, saveUser } from "src/persistence/user";
-import { associate, getValue, saveValue } from "src/demo/demo";
+import chalk from "npm:chalk";
+import { getUser, saveUser } from "./src/persistence/user.ts";
+import { associate, getValue, saveValue } from "./src/demo/demo.ts";
 
 const ResponseError = (code, error) => {
   return new Response(error, {
@@ -45,6 +46,9 @@ const register = async (request: Request): Response | Error => {
 
   const uuid = sessionless.generateUUID();
   await saveUser(uuid, payload.pubKey);
+
+  console.log(chalk.green(`\n\nuser registered with uuid: ${uuid}`));
+
   return {uuid, welcomeMessage: "Welcome to Sessionless"};
 };
 
@@ -68,12 +72,11 @@ const doCoolStuff = async (request: Request): Response | Error => {
 };
 
 Deno.serve({port: 3000}, async (request: Request) => {
-console.log(request);
+console.log(request.url);
   if((request.method !== "POST" && request.method !== "PUT") || !request.body) {
     return ResponseError(404, "Method not supported");
   }
   const res = await dispatch(request);
-console.log(res);
   return new Response(JSON.stringify(res), {
     headers: {
       "content-type": "application/json; charset=utf-8",
