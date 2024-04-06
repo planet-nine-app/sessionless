@@ -1,8 +1,8 @@
 package com.planetnine.sessionless
 
-import com.planetnine.sessionless.models.IdentifiableMessage
-import com.planetnine.sessionless.models.KeyAccessInfo
-import com.planetnine.sessionless.models.MessageSignature
+import com.planetnine.sessionless.impl.KeyAccessInfo
+import com.planetnine.sessionless.impl.MessageSignature
+import com.planetnine.sessionless.impl.SignedMessage
 import com.planetnine.sessionless.util.KeyUtils.toECHex
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
@@ -61,7 +61,7 @@ class SessionlessGeneralTests {
         )
         val publicHex = generated.toECHex().publicKey
         val verified = sessionless.verify(
-            IdentifiableMessage(
+            SignedMessage(
                 message = text,
                 signature = signature,
                 publicKey = publicHex
@@ -69,7 +69,7 @@ class SessionlessGeneralTests {
         )
         // bad signature should lead to verification failure
         val verifiedBad = sessionless.verify(
-            IdentifiableMessage(
+            SignedMessage(
                 message = text,
                 signature = signatureBad,
                 publicKey = publicHex

@@ -3,10 +3,6 @@ package com.planetnine.sessionless.impl
 import com.planetnine.sessionless.impl.Sessionless.WithCustomVault
 import com.planetnine.sessionless.impl.Sessionless.WithKeyStore
 import com.planetnine.sessionless.models.ISessionless
-import com.planetnine.sessionless.models.IdentifiableMessage
-import com.planetnine.sessionless.models.KeyAccessInfo
-import com.planetnine.sessionless.models.MessageSignature
-import com.planetnine.sessionless.models.SimpleKeyPair
 import com.planetnine.sessionless.models.vaults.ICustomVault
 import com.planetnine.sessionless.models.vaults.IVault
 import com.planetnine.sessionless.util.KeyUtils
@@ -49,7 +45,7 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
             return vault.get(keyAccessInfo)
         }
 
-        override fun sign(message: String, keyAccessInfo: KeyAccessInfo): MessageSignature {
+        override fun sign(message: String, keyAccessInfo: KeyAccessInfo): MessageSignatureHex {
             val privateKey = getKeys(keyAccessInfo).private
             return sign(message, privateKey)
         }
@@ -60,32 +56,32 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         Sessionless(vault),
         ISessionless.WithCustomVault {
 
-        override fun generateKeys(): SimpleKeyPair {
+        override fun generateKeys(): KeyPairHex {
             val pair = KeyUtils.generateKeyPair()
             val simple = pair.toECHex()
             vault.save(simple)
             return simple
         }
 
-        override suspend fun generateKeysAsync(): SimpleKeyPair {
+        override suspend fun generateKeysAsync(): KeyPairHex {
             val pair = KeyUtils.generateKeyPairAsync()
             val simple = pair.toECHex()
             vault.save(simple)
             return simple
         }
 
-        override fun getKeys(): SimpleKeyPair {
+        override fun getKeys(): KeyPairHex {
             return vault.get()
         }
 
-        override fun sign(message: String): MessageSignature {
+        override fun sign(message: String): MessageSignatureHex {
             val privateString = getKeys().privateKey
             val privateKey = privateString.toECPrivateKey(KeyUtils.Defaults.parameterSpec)
             return sign(message, privateKey)
         }
     }
 
-    override fun sign(message: String, privateKey: PrivateKey): MessageSignature {
+    override fun sign(message: String, privateKey: PrivateKey): MessageSignatureHex {
         val signer = ECDSASigner().apply {
             val privateHex = (privateKey as ECPrivateKey).toHex()
             val privateKeyFormatted = BigInteger(privateHex, 16)
@@ -96,13 +92,13 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
             init(true, privateKeyParameters)
         }
         val messageHash = hashKeccak256(message)
-        val signature = signer.generateSignature(messageHash)
-        return MessageSignature.from(signature)!!
+        val signatureArray = signer.generateSignature(messageHash)
+        return MessageSignatureInt(signatureArray).toHex()
     }
 
-    override fun verify(identifiableMessage: IdentifiableMessage): Boolean {
+    override fun verify(signedMessage: SignedMessage): Boolean {
         val signer = ECDSASigner().apply {
-            val publicInt = BigInteger(identifiableMessage.publicKey, 16)
+            val publicInt = BigInteger(signedMessage.publicKey, 16)
             val paramSpec = KeyUtils.Defaults.parameterSpec
             val publicKeyPoint = paramSpec.curve.decodePoint(publicInt.toByteArray())
             val publicKeyParameters = ECPublicKeyParameters(
@@ -110,29 +106,30 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
             )
             init(false, publicKeyParameters)
         }
-        val messageHash = hashKeccak256(identifiableMessage.message)
+        val messageHash = hashKeccak256(signedMessage.message)
+        val signature = signedMessage.signature.toInt()
         return signer.verifySignature(
             messageHash,
-            identifiableMessage.signature.r,
-            identifiableMessage.signature.s
+            signature.r,
+            signature.s
         )
     }
 
     /** Verifies a given signature with a public key
-     * - This calls [verify] with [IdentifiableMessage] out of the provided parameters
+     * - This calls [verify] with [SignedMessage] out of the provided parameters
      * @see verify */
-    fun verify(message: String, publicKey: String, signature: MessageSignature): Boolean {
-        return verify(IdentifiableMessage(message, publicKey, signature))
+    fun verify(message: String, publicKey: String, signature: MessageSignatureHex): Boolean {
+        return verify(SignedMessage(message, publicKey, signature))
     }
 
     override fun generateUUID(): String {
         return UUID.randomUUID().toString()
     }
 
-    override fun associate(vararg identifiableMessages: IdentifiableMessage): Boolean {
-        if (identifiableMessages.size < 2) {
+    override fun associate(vararg signedMessages: SignedMessage): Boolean {
+        if (signedMessages.size < 2) {
             throw IllegalArgumentException("Must have at least two messages to associate")
         }
-        return identifiableMessages.all { verify(it) }
+        return signedMessages.all { verify(it) }
     }
 }

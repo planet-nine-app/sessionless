@@ -1,9 +1,9 @@
 package com.planetnine.sessionless.models.vaults
 
-import com.planetnine.sessionless.models.SimpleKeyPair
+import com.planetnine.sessionless.impl.KeyPairHex
 
 /** [IVault] which uses custom [save]/[get] methods */
 interface ICustomVault : IVault {
-    fun save(pair: SimpleKeyPair)
-    fun get(): SimpleKeyPair
+    fun save(pair: KeyPairHex)
+    fun get(): KeyPairHex
 }

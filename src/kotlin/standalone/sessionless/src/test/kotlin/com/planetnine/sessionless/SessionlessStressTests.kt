@@ -1,8 +1,8 @@
 package com.planetnine.sessionless
 
+import com.planetnine.sessionless.impl.KeyAccessInfo
+import com.planetnine.sessionless.impl.KeyPairHex
 import com.planetnine.sessionless.impl.Sessionless
-import com.planetnine.sessionless.models.KeyAccessInfo
-import com.planetnine.sessionless.models.SimpleKeyPair
 import com.planetnine.sessionless.models.vaults.ICustomVault
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -11,8 +11,8 @@ class SessionlessStressTests {
 
     private val sessionlessC = Sessionless.WithCustomVault(
         object : ICustomVault {
-            override fun save(pair: SimpleKeyPair) {}
-            override fun get() = SimpleKeyPair("", "")
+            override fun save(pair: KeyPairHex) {}
+            override fun get() = KeyPairHex("", "")
         }
     )
 
