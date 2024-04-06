@@ -1,35 +1,46 @@
 ﻿using Org.BouncyCastle.Math;
-using SessionlessNET.Models;
+using SessionlessNET.Util;
 
 namespace SessionlessNET.Impl;
 
-public record MessageSignature : IMessageSignature, IMessageSignatureHex {
+/// <summary> Common type for message signatures 
+/// <br/> ● Empty. Used only to indicate that subclasses are similar </summary>
+public interface IMessageSignature { }
+
+/// <summary>  Message signature as <see cref="BigInteger"/>s </summary>
+public record MessageSignatureInt : IMessageSignature {
     public BigInteger R { get; }
     public BigInteger S { get; }
+
+    public MessageSignatureInt(BigInteger r, BigInteger s) {
+        R = r; S = s;
+    }
+
+    /// <exception cref="IndexOutOfRangeException"/>
+    public MessageSignatureInt(BigInteger[] ints)
+            : this(ints[0], ints[1]) { }
+
+    /// <summary> Convert to <see cref="MessageSignatureHex"/> </summary>
+    public MessageSignatureHex ToHex() {
+        return new(R.ToString(16), S.ToString(16));
+    }
+}
+
+/// <summary> Message signature as hex <see cref="string"/>s </summary>
+public record MessageSignatureHex : IMessageSignature {
     public string RHex { get; }
     public string SHex { get; }
 
-    public MessageSignature(BigInteger r, BigInteger s) {
-        R = r; RHex = R.ToString(16);
-        S = s; SHex = S.ToString(16);
-    }
-    public MessageSignature(IMessageSignature signatureInt)
-            : this(signatureInt.R, signatureInt.S) { }
-
-    /// <exception cref="FormatException" />
-    public MessageSignature(string rHex, string sHex) {
-        RHex = rHex;
-        SHex = sHex;
-        R = new BigInteger(rHex, 16);
-        S = new BigInteger(sHex, 16);
-    }
-    public MessageSignature(IMessageSignatureHex signatureHex)
-            : this(signatureHex.RHex, signatureHex.SHex) { }
-
-    public static MessageSignature From(BigInteger[] ints) {
-        if (ints.Length != 2) {
-            throw new ArgumentException($"{nameof(ints)} array length must be 2 (containing [r,s])");
+    /// <exception cref="FormatException"/>
+    public MessageSignatureHex(string rHex, string sHex) {
+        if (!rHex.IsHex() || !sHex.IsHex()) {
+            throw new FormatException("R & S must be in hex format (allowed characters: 0-9 A-F a-f)");
         }
-        return new(ints[0], ints[1]);
+        RHex = rHex; SHex = sHex;
+    }
+
+    /// <summary> Convert to <see cref="MessageSignatureInt"/> </summary>
+    public MessageSignatureInt ToInt() {
+        return new(new(RHex, 16), new(SHex, 16));
     }
 }
