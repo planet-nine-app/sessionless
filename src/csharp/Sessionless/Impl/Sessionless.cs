@@ -3,8 +3,10 @@ using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto.Signers;
 using Org.BouncyCastle.Math;
+using Org.BouncyCastle.Math.EC;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities.Encoders;
+using SessionlessNET.Impl.Exceptions;
 using SessionlessNET.Models;
 using SessionlessNET.Util;
 
@@ -35,12 +37,13 @@ public class Sessionless(IVault vault) : ISessionless {
     }
 
 
-    public KeyPairHex GetKeys() {
+    public KeyPairHex? GetKeys() {
         return Vault.Get();
     }
 
     public MessageSignatureHex Sign(string message) {
-        var privateHex = GetKeys().PrivateKey;
+        var privateHex = GetKeys()?.PrivateKey
+            ?? throw new KeyPairNotFoundException();
         return Sign(message, privateHex);
     }
 
@@ -67,18 +70,22 @@ public class Sessionless(IVault vault) : ISessionless {
 
 
     public bool Verify(SignedMessage signedMessage) {
-        var publicHex = GetKeys().PublicKey;
+        var publicHex = GetKeys()?.PublicKey
+            ?? throw new KeyPairNotFoundException();
         if (publicHex != signedMessage.PublicKey) return false;
         return Verify(signedMessage, publicHex);
     }
     public bool Verify(SignedMessage signedMessage, string publicKeyHex) {
+        if (!publicKeyHex.IsHex()) {
+            throw new HexFormatRequiredException(nameof(publicKeyHex));
+        }
         if (publicKeyHex != signedMessage.PublicKey) return false;
         // public hex to bytes
         var publicBytes = Hex.Decode(publicKeyHex);
         // public bytes to key object
         ECDomainParameters curve = KeyUtils.Defaults.DomainParameters;
-        var q = curve.Curve.DecodePoint(publicBytes);
-        var publicKey = new ECPublicKeyParameters(q, curve);
+        ECPoint qPoint = curve.Curve.DecodePoint(publicBytes);
+        var publicKey = new ECPublicKeyParameters(qPoint, curve);
         return Verify(signedMessage, publicKey);
     }
     public bool Verify(SignedMessage signedMessage, ECPublicKeyParameters publicKey) {
