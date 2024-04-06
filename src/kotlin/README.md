@@ -44,6 +44,7 @@ classDiagram
     +r: BigInteger
     +s: BigInteger
     +constructor(r: BigInteger, s: BigInteger)
+    +constructor(ints: Array<BigInteger>)
     +toHex(): MessageSignatureHex
   }
   class MessageSignatureHex {
