@@ -42,6 +42,7 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         }
 
         override fun getKeys(keyAccessInfo: KeyAccessInfo): KeyPair {
+            //? will throw anyway if not found (caller should not call this before generating keys)
             return vault.get(keyAccessInfo)
         }
 
@@ -70,12 +71,14 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
             return simple
         }
 
-        override fun getKeys(): KeyPairHex {
+        override fun getKeys(): KeyPairHex? {
             return vault.get()
         }
 
         override fun sign(message: String): MessageSignatureHex {
-            val privateString = getKeys().privateKey
+            // throw if not found (caller should not call this before generating keys)
+            val privateString = getKeys()?.privateKey
+                ?: throw IllegalStateException("No private key found")
             val privateKey = privateString.toECPrivateKey(KeyUtils.Defaults.parameterSpec)
             return sign(message, privateKey)
         }
