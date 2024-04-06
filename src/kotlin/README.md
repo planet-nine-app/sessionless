@@ -28,7 +28,7 @@ classDiagram
     +generateKeys(): KeyPairHex
     +generateKeysAsync(): KeyPairHex
     +getKeys(): KeyPairHex
-    +sign(message: String): SignedMessage
+    +sign(message: String): IMessageSignature
   }
 
   ISessionless <-- IWithKeyStore
