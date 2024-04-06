@@ -49,8 +49,8 @@ classDiagram
     +get(access: KeyAccessInfo): KeyPair
   }
   class ICustomVault {
-    +save(pair: SimpleKeyPair)
-    +get(): SimpleKeyPair?
+    +save(pair: KeyPairHex)
+    +get(): KeyPairHex?
   }
 
   class KeyStoreVault {
