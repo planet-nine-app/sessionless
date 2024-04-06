@@ -30,7 +30,7 @@ public interface ISessionless {
     /// Retrieves keys using <paramref name="Vault"/>.
     /// </summary>
     /// <returns>Key pair as <see cref="IKeyPair"/>.</returns>
-    public KeyPairHex GetKeys();
+    public KeyPairHex? GetKeys();
 
     /// <summary>
     /// Signs a <paramref name="message"/> with the user's stored private key
