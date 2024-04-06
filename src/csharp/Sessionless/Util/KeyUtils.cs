@@ -44,7 +44,7 @@ public static class KeyUtils {
     /// <br/> See: <see cref="ToHex(ECPrivateKeyParameters)"/>
     /// <br/> See: <see cref="ToHex(ECPublicKeyParameters)"/>
     /// </summary>
-    public static KeyPair ToHex(this AsymmetricCipherKeyPair pair) {
+    public static KeyPairHex ToHex(this AsymmetricCipherKeyPair pair) {
         var priv = pair.Private; var pub = pair.Public;
         var privHex = ((ECPrivateKeyParameters)priv).ToHex();
         var pubHex = ((ECPublicKeyParameters)pub).ToHex();

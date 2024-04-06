@@ -11,40 +11,40 @@ using SessionlessNET.Util;
 namespace SessionlessNET.Impl;
 
 /// <summary> <see cref="ISessionless"/> implementation </summary>
-/// <param name="vault"> The way to store and retrieve <see cref="KeyPair"/>s </param>
+/// <param name="vault"> The way to store and retrieve <see cref="KeyPairHex"/>s </param>
 public class Sessionless(IVault vault) : ISessionless {
     public IVault Vault { get; } = vault;
 
     public string GenerateUUID() {
         return Guid.NewGuid().ToString();
     }
-    public IKeyPair GenerateKeys() {
+    public KeyPairHex GenerateKeys() {
         var pair = KeyUtils.GenerateKeyPair();
         return StoreHexPair(pair);
     }
 
-    public async Task<IKeyPair> GenerateKeysAsync() {
+    public async Task<KeyPairHex> GenerateKeysAsync() {
         var pair = await KeyUtils.GenerateKeyPairAsync();
         return StoreHexPair(pair);
     }
 
-    private IKeyPair StoreHexPair(AsymmetricCipherKeyPair pair) {
+    private KeyPairHex StoreHexPair(AsymmetricCipherKeyPair pair) {
         var simple = pair.ToHex();
         Vault.Save(simple);
         return simple;
     }
 
 
-    public IKeyPair GetKeys() {
+    public KeyPairHex GetKeys() {
         return Vault.Get();
     }
 
-    public IMessageSignatureHex Sign(string message) {
+    public MessageSignatureHex Sign(string message) {
         var privateHex = GetKeys().PrivateKey;
         return Sign(message, privateHex);
     }
 
-    public IMessageSignatureHex Sign(string message, string privateKeyHex) {
+    public MessageSignatureHex Sign(string message, string privateKeyHex) {
         // private hex to bigint
         var privateInt = new BigInteger(privateKeyHex, 16);
         // secp256k1 spec curve
@@ -53,7 +53,7 @@ public class Sessionless(IVault vault) : ISessionless {
         return Sign(message, privateKey);
     }
 
-    public IMessageSignatureHex Sign(string message, ECPrivateKeyParameters privateKey) {
+    public MessageSignatureHex Sign(string message, ECPrivateKeyParameters privateKey) {
         var paramWithRandom = new ParametersWithRandom(privateKey, new SecureRandom());
         // init signer
         var signer = new ECDsaSigner(new HMacDsaKCalculator(new Sha256Digest()));
@@ -62,16 +62,16 @@ public class Sessionless(IVault vault) : ISessionless {
         byte[] messageHash = message.HashKeccak256();
         // sign
         BigInteger[] signature = signer.GenerateSignature(messageHash);
-        return MessageSignature.From(signature);
+        return new MessageSignatureInt(signature).ToHex();
     }
 
 
-    public bool Verify(ISignedMessage signedMessage) {
+    public bool Verify(SignedMessage signedMessage) {
         var publicHex = GetKeys().PublicKey;
         if (publicHex != signedMessage.PublicKey) return false;
         return Verify(signedMessage, publicHex);
     }
-    public bool Verify(ISignedMessage signedMessage, string publicKeyHex) {
+    public bool Verify(SignedMessage signedMessage, string publicKeyHex) {
         if (publicKeyHex != signedMessage.PublicKey) return false;
         // public hex to bytes
         var publicBytes = Hex.Decode(publicKeyHex);
@@ -81,9 +81,9 @@ public class Sessionless(IVault vault) : ISessionless {
         var publicKey = new ECPublicKeyParameters(q, curve);
         return Verify(signedMessage, publicKey);
     }
-    public bool Verify(ISignedMessage signedMessage, ECPublicKeyParameters publicKey) {
+    public bool Verify(SignedMessage signedMessage, ECPublicKeyParameters publicKey) {
         // signature hex to bigint (and hex still included)
-        var signature = new MessageSignature(signedMessage.Signature);
+        var signature = signedMessage.Signature.ToInt();
         // message string to keccak256 hash
         byte[] messageHash = signedMessage.Message.HashKeccak256();
         // verify
@@ -92,7 +92,7 @@ public class Sessionless(IVault vault) : ISessionless {
         return verifier.VerifySignature(messageHash, signature.R, signature.S);
     }
 
-    public bool Associate(params ISignedMessage[] messages) {
+    public bool Associate(params SignedMessage[] messages) {
         if (messages.Length < 2) {
             throw new ArgumentException($"{nameof(messages)} array length must be at least 2");
         }

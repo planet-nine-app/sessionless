@@ -1,11 +1,13 @@
-﻿namespace SessionlessNET.Models;
+﻿using SessionlessNET.Impl;
 
-public record SignedMessage : ISignedMessage {
+namespace SessionlessNET.Models;
+
+public record SignedMessage {
     public string Message { get; }
-    public IMessageSignatureHex Signature { get; }
+    public MessageSignatureHex Signature { get; }
     public string PublicKey { get; }
 
-    public SignedMessage(string message, IMessageSignatureHex signature, string publicKey) {
+    public SignedMessage(string message, MessageSignatureHex signature, string publicKey) {
         Message = message;
         Signature = signature;
         PublicKey = publicKey;

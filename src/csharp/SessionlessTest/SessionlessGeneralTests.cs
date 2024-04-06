@@ -20,7 +20,7 @@ public class SessionlessGeneralTests {
                 var publicHex = File.ReadAllText(pubPath);
                 return new(privateHex, publicHex);
             },
-            saver: (KeyPair pair) => {
+            saver: (KeyPairHex pair) => {
                 File.WriteAllText(privPath, pair.PrivateKey);
                 File.WriteAllText(pubPath, pair.PublicKey);
             }
@@ -30,8 +30,8 @@ public class SessionlessGeneralTests {
 
     [Test]
     public void GenerateKeys() {
-        var generated = (KeyPair)S.GenerateKeys();
-        var retrieved = (KeyPair)S.GetKeys();
+        var generated = (KeyPairHex)S.GenerateKeys();
+        var retrieved = (KeyPairHex)S.GetKeys();
         Assert.That(generated == retrieved, "Generated keys match retrieved keys");
     }
 }
