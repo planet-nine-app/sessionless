@@ -61,7 +61,9 @@ classDiagram
 
 ```mermaid
 classDiagram
-  class IVault { }
+  class IVault {
+    +getDefault(keyStore: KeyStore): KeyStoreVault
+  }
   class IKeyStoreVault {
     +keyStore: KeyStore
 
@@ -89,7 +91,7 @@ classDiagram
 classDiagram
   class SignedMessage {
     +message: String
-    +signature: IMessageSignatureHex
+    +signature: MessageSignatureHex
     +publicKey: String
     +constructor(..all..)
   }
