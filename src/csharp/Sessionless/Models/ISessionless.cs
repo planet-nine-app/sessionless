@@ -1,4 +1,5 @@
 ﻿using Org.BouncyCastle.Crypto.Parameters;
+using SessionlessNET.Impl;
 
 namespace SessionlessNET.Models;
 
@@ -17,44 +18,44 @@ public interface ISessionless {
     /// Generates a private/public <see cref="IKeyPair"/> and stores it using <paramref name="Vault"/>.
     /// </summary>
     /// <returns> <see cref="IKeyPair"/> that was generated </returns>
-    public IKeyPair GenerateKeys();
+    public KeyPairHex GenerateKeys();
 
     /// <summary>
     /// Generates a private/public <see cref="IKeyPair"/> asynchronously and stores it using <paramref name="Vault"/>.
     /// </summary>
     /// <returns> <see cref="IKeyPair"/> that was generated </returns>
-    public Task<IKeyPair> GenerateKeysAsync();
+    public Task<KeyPairHex> GenerateKeysAsync();
 
     /// <summary>
     /// Retrieves keys using <paramref name="Vault"/>.
     /// </summary>
     /// <returns>Key pair as <see cref="IKeyPair"/>.</returns>
-    public IKeyPair GetKeys();
+    public KeyPairHex GetKeys();
 
     /// <summary>
     /// Signs a <paramref name="message"/> with the user's stored private key
     /// <br/> (Get from <paramref name="Vault"/> using <see cref="GetKeys"/>).
     /// </summary>
     /// <param name="message">The message to be signed.</param>
-    /// <returns>Signature as a <see cref="IMessageSignatureHex"/>.</returns>
-    public IMessageSignatureHex Sign(string message);
+    /// <returns>Signature as a <see cref="MessageSignatureHex"/>.</returns>
+    public MessageSignatureHex Sign(string message);
 
     /// <summary>
     /// Signs a <paramref name="message"/> using the provided <paramref name="privateKeyHex"/>
     /// </summary>
     /// <param name="message">The message to be signed.</param>
     /// <param name="privateKeyHex"> The private key in hex format to use for signing </param>
-    /// <returns>Signature as a <see cref="IMessageSignatureHex"/>.</returns>
+    /// <returns>Signature as a <see cref="MessageSignatureHex"/>.</returns>
 
-    public IMessageSignatureHex Sign(string message, string privateKeyHex);
+    public MessageSignatureHex Sign(string message, string privateKeyHex);
 
     /// <summary>
     /// Signs a <paramref name="message"/> using the provided <paramref name="privateKey"/>.
     /// </summary>
     /// <param name="message">The message to be signed.</param>
     /// <param name="privateKey">The private key to use for signing.</param>
-    /// <returns>Signature as a <see cref="IMessageSignatureHex"/>.</returns>
-    public IMessageSignatureHex Sign(string message, ECPrivateKeyParameters privateKey);
+    /// <returns>Signature as a <see cref="MessageSignatureHex"/>.</returns>
+    public MessageSignatureHex Sign(string message, ECPrivateKeyParameters privateKey);
 
     /// <summary>
     /// Verifies a given <paramref name="signedMessage"/> with the user's stored public key.
@@ -63,7 +64,7 @@ public interface ISessionless {
     /// </summary>
     /// <param name="signedMessage"> The message that was signed earlier </param>
     /// <returns> True if the signature is valid for the given message and public key </returns>
-    public bool Verify(ISignedMessage signedMessage);
+    public bool Verify(SignedMessage signedMessage);
     /// <summary>
     /// Verifies a given <paramref name="signedMessage"/> with the provided <paramref name="publicKeyHex"/>.
     /// <br/>
@@ -71,7 +72,7 @@ public interface ISessionless {
     /// </summary>
     /// <param name="signedMessage">The message that was signed earlier </param>
     /// <returns> True if the signature is valid for the given message and public key </returns>
-    public bool Verify(ISignedMessage signedMessage, string publicKeyHex);
+    public bool Verify(SignedMessage signedMessage, string publicKeyHex);
     /// <summary>
     /// Verifies a given <paramref name="signedMessage"/> with the provided <paramref name="publicKey"/>.
     /// <br/>
@@ -79,7 +80,7 @@ public interface ISessionless {
     /// </summary>
     /// <param name="signedMessage">The message that was signed earlier </param>
     /// <returns> True if the signature is valid for the given message and public key </returns>
-    public bool Verify(ISignedMessage signedMessage, ECPublicKeyParameters publicKey);
+    public bool Verify(SignedMessage signedMessage, ECPublicKeyParameters publicKey);
 
     /// <summary>
     /// Verifies each of the <paramref name="messages"/>
@@ -89,6 +90,6 @@ public interface ISessionless {
     /// <param name="messages"> Messages to be verified </param>
     /// <returns> True if all signatures were verified successfully </returns>
     /// <exception cref="ArgumentException"></exception> 
-    public bool Associate(params ISignedMessage[] messages);
+    public bool Associate(params SignedMessage[] messages);
 }
 
