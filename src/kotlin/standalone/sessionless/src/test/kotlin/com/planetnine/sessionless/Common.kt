@@ -1,7 +1,7 @@
 package com.planetnine.sessionless
 
+import com.planetnine.sessionless.impl.KeyPairHex
 import com.planetnine.sessionless.impl.Sessionless
-import com.planetnine.sessionless.models.SimpleKeyPair
 import com.planetnine.sessionless.models.vaults.ICustomVault
 import com.planetnine.sessionless.models.vaults.IVault
 import java.security.KeyStore
@@ -17,10 +17,10 @@ object Common {
     val sessionlessC
         get(): Sessionless.WithCustomVault {
             val vault = object : ICustomVault {
-                override fun save(pair: SimpleKeyPair) {
+                override fun save(pair: KeyPairHex) {
                 }
 
-                override fun get(): SimpleKeyPair {
+                override fun get(): KeyPairHex {
                     TODO("Not yet implemented")
                 }
             }

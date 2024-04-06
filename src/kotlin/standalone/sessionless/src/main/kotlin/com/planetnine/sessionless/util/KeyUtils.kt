@@ -1,6 +1,6 @@
 package com.planetnine.sessionless.util
 
-import com.planetnine.sessionless.models.SimpleKeyPair
+import com.planetnine.sessionless.impl.KeyPairHex
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.bouncycastle.asn1.x509.X509Name
@@ -30,7 +30,7 @@ import java.security.interfaces.ECPublicKey
 import java.util.Date
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
- 
+
 object KeyUtils {
     object Defaults {
         const val KEY_ALGORITHM = "ECDSA"
@@ -133,12 +133,12 @@ object KeyUtils {
     /** Convert [KeyPair] to [ECPublicKey]/[ECPrivateKey] hex [String]s
      * @see ECPrivateKey.toHex
      * @see ECPublicKey.toHex */
-    fun KeyPair.toECHex(): SimpleKeyPair {
+    fun KeyPair.toECHex(): KeyPairHex {
         val ecPrivateKey = this.private as ECPrivateKey
         val ecPublicKey = this.public as ECPublicKey
         val ecPrivateKeyHex = ecPrivateKey.toHex()
         val ecPublicKeyHex = ecPublicKey.toHex()
-        return SimpleKeyPair(ecPrivateKeyHex, ecPublicKeyHex)
+        return KeyPairHex(ecPrivateKeyHex, ecPublicKeyHex)
     }
 
     fun String.toECPrivateKey(paramSpec: ECParameterSpec = Defaults.parameterSpec): ECPrivateKey {
