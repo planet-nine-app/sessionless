@@ -79,3 +79,18 @@ classDiagram
     +constructor(string, string)
   }
 ```
+
+#### .../Impl/Exceptions/...
+
+```mermaid
+classDiagram
+  class KeyPairNotFound {
+    constructor()
+  }
+  class HexFormatRequiredException {
+    constructor(string)
+  }
+  Exception "inherits" <-- KeyPairNotFound
+  Exception "based on" <.. FormatException
+  FormatException "inherits" <-- HexFormatRequiredException
+```
