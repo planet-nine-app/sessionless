@@ -28,6 +28,7 @@ export const saveUser = async (uuid, pubKey) => {
 export const getUser = (uuid) => {
   const usersString = fs.readFileSync('./users.json');
   const users = JSON.parse(usersString);
+console.log("looking for user: " + uuid + " in " + users[uuid]);
   return users[uuid];
 };
 
@@ -38,7 +39,7 @@ export const getUserPublicKey = (uuid) => {
 };
 
 export const associateKey = (user, uuid, pubKey) => {
-  user[associatedKeys][uuid] = pubKey;
+  user.associatedKeys[uuid] = pubKey;
   const users = JSON.parse(fs.readFileSync('./users.json'));
   fs.writeFileSync('./users.json', JSON.stringify(users));
 };

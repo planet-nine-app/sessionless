@@ -16,6 +16,20 @@ struct AssociateKey {
 }
 
 class Network {
+    class func get(urlString: String, callback: @escaping (Error?, Data?) -> Void) async {
+        guard let url = URL(string: urlString) else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request)
+            callback(nil, data)
+        } catch {
+            callback(error, nil)
+        }
+    }
+    
     class func post(urlString: String, payload: Data, callback: @escaping (Error?, Data?) -> Void) async {
         guard let url = URL(string: urlString) else { return }
         var request = URLRequest(url: url)
@@ -30,49 +44,88 @@ class Network {
         }
     }
     
-    class func register(enteredText: String, callback: @escaping (Error?, Data?) -> Void) async {
+    class func register(baseURL: String, enteredText: String, callback: @escaping (Error?, Data?) -> Void) async {
         let sessionless = Sessionless()
         sessionless.generateKeys()
         guard let publicKey = sessionless.getKeys()?.publicKey else { return }
         let message = """
-            {"publicKey":"\(publicKey)","enteredText":"\(enteredText)","timestamp":"right now"}
+            {"pubKey":"\(publicKey)","enteredText":"\(enteredText)","timestamp":"right now"}
             """
         guard let signature = sessionless.sign(message: message) else { return }
         
         let payload = """
-            {"publicKey":"\(publicKey)","enteredText":"\(enteredText)","timestamp":"right now","signature":\(signature.toString())}
+            {"pubKey":"\(publicKey)","enteredText":"\(enteredText)","timestamp":"right now","signature":"\(signature)"}
             """
+        print(payload)
         guard let data = payload.data(using: .utf8) else { return }
-        await Network.post(urlString: "http://localhost:3000/register", payload: data) { err, data in
+        await Network.post(urlString: "\(baseURL)/register", payload: data) { err, data in
             callback(err, data)
         }
     }
     
-    class func doCoolStuff(callback: @escaping (Error?, Data?) -> Void) async {
+    class func doCoolStuff(baseURL: String, callback: @escaping (Error?, Data?) -> Void) async {
         let sessionless = Sessionless()
         let message = """
             {"coolness":"max","timestamp":"right now"}
             """
         guard let signature = sessionless.sign(message: message) else { return }
         let payload = """
-            {"coolness":"max","timestamp":"right now","signature":\(signature.toString())}
+            {"coolness":"max","timestamp":"right now","signature":"\(signature)"}
             """
         guard let data = payload.data(using: .utf8) else { return }
-        await Network.post(urlString: "http://localhost:3000/cool-stuff", payload: data, callback: {err, data in
+        await Network.post(urlString: "\(baseURL)/cool-stuff", payload: data, callback: {err, data in
             callback(err, data)
         })
     }
     
-    class func associate(associateKey: AssociateKey, callback: @escaping (Error?, Data?) -> Void) async {
+    class func associate(baseURL: String, associateKey: AssociateKey, callback: @escaping (Error?, Data?) -> Void) async {
         let sessionless = Sessionless()
+        let uuid = Persistence.getUUID()
+        let timestamp = "".getTime()
+        
+        let message = """
+            {"uuid":"\(uuid)","timestamp":"\(timestamp)"}
+        """
+        
+        guard let signature = sessionless.sign(message: message) else { return }
+        
+        let payload = """
+            {"uuid1":"\(uuid)","timestamp1":"\(timestamp)","signature1":"\(signature)","uuid2":"\(associateKey.uuid)","timestamp2":"\(associateKey.timestamp)","pubKey":"\(associateKey.pubKey)","signature2":"\(associateKey.signature)"}
+        """
+        
+        guard let data = payload.data(using: .utf8) else { return }
+        await Network.post(urlString: "\(baseURL)/associate", payload: data, callback: {err, data in
+            callback(err, data)
+        })
     }
     
-    class func getValue(callback: @escaping (Error?, Data?) -> Void) async {
+    class func getValue(baseURL: String, callback: @escaping (Error?, Data?) -> Void) async {
         let sessionless = Sessionless()
+        let timestamp = "".getTime()
+        let uuid = Persistence.getUUID()
+        let message = """
+        {"timestamp":"\(timestamp)","uuid":"\(uuid)"}
+        """
+        
+        guard let signature = sessionless.sign(message: message) else { return }
+        
+        await Network.get(urlString: "\(baseURL)/value?timestamp=\(timestamp)&uuid=\(uuid)&signature=\(signature)", callback: callback)
     }
     
-    class func setValue(callback: @escaping (Error?, Data?) -> Void) async {
+    class func setValue(value: String, baseURL: String, callback: @escaping (Error?, Data?) -> Void) async {
         let sessionless = Sessionless()
+        let message = """
+        {"timestamp":"\("".getTime())","uuid":"\(Persistence.getUUID())","value":"\(value)"}
+        """
+        
+        guard let signature = sessionless.sign(message: message) else { return }
+        
+        let payload = """
+        {"timestamp":"\("".getTime())","uuid":"\(Persistence.getUUID())","value":"\(value)","signature":"\(signature)"}
+        """
+        
+        guard let data = payload.data(using: .utf8) else { return }
+        await Network.post(urlString: "\(baseURL)/value", payload: data, callback: callback)
     }
 }
 

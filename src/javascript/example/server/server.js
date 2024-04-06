@@ -66,22 +66,22 @@ app.post('/register', async (req, res) => {
     return handleWebRegistration(req, res);
   }
   
-  const publicKey = payload.publicKey; 
+  const pubKey = payload.pubKey; 
   
   const message = JSON.stringify({ 
-    publicKey, 
+    pubKey, 
     enteredText: payload.enteredText, 
     timestamp: payload.timestamp 
   });
 
-  if(sessionless.verifySignature(signature, message, publicKey)) {
+  if(sessionless.verifySignature(signature, message, pubKey)) {
     const uuid = sessionless.generateUUID();
-    await saveUser(uuid, publicKey);
+    await saveUser(uuid, pubKey);
     const user = {
       uuid,
       welcomeMessage: "Welcome to this example!"
     };
-    console.log(chalk.green(`user registered with uuid: ${uuid}`));
+    console.log(chalk.blue(`\n\nuser registered with uuid: ${uuid}`));
     res.send(user);
   } else {
     console.log(chalk.red('unverified!'));
@@ -102,9 +102,11 @@ app.post('/cool-stuff', async (req, res) => {
   return res.send({error: 'auth error'});
 });
 
+addRoutes(app);
+
 app.use(express.static('../web'));
 
-app.listen(3000);
+app.listen(3001);
 
 
 
