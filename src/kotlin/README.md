@@ -35,29 +35,6 @@ classDiagram
   ISessionless <-- IWithCustomVault
 ```
 
-# [MessageSignature](./src/main/kotlin/com/planetnine/sessionless/impl/MessageSignature.kt):
-
-```mermaid
-classDiagram
-  class IMessageSignature { }
-  class MessageSignatureInt {
-    +r: BigInteger
-    +s: BigInteger
-    +constructor(r: BigInteger, s: BigInteger)
-    +constructor(ints: Array<BigInteger>)
-    +toHex(): MessageSignatureHex
-  }
-  class MessageSignatureHex {
-    +rHex: String
-    +sHex: String
-    +constructor(rHex: String, sHex: String)
-    +toInt(): MessageSignatureInt
-  }
-
-  IMessageSignature <-- MessageSignatureInt
-  IMessageSignature <-- MessageSignatureHex
-```
-
 # [IVault](./src/main/kotlin/com/planetnine/sessionless/models/IVault.kt):
 
 ```mermaid
@@ -87,6 +64,31 @@ classDiagram
 ```
 
 # The rest:
+
+### [MessageSignature](./src/main/kotlin/com/planetnine/sessionless/impl/MessageSignature.kt):
+
+```mermaid
+classDiagram
+  class IMessageSignature { }
+  class MessageSignatureInt {
+    +r: BigInteger
+    +s: BigInteger
+    +constructor(r: BigInteger, s: BigInteger)
+    +constructor(ints: Array<BigInteger>)
+    +toHex(): MessageSignatureHex
+  }
+  class MessageSignatureHex {
+    +rHex: String
+    +sHex: String
+    +constructor(rHex: String, sHex: String)
+    +toInt(): MessageSignatureInt
+  }
+
+  IMessageSignature <-- MessageSignatureInt
+  IMessageSignature <-- MessageSignatureHex
+```
+
+### More...
 
 ```mermaid
 classDiagram
