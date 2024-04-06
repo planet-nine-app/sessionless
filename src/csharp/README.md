@@ -1,4 +1,4 @@
-# [ISessionless](./src/csharp/Sessionless/Models/ISessionless.cs):
+# .../Models/**ISessionless**.cs
 
 ```mermaid
 classDiagram
@@ -22,7 +22,7 @@ classDiagram
   ISessionless <-- Sessionless
 ```
 
-# [IVault](./src/main/kotlin/com/planetnine/sessionless/models/IVault.kt):
+# .../Models/**IVault**.cs
 
 ```mermaid
 classDiagram
@@ -39,7 +39,7 @@ classDiagram
 
 # The rest:
 
-### [MessageSignature](./src/main/kotlin/com/planetnine/sessionless/impl/MessageSignature.kt):
+### .../Impl/MessageSignature.cs
 
 ```mermaid
 classDiagram
@@ -62,7 +62,7 @@ classDiagram
   IMessageSignature <-- MessageSignatureHex
 ```
 
-### More...
+### More: .../Impl/...
 
 ```mermaid
 classDiagram
