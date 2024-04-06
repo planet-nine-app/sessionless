@@ -6,7 +6,7 @@ classDiagram
     +vault: IVault
 
     +generateUUID(): String
-    +sign(message: String, key: PrivateKey): IMessageSignatureHex
+    +sign(message: String, key: PrivateKey): IMessageSignature
     +verify(signedMessage: SignedMessage): Boolean
     +associate(...signedMessages: SignedMessage): Boolean
   }
@@ -18,16 +18,16 @@ classDiagram
     +generateKeys(access: KeyAccessInfo): KeyPair
     +generateKeysAsync(access: KeyAccessInfo): KeyPair
     +getKeys(): KeyPair
-    +sign(message: String, access: KeyAccess): IMessageSignatureHex
+    +sign(message: String, access: KeyAccess): IMessageSignature
   }
 
   class IWithCustomVault {
     @Override
     ^vault: ICustomVault
 
-    +generateKeys(): SimpleKeyPair
-    +generateKeysAsync(): SimpleKeyPair
-    +getKeys(): SimpleKeyPair
+    +generateKeys(): KeyPairHex
+    +generateKeysAsync(): KeyPairHex
+    +getKeys(): KeyPairHex
     +sign(message: String): SignedMessage
   }
 
@@ -39,21 +39,22 @@ classDiagram
 
 ```mermaid
 classDiagram
-  class IMessageSignature {
+  class IMessageSignature { }
+  class MessageSignatureInt {
     +r: BigInteger
     +s: BigInteger
+    +constructor(r: BigInteger, s: BigInteger)
+    +toHex(): MessageSignatureHex
   }
-  class IMessageSignatureHex {
+  class MessageSignatureHex {
     +rHex: String
     +sHex: String
-  }
-  class MessageSignature {
-    +constructor(r: BigInteger, s: BigInteger)
     +constructor(rHex: String, sHex: String)
+    +toInt(): MessageSignatureInt
   }
 
-  IMessageSignature <-- MessageSignature
-  IMessageSignatureHex <-- MessageSignature
+  IMessageSignature <-- MessageSignatureInt
+  IMessageSignature <-- MessageSignatureHex
 ```
 
 # [Vault](./src/main/kotlin/com/planetnine/sessionless/models/IVault.kt) interface:
@@ -64,7 +65,7 @@ classDiagram
   class IKeyStoreVault {
     +keyStore: KeyStore
 
-    +save(pair: KeyPair, access: KeyAccessInfo,certificate: Certificate)
+    +save(pair: KeyPair, access: KeyAccessInfo, certificate: Certificate)
     +get(access: KeyAccessInfo): KeyPair
   }
   class ICustomVault {
@@ -90,18 +91,19 @@ classDiagram
     +message: String
     +signature: IMessageSignatureHex
     +publicKey: String
-    +constructor(..all..)
+    +constructor(message: String, signature: IMessageSignatureHex, publicKey: String)
   }
 
-  class SimpleKeyPair {
-    +publicKey: String
+  class KeyPairHex {
     +privateKey: String
-    +constructor(..all..)
+    +publicKey: String
+    +constructor(privateKey: String, publicKey: String)
   }
 
   class KeyAccessInfo {
     +alias: String
     +password: CharArray?
-    +constructor(..all..)
+    +constructor(alias: String, password: CharArray)
+    +constructor(alias: String, password: String)
   }
 ```
