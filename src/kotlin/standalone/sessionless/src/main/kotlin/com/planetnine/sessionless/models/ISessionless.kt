@@ -52,7 +52,7 @@ interface ISessionless {
 
         /** Retrieves keys using [vault]
          * @return Key pair as [String]s ([KeyPairHex]). */
-        fun getKeys(): KeyPairHex
+        fun getKeys(): KeyPairHex?
 
         /** Signs a [message] with the user's stored private key (from [vault]).
          * @param message The message to be signed.
