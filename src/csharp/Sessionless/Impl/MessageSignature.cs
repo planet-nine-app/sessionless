@@ -1,4 +1,5 @@
 ﻿using Org.BouncyCastle.Math;
+using SessionlessNET.Impl.Exceptions;
 using SessionlessNET.Util;
 
 namespace SessionlessNET.Impl;
@@ -34,7 +35,7 @@ public record MessageSignatureHex : IMessageSignature {
     /// <exception cref="FormatException"/>
     public MessageSignatureHex(string rHex, string sHex) {
         if (!rHex.IsHex() || !sHex.IsHex()) {
-            throw new FormatException("R & S must be in hex format (allowed characters: 0-9 A-F a-f)");
+            throw new HexFormatRequiredException($"{nameof(rHex)}, {nameof(sHex)}");
         }
         RHex = rHex; SHex = sHex;
     }
