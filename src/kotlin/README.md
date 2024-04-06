@@ -1,4 +1,4 @@
-# [Sessionless](./src/main/kotlin/com/planetnine/sessionless/models/ISessionless.kt) interface:
+# [ISessionless](./src/main/kotlin/com/planetnine/sessionless/models/ISessionless.kt):
 
 ```mermaid
 classDiagram
@@ -35,7 +35,7 @@ classDiagram
   ISessionless <-- IWithCustomVault
 ```
 
-# [MessageSignature](./src/main/kotlin/com/planetnine/sessionless/models/IMessageSignature.kt) interface:
+# [MessageSignature](./src/main/kotlin/com/planetnine/sessionless/impl/MessageSignature.kt):
 
 ```mermaid
 classDiagram
@@ -57,7 +57,7 @@ classDiagram
   IMessageSignature <-- MessageSignatureHex
 ```
 
-# [Vault](./src/main/kotlin/com/planetnine/sessionless/models/IVault.kt) interface:
+# [IVault](./src/main/kotlin/com/planetnine/sessionless/models/IVault.kt):
 
 ```mermaid
 classDiagram
@@ -91,19 +91,19 @@ classDiagram
     +message: String
     +signature: IMessageSignatureHex
     +publicKey: String
-    +constructor(message: String, signature: IMessageSignatureHex, publicKey: String)
+    +constructor(..all..)
   }
 
   class KeyPairHex {
     +privateKey: String
     +publicKey: String
-    +constructor(privateKey: String, publicKey: String)
+    +constructor(..all..)
   }
 
   class KeyAccessInfo {
     +alias: String
     +password: CharArray?
-    +constructor(alias: String, password: CharArray)
+    +constructor(..all..)
     +constructor(alias: String, password: String)
   }
 ```
