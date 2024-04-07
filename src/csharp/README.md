@@ -88,13 +88,13 @@ classDiagram
 
 ```mermaid
 classDiagram
-  class KeyPairNotFound {
+  class KeyPairNotFoundException {
     constructor()
   }
   class HexFormatRequiredException {
     constructor(string)
   }
-  Exception <-- KeyPairNotFound
+  Exception <-- KeyPairNotFoundException
   Exception <.. FormatException
   FormatException <-- HexFormatRequiredException
 ```
