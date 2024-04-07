@@ -9,7 +9,7 @@ class SessionlessSecp256k1():
     def get_algorithm_name(self):
         return "secp256k1"
     
-    def get_random_private_key(self, saveKeys, getKeys):
+    def get_private_key(self, saveKeys, getKeys):
         try: 
             if callable(saveKeys) and callable(getKeys):
                 return self.private_key.serialize()
