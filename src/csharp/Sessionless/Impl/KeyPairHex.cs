@@ -9,7 +9,7 @@ public record KeyPairHex {
 
     /// <exception cref="HexFormatRequiredException"/>
     public KeyPairHex(string privateKey, string publicKey) {
-        if (!privateKey.IsHex() || !publicKey.IsHex()) {
+        if (!privateKey.IsBytes() || !publicKey.IsBytes()) {
             throw new HexFormatRequiredException($"{nameof(privateKey)}, {nameof(publicKey)}");
         }
         PrivateKey = privateKey;

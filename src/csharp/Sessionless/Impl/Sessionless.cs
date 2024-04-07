@@ -44,7 +44,7 @@ public class Sessionless(IVault vault) : ISessionless {
     }
 
     public MessageSignatureHex Sign(string message, string privateKeyHex) {
-        if (!privateKeyHex.IsHex()) {
+        if (!privateKeyHex.IsBytes()) {
             throw new HexFormatRequiredException(nameof(privateKeyHex));
         }
         // private hex to bigint
@@ -75,7 +75,7 @@ public class Sessionless(IVault vault) : ISessionless {
         return VerifySignature(signedMessage, publicHex);
     }
     public bool VerifySignature(SignedMessage signedMessage, string publicKeyHex) {
-        if (!publicKeyHex.IsHex()) {
+        if (!publicKeyHex.IsBytes()) {
             throw new HexFormatRequiredException(nameof(publicKeyHex));
         }
         if (publicKeyHex != signedMessage.PublicKey) return false;
