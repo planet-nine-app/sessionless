@@ -11,9 +11,9 @@ classDiagram
     +Sign(string): MessageSignatureHex
     +Sign(string, string): MessageSignatureHex
     +Sign(string, ECPrivateKeyParameters): MessageSignatureHex
-    +Verify(SignedMessage): bool
-    +Verify(SignedMessage, string): bool
-    +Verify(SignedMessage, ECPublicKeyParameters): bool
+    +VerifySignature(SignedMessage): bool
+    +VerifySignature(SignedMessage, string): bool
+    +VerifySignature(SignedMessage, ECPublicKeyParameters): bool
     +Associate(SignedMessages[]): bool
   }
   class Sessionless {
@@ -49,20 +49,24 @@ classDiagram
     +S: BigInteger
     +constructor(BigInteger, BigInteger)
     +constructor(BigInteger[])
+    +constructor(MessageSignatureHex)
     +toHex(): MessageSignatureHex
+    +op_explicit(MessageSignatureInt): MessageSignatureHex
   }
   class MessageSignatureHex {
     +RHex: string
     +SHex: string
     +constructor(string, string)
+    +constructor(MessageSignatureInt)
     +toInt(): MessageSignatureInt
+    +op_explicit(MessageSignatureHex): MessageSignatureInt
   }
 
   IMessageSignature <-- MessageSignatureInt
   IMessageSignature <-- MessageSignatureHex
 ```
 
-### More: .../Impl/...
+### .../Impl/...
 
 ```mermaid
 classDiagram
@@ -80,7 +84,7 @@ classDiagram
   }
 ```
 
-#### .../Impl/Exceptions/...
+### .../Impl/Exceptions/...
 
 ```mermaid
 classDiagram
@@ -90,7 +94,7 @@ classDiagram
   class HexFormatRequiredException {
     constructor(string)
   }
-  Exception "inherits" <-- KeyPairNotFound
-  Exception "based on" <.. FormatException
-  FormatException "inherits" <-- HexFormatRequiredException
+  Exception <-- KeyPairNotFound
+  Exception <.. FormatException
+  FormatException <-- HexFormatRequiredException
 ```
