@@ -129,6 +129,11 @@ object KeyUtils {
         return withContext(context) { generateKeyPair() }
     }
 
+    /** Check if a [String] is comprised of only hex characters
+     * - Allowed characters: 0-9 a-f A-F */
+    fun String.isHex(): Boolean {
+        return Regex("^[0-9a-fA-F]+$").matches(this)
+    }
 
     /** Convert [KeyPair] to [ECPublicKey]/[ECPrivateKey] hex [String]s
      * @see ECPrivateKey.toHex
