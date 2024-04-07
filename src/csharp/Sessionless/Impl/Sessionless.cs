@@ -72,27 +72,27 @@ public class Sessionless(IVault vault) : ISessionless {
     }
 
 
-    public bool Verify(SignedMessage signedMessage) {
+    public bool VerifySignature(SignedMessage signedMessage) {
         var publicHex = GetKeys()?.PublicKey
             ?? throw new KeyPairNotFoundException();
         if (publicHex != signedMessage.PublicKey) return false;
-        return Verify(signedMessage, publicHex);
+        return VerifySignature(signedMessage, publicHex);
     }
-    public bool Verify(SignedMessage signedMessage, string publicKeyHex) {
+    public bool VerifySignature(SignedMessage signedMessage, string publicKeyHex) {
         if (!publicKeyHex.IsHex()) {
             throw new HexFormatRequiredException(nameof(publicKeyHex));
         }
         if (publicKeyHex != signedMessage.PublicKey) return false;
         // public hex to bytes
-        var publicBytes = Hex.Decode(publicKeyHex);
+        byte[] publicBytes = Hex.Decode(publicKeyHex);
         // public bytes to key object
         ECDomainParameters curve = KeyUtils.Defaults.DomainParameters;
         ECPoint qPoint = curve.Curve.DecodePoint(publicBytes);
         var publicKey = new ECPublicKeyParameters(qPoint, curve);
-        return Verify(signedMessage, publicKey);
+        return VerifySignature(signedMessage, publicKey);
     }
-    public bool Verify(SignedMessage signedMessage, ECPublicKeyParameters publicKey) {
-        // signature hex to bigint (and hex still included)
+    public bool VerifySignature(SignedMessage signedMessage, ECPublicKeyParameters publicKey) {
+        // signature hex to bigint
         var signature = signedMessage.Signature.ToInt();
         // message string to keccak256 hash
         byte[] messageHash = signedMessage.Message
@@ -108,6 +108,6 @@ public class Sessionless(IVault vault) : ISessionless {
         if (messages.Length < 2) {
             throw new ArgumentException($"{nameof(messages)} length must be greater or equal to 2");
         }
-        return messages.All(Verify);
+        return messages.All(VerifySignature);
     }
 }

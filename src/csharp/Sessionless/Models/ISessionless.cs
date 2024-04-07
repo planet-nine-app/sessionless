@@ -64,7 +64,7 @@ public interface ISessionless {
     /// </summary>
     /// <param name="signedMessage"> The message that was signed earlier </param>
     /// <returns> True if the signature is valid for the given message and public key </returns>
-    public bool Verify(SignedMessage signedMessage);
+    public bool VerifySignature(SignedMessage signedMessage);
     /// <summary>
     /// Verifies a given <paramref name="signedMessage"/> with the provided <paramref name="publicKeyHex"/>.
     /// <br/>
@@ -72,7 +72,7 @@ public interface ISessionless {
     /// </summary>
     /// <param name="signedMessage">The message that was signed earlier </param>
     /// <returns> True if the signature is valid for the given message and public key </returns>
-    public bool Verify(SignedMessage signedMessage, string publicKeyHex);
+    public bool VerifySignature(SignedMessage signedMessage, string publicKeyHex);
     /// <summary>
     /// Verifies a given <paramref name="signedMessage"/> with the provided <paramref name="publicKey"/>.
     /// <br/>
@@ -80,12 +80,12 @@ public interface ISessionless {
     /// </summary>
     /// <param name="signedMessage">The message that was signed earlier </param>
     /// <returns> True if the signature is valid for the given message and public key </returns>
-    public bool Verify(SignedMessage signedMessage, ECPublicKeyParameters publicKey);
+    public bool VerifySignature(SignedMessage signedMessage, ECPublicKeyParameters publicKey);
 
     /// <summary>
     /// Verifies each of the <paramref name="messages"/>
     /// <br/>
-    /// <br/> See: <seealso cref="Verify"/>
+    /// <br/> See: <seealso cref="VerifySignature"/>
     /// </summary>
     /// <param name="messages"> Messages to be verified </param>
     /// <returns> True if all signatures were verified successfully </returns>
