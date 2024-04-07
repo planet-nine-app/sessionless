@@ -48,6 +48,9 @@ public class Sessionless(IVault vault) : ISessionless {
     }
 
     public MessageSignatureHex Sign(string message, string privateKeyHex) {
+        if (!privateKeyHex.IsHex()) {
+            throw new HexFormatRequiredException(nameof(privateKeyHex));
+        }
         // private hex to bigint
         var privateInt = new BigInteger(privateKeyHex, 16);
         // secp256k1 spec curve
