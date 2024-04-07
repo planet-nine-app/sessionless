@@ -25,6 +25,8 @@ open class MessageSignatureInt(
 
     /** Convert to [MessageSignatureHex] */
     fun toHex() = MessageSignatureHex(this)
+
+    override fun toString() = toHex().toString()
 }
 
 /** Message signature as hex [String]s */
@@ -38,8 +40,17 @@ open class MessageSignatureHex(
         }
     }
 
+    constructor(rsHex: String, partSize: Int = 32)
+            : this(rsHex.substring(0, partSize), rsHex.substring(partSize)) {
+        if (rsHex.length != partSize * 2) {
+            throw IllegalArgumentException("Length must be $partSize hex characters")
+        }
+    }
+
     constructor(signatureInt: MessageSignatureInt)
             : this(signatureInt.r.toString(16), signatureInt.s.toString(16))
+
+    override fun toString() = "$rHex$sHex"
 
     /** Convert to [MessageSignatureInt] */
     fun toInt() = MessageSignatureInt(this)
