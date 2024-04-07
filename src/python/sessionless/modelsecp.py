@@ -1,6 +1,5 @@
 import secp256k1
 import pickle
-
 class SessionlessSecp256k1():
     def __init__(self, private_key_hex=secp256k1.PrivateKey().serialize()):
         private_key = secp256k1.PrivateKey()
@@ -61,4 +60,3 @@ class SessionlessSecp256k1():
         except Exception as e:
             pass
     
-
