@@ -1,5 +1,7 @@
 package com.planetnine.sessionless.impl
 
+import com.planetnine.sessionless.impl.exceptions.HexFormatRequiredException
+import com.planetnine.sessionless.util.KeyUtils.isHex
 import java.math.BigInteger
 
 /** Common type for message signatures
@@ -14,10 +16,11 @@ open class MessageSignatureInt(
     constructor(ints: Array<BigInteger>)
             : this(ints[0], ints[1])
 
+    constructor(signatureHex: MessageSignatureHex)
+            : this(BigInteger(signatureHex.rHex, 16), BigInteger(signatureHex.sHex, 16))
+
     /** Convert to [MessageSignatureHex] */
-    fun toHex(): MessageSignatureHex {
-        return MessageSignatureHex(r.toString(16), s.toString(16))
-    }
+    fun toHex() = MessageSignatureHex(this)
 }
 
 /** Message signature as hex [String]s */
@@ -25,8 +28,15 @@ open class MessageSignatureHex(
     val rHex: String,
     val sHex: String
 ) : IMessageSignature {
-    /** Convert to [MessageSignatureInt] */
-    fun toInt(): MessageSignatureInt {
-        return MessageSignatureInt(BigInteger(rHex, 16), BigInteger(sHex, 16))
+    init {
+        if (!rHex.isHex() || !sHex.isHex()) {
+            throw HexFormatRequiredException("rHex, sHex")
+        }
     }
+
+    constructor(signatureInt: MessageSignatureInt)
+            : this(signatureInt.r.toString(16), signatureInt.s.toString(16))
+
+    /** Convert to [MessageSignatureInt] */
+    fun toInt() = MessageSignatureInt(this)
 }
