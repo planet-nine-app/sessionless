@@ -1,2 +1,2 @@
 from sessionless.core import SessionlessCore
-from sessionless.modelsecp import SessionlessSecp256k1
+from sessionless.modelsecp256k1 import SessionlessSecp256k1

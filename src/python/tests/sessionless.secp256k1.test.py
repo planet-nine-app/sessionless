@@ -1,9 +1,19 @@
 import unittest
-from unittest.mock import Mock
+from sessionless import SessionlessSecp256k1
 
 class SessionlessSecp256k1Test(unittest.TestCase):
-        def setUp(self):
-         self.context_id = "test"
-         self.mock_stream = Mock()
-         self.addresses = ["a", "b", "c"]
-         self.data = [addr.encode() for addr in self.addresses]
+        def test_private_key_hex(self):
+                pass
+        
+        def test_public_key_from_hex(self):
+                pass
+        
+        def test_signing_message(self):
+                pass
+        
+        def test_verifying_signature(self):
+                pass
+        
+        def test_associating_verification(self):
+                pass
+                
