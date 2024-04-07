@@ -20,12 +20,12 @@ To use this package, please call a new instance of the SessionlessSecp256k1 clas
 
 ```python
 #This will generate a random private key
-#Passing a private key in hex format within the constructor will assign the value as instance private key
+#Passing a private key in hex format within the constructor will assign the value as an instance private key
 sessionless = SessionlessSecp256k1()
 ```
 
 ### Retrieving the private key
-Users will need to supply methods to retrieve the key (i.e. a getKeys() and saveKeys() methods). If methods are not supplied, the private key will not be returned. This is to uphold security practices.
+Users will need to supply methods to retrieve the key. If methods are not supplied, the private key will not be returned. This is to uphold security practices.
 ```python
 sessionless.get_private_key(saveKeys(), getKeys()) #This will return the encrypted private key
 ```
@@ -34,3 +34,24 @@ Accessing the private key by calling the parameter will throw an attribute error
 ```python
 sessionless.__private_key #AttributeError: 'SessionlessSecp256k1' object has no attribute '__private_key'. Did you mean: 'get_private_key'?
 ```
+### Generating a public key
+Users can easily generate public keys from the private key.
+```python
+public_key = sessionless.get_public_key_from_private_key()
+```
+
+### Signing messages
+Users can easily sign messages by providing a message to the sign_message() method. Messages do not need to be encoded before passing them to the method. The method will return an encrypted signature that users can store as needed.
+```python
+msg = {
+"message": "The weather is so nice today!"
+}
+signature = sessionless.sign_message(msg)
+```
+
+### Verifying messages
+Users can verify messages and signatures to ensure data integrity, authenticity, and non-repudiation. Users will pass the signature, and message as parameters. 
+```python
+res = sessionless.verify_signature(signature, msg) // Returns True or False
+```
+
