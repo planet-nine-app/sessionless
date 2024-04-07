@@ -54,6 +54,19 @@ public record MessageSignatureHex : IMessageSignature {
                 signatureInt.S.ToString(16)
             ) { }
 
+    /// <summary> Create from a single <see cref="string"/> of <see cref="byte"/>s containing both <see cref="RHex"/> and <see cref="SHex"/> <see cref="byte"/>s </summary>
+    /// <param name="rsHex"> <see cref="RHex"/> and <see cref="SHex"/> <see cref="byte"/>s sequencially.
+    /// <br/> Like: R......S...... </param>
+    /// <param name="partSize"> size of each part (<see cref="RHex"/> and <see cref="SHex"/>) </param>
+    /// <exception cref="ArgumentException"/>
+    public MessageSignatureHex(string rsHex, int partSize = 32)
+                : this(rsHex[..partSize], rsHex[partSize..]) {
+        int requiredSize = partSize * 2;
+        if (rsHex.Length != requiredSize) {
+            throw new ArgumentException($"{nameof(rsHex)} length must be {requiredSize}");
+        }
+    }
+
     /// <summary> Convert to <see cref="MessageSignatureInt"/> </summary>
     public MessageSignatureInt ToInt() => new(this);
 
