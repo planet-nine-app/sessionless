@@ -9,8 +9,8 @@ setup(
        # the name must match the folder name 'verysimplemodule'
         name="sessionless", 
         version=VERSION,
-        author="Sessionless",
-        author_email="<youremail@email.com>",
+        author="Sessionless Team",
+        author_email="zach@planetnine.app",
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
         packages=find_packages(),
