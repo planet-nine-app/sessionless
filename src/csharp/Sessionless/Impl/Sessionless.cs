@@ -106,7 +106,7 @@ public class Sessionless(IVault vault) : ISessionless {
 
     public bool Associate(params SignedMessage[] messages) {
         if (messages.Length < 2) {
-            throw new ArgumentException($"{nameof(messages)} array length must be at least 2");
+            throw new ArgumentException($"{nameof(messages)} length must be greater or equal to 2");
         }
         return messages.All(Verify);
     }
