@@ -95,7 +95,9 @@ public class Sessionless(IVault vault) : ISessionless {
         // signature hex to bigint (and hex still included)
         var signature = signedMessage.Signature.ToInt();
         // message string to keccak256 hash
-        byte[] messageHash = signedMessage.Message.HashKeccak256();
+        byte[] messageHash = signedMessage.Message
+            .HashKeccak256()
+            .Take(32).ToArray();
         // verify
         var verifier = new ECDsaSigner();
         verifier.Init(false, publicKey);
