@@ -5,31 +5,31 @@ namespace SessionlessNET.Models;
 
 /// <summary> 
 /// <para> Passwordless authentication </para>
-/// <para> With a <see cref="Vault"/> for storing and retrieving <see cref="IKeyPair"/>s </para>
+/// <para> With a <see cref="Vault"/> for storing and retrieving <see cref="KeyPairHex"/>es </para>
 /// </summary>
 public interface ISessionless {
-    /// <summary> The way to store and retrieve <see cref="IKeyPair"/>s </summary>
+    /// <summary> The way to store and retrieve <see cref="KeyPairHex"/>s </summary>
     public IVault Vault { get; }
 
     /// <summary> Creates a unique UUID for a user. </summary> 
     public string GenerateUUID();
 
     /// <summary>
-    /// Generates a private/public <see cref="IKeyPair"/> and stores it using <paramref name="Vault"/>.
+    /// Generates a private/public <see cref="KeyPairHex"/> and stores it using <paramref name="Vault"/>.
     /// </summary>
-    /// <returns> <see cref="IKeyPair"/> that was generated </returns>
+    /// <returns> <see cref="KeyPairHex"/> that was generated </returns>
     public KeyPairHex GenerateKeys();
 
     /// <summary>
-    /// Generates a private/public <see cref="IKeyPair"/> asynchronously and stores it using <paramref name="Vault"/>.
+    /// Generates a private/public <see cref="KeyPairHex"/> asynchronously and stores it using <paramref name="Vault"/>.
     /// </summary>
-    /// <returns> <see cref="IKeyPair"/> that was generated </returns>
+    /// <returns> <see cref="KeyPairHex"/> that was generated </returns>
     public Task<KeyPairHex> GenerateKeysAsync();
 
     /// <summary>
     /// Retrieves keys using <paramref name="Vault"/>.
     /// </summary>
-    /// <returns>Key pair as <see cref="IKeyPair"/>.</returns>
+    /// <returns>Key pair as <see cref="KeyPairHex"/>.</returns>
     public KeyPairHex? GetKeys();
 
     /// <summary>
