@@ -41,5 +41,4 @@ internal static partial class MathUtils {
         keccak256.DoFinal(hashBytes, 0);
         return hashBytes;
     }
-
 }
