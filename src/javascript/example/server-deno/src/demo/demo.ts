@@ -1,6 +1,6 @@
 import sessionless from 'npm:sessionless-node';
 import chalk from 'npm:chalk';
-import { associateKey, getUser, saveUser } from '../persistence/user.ts';
+import { associateKey, getUser, getValue as gv, getUserByAssociatedKey, saveUser, setValue } from '../persistence/user.ts';
 
 export const associate = async (request: Request): Response | Error => {
   const payload = await request.json();
@@ -10,7 +10,7 @@ export const associate = async (request: Request): Response | Error => {
   const user = await getUser(payload.uuid1);
 
   if(!signature1 || !signature2) {
-    res.send(new Error('Need two signatures'));
+    return new Response(403, {error: 'Need two signatures'});
   }
 
   const message1 = JSON.stringify({
@@ -26,10 +26,10 @@ export const associate = async (request: Request): Response | Error => {
 
   if(!sessionless.verifySignature(signature1, message1, user.pubKey) ||
      !sessionless.verifySignature(signature2, message2, payload.pubKey)) {
-    res.send(new Error('Auth error'));
+    return new Response(401, {error: 'Auth error'});
   }
     
-  associateKey(user, payload.uuid2, payload.pubKey2);
+  await associateKey(user, payload.uuid2, payload.pubKey);
 
   console.log(chalk.green('\n\nKeys associated'));
 
@@ -39,47 +39,55 @@ export const associate = async (request: Request): Response | Error => {
 export const saveValue = async (request: Request): Response | Error => {
   const payload = await request.json();
   const signature = payload.signature;
-  const pubKey  = getUser(payload.uuid).pubKey;
+  const user = await getUserByAssociatedKey(payload.uuid);
+  const pubKey = user.pubKey;
 
   const message = JSON.stringify({
-    timestamp: paylaod.timestamp,
+    timestamp: payload.timestamp,
     uuid: payload.uuid,
     value: payload.value
   });
 
   if(!sessionless.verifySignature(signature, message, pubKey)) {
-    return Response(401, 'Auth error');
+    console.log(chalk.red('\n\nAuth error'));
+    return new Response(401, {error: 'Auth error'});
   }
 
-  await saveValue(payload.uuid, value);
+  await setValue(payload.uuid, payload.value);
 
   console.log(chalk.green('\n\nvalue set'));
 
-  return Response(200, {success: true});
+  return new Response(200, {success: true});
 };
 
 export const getValue = async (request: Request): Response | Error => {
+  const url = new URL(request.url);
   const payload = {
-    timestamp: request.searchParams.get('timestamp'),
-    uuid: request.searchParams.get('uuid'),
-    signature: request.searchParams.get('signature'),
+    timestamp: url.searchParams.get('timestamp'),
+    uuid: url.searchParams.get('uuid'),
+    signature: url.searchParams.get('signature'),
   };
   const signature = payload.signature;
-  const pubKey  = getUser(payload.uuid).pubKey;
+  const user  = await getUser(payload.uuid);
+  const pubKey = user.pubKey;
 
   const message = JSON.stringify({
-    timestamp: paylaod.timestamp,
+    timestamp: payload.timestamp,
     uuid: payload.uuid
   });
 
   if(!sessionless.verifySignature(signature, message, pubKey)) {
-    return Response(401, 'Auth error');
+    return new Response(401, {error: 'Auth error'});
   }
 
-  await getValue(payload.uuid);
+  const value = await gv(payload.uuid);
+
+  if(!value) {
+    return new Response(404, {error: "not found"});
+  }
 
   console.log(chalk.green('\n\nreturning value'));
 
-  return Response(200, { value });  
+  return new Response(200, { value });  
 };
 

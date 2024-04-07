@@ -11,6 +11,7 @@ export const saveUser = async (uuid, pubKey) => {
     const usersString = await readFile('./users.json');
     const users = JSON.parse(usersString);
     users[uuid] = {
+      uuid,
       pubKey,
       associatedKeys: {}
     };
@@ -18,6 +19,7 @@ export const saveUser = async (uuid, pubKey) => {
   } catch(err) {
     let users = {};
     users[uuid] = {
+      uuid,
       pubKey,
       associatedKeys: {}
     };
@@ -39,19 +41,54 @@ export const getUserPublicKey = (uuid) => {
 };
 
 export const associateKey = (user, uuid, pubKey) => {
-  user.associatedKeys[uuid] = pubKey;
-  const users = JSON.parse(fs.readFileSync('./users.json'));
+console.log('args');
+console.log(user)
+console.log(uuid);
+console.log(pubKey);
+  user.associatedKeys[uuid] = {
+    uuid,
+    pubKey
+  };
+  let users = JSON.parse(fs.readFileSync('./users.json'));
+  users[user.uuid] = user;
+console.log('updated users looks like: ' + JSON.stringify(users));
   fs.writeFileSync('./users.json', JSON.stringify(users));
+};
+
+export const getUserByAssociatedKey = (uuid) => {
+  const usersString = fs.readFileSync('./users.json');
+  const users = JSON.parse(usersString);
+  let user;
+
+ /**
+  * In a real implementation you'll have a db for persistence, and this will be 
+  * a query instead of this kind of janky map lookup
+  */
+console.log('Looking for key with uuid: ' + uuid);
+  for(let userUUID in users) {
+console.log(users[userUUID].associatedKeys);
+    if(users[userUUID].associatedKeys[uuid]) {
+      user = users[userUUID];
+      user.pubKey = users[userUUID].associatedKeys[uuid].pubKey;
+    }
+  }
+  return user;
 };
 
 export const saveValue = (uuid, value) => {
   const user = getUser(uuid);
+  if(!user) {
+    return;
+  }
   user.value = value;
-  const users = JSON.parse(fs.readFileSync('./users.json'));
+  let users = JSON.parse(fs.readFileSync('./users.json'));
+  users[user.uuid] = user;
   fs.writeFileSync('./users.json', JSON.stringify(users));
 };
 
 export const getValue = (uuid) => {
   const user = getUser(uuid);
+console.log(user);
+console.log(user.value);
   return user.value;
 };

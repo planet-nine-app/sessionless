@@ -54,11 +54,24 @@ struct ContentView: View {
         }
     }
     
+    
+    
     struct ExampleTextField: View {
         @Binding var enteredText: String
         
         var body: some View {
             TextField("Enter Text", text: $enteredText)
+        }
+    }
+    
+    struct CustomButtonStyle: ButtonStyle {
+        
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+                .padding()
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                .opacity(configuration.isPressed ? 0.5 : 1)
         }
     }
     
@@ -70,7 +83,7 @@ struct ContentView: View {
                  (primary) and 3001 (secondary).
                 """
             ).padding(.all, 8)
-                .alert("Blue has been spread!", isPresented: $spreadAlert) {
+                .alert("Green has been spread!", isPresented: $spreadAlert) {
                     Button("OK") {
                         
                     }
@@ -81,7 +94,7 @@ struct ContentView: View {
                     }
                 }
                 .alert("The server thinks your \(coolness.doubleCool)", isPresented: $showingAlert) {
-                Button("OK") { }
+                    Button("OK") { }
                 }
                 .alert("Blue would like to associate with you. Will you allow it?", isPresented: $associateAlert) {
                     Button("OK") {
@@ -110,35 +123,36 @@ struct ContentView: View {
                 .padding(.all, 8)
             ExampleTextField(enteredText: $enteredText)
                 .padding(.all, 8)
-                    Button("Register") {
-                        Task {
-                            await Network.register(baseURL: baseURL, enteredText: $enteredText.wrappedValue, callback: { err, data in
-                                if let err = err {
-                                    print("error")
-                                    print(err)
-                                    return
-                                }
-                                guard let data = data else { return }
-                                do {
-                                    let user = try JSONDecoder().decode(User.self, from: data)
-                                    uuid = user.uuid
-                                    welcomeMessage = user.welcomeMessage
-                                    Persistence.saveUUID(uuid: uuid)
-                                } catch {
-                                    return
-                                }
-                            })
+            Button() {
+                Task {
+                    await Network.register(baseURL: baseURL, enteredText: $enteredText.wrappedValue, callback: { err, data in
+                        if let err = err {
+                            print("error")
+                            print(err)
+                            return
                         }
-                    }.padding(.all, 8)
-                .background(changeBackgroundColor())
-                        .foregroundColor(.white)
+                        guard let data = data else { return }
+                        do {
+                            let user = try JSONDecoder().decode(User.self, from: data)
+                            uuid = user.uuid
+                            welcomeMessage = user.welcomeMessage
+                            Persistence.saveUUID(uuid: uuid)
+                        } catch {
+                            return
+                        }
+                    })
+                }
+            } label: {
+                Text("Register")
+                    .frame(width: 160, height: 22)
+            }.buttonStyle(CustomButtonStyle())
+            .background(changeBackgroundColor())
             
             if uuid.count > 3 && welcomeMessage.count > 3 {
                 Text("\(welcomeMessage) now you can do cool stuff")
                     .padding(.all, 8)
                 if false {
                     Button("Do Cool Stuff") {
-                        print("cool stuff button tapped")
                         Task {
                             await Network.doCoolStuff(baseURL: baseURL) { err, data in
                                 if let err = err {
@@ -156,18 +170,22 @@ struct ContentView: View {
                                 }
                             }
                         }
-                    }.background(changeBackgroundColor())
-                        .foregroundColor(.white)
+                    }.buttonStyle(CustomButtonStyle())
+                    .background(changeBackgroundColor())
+
                 } else {
                     if !associated {
-                        Button(secondaryButtonText()) {
+                        Button() {
                             guard let url = URL(string: "blue://foo?bar=baz") else { return }
                             UIApplication.shared.open(url)
-                        }
+                        } label: {
+                            Text(secondaryButtonText())
+                                .frame(width: 160, height: 22)
+                        }.buttonStyle(CustomButtonStyle())
                         .background(changeBackgroundColor())
-                        .foregroundColor(.white)
+
                     } else {
-                        Button("Spread Green") {
+                        Button() {
                             Task {
                                 await Network.setValue(value: "green", baseURL: otherURL) { error, data in
                                     if let error = error {
@@ -178,22 +196,30 @@ struct ContentView: View {
                                     spreadAlert = true
                                 }
                             }
-                        }
+                        } label: {
+                            Text("Spread Green")
+                                .frame(width: 160, height: 22)
+                        }.buttonStyle(CustomButtonStyle())
                         .background(changeBackgroundColor())
-                        .foregroundColor(.white)
+                        .frame(width: 160, height: 48)
                     }
-                    Button("Check For Blue") {
+                    Button() {
                         Task {
-                            await Network.getValue(baseURL: otherURL) { error, data in
+                            await Network.getValue(baseURL: baseURL) { error, data in
                                 if let error = error {
                                     print(error)
                                     return
                                 }
-                                print("success")
                                 accentColor = 2
                             }
                         }
-                    }
+                    } label: {
+                        Text("Check For Blue")
+                            .frame(width: 160, height: 22)
+                    }.buttonStyle(CustomButtonStyle())
+                    .background(changeBackgroundColor())
+                    .frame(width: 160, height: 48)
+                    .padding(.top, 24)
                 }
             }
         }
@@ -201,15 +227,12 @@ struct ContentView: View {
         .background(.green)
         .onOpenURL { url in
             guard let query = url.query() else { return }
-            print(query)
             if query.contains("bar") {
-                print("associateAlert should be true")
                 associateAlert = true
             } else {
                 let params = query.components(separatedBy: "&")
                 let values = params.map { String($0.split(separator: "=")[1]) }
                 let associateKey = AssociateKey(uuid: values[0], timestamp: values[1], pubKey: values[2], signature: values[3])
-                print(associateKey)
                 Task {
                     await Network.associate(baseURL: baseURL, associateKey: associateKey) { error, user in
                         if let error = error {
