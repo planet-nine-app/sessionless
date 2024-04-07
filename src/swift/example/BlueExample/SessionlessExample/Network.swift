@@ -15,6 +15,10 @@ struct AssociateKey {
     let signature: String
 }
 
+enum NetworkError: Error {
+    case networkError
+}
+
 class Network {
     class func get(urlString: String, callback: @escaping (Error?, Data?) -> Void) async {
         guard let url = URL(string: urlString) else { return }
@@ -23,7 +27,12 @@ class Network {
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         do {
-            let (data, _) = try await URLSession.shared.data(for: request)
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard let httpResponse = response as? HTTPURLResponse else { return }
+            if httpResponse.statusCode > 300 {
+                callback(NetworkError.networkError, nil)
+                return
+            }
             callback(nil, data)
         } catch {
             callback(error, nil)
@@ -56,7 +65,6 @@ class Network {
         let payload = """
             {"pubKey":"\(publicKey)","enteredText":"\(enteredText)","timestamp":"right now","signature":"\(signature)"}
             """
-        print(payload)
         guard let data = payload.data(using: .utf8) else { return }
         await Network.post(urlString: "\(baseURL)/register", payload: data) { err, data in
             callback(err, data)
@@ -109,7 +117,10 @@ class Network {
         
         guard let signature = sessionless.sign(message: message) else { return }
         
-        await Network.get(urlString: "\(baseURL)/value?timestamp=\(timestamp)&uuid=\(uuid)&signature=\(signature)", callback: callback)
+        let urlString = "timestamp=\(timestamp)&uuid=\(uuid)&signature=\(signature)"
+        guard let urlEncodedString = urlString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        
+        await Network.get(urlString: "\(baseURL)/value?\(urlEncodedString)", callback: callback)
     }
     
     class func setValue(value: String, baseURL: String, callback: @escaping (Error?, Data?) -> Void) async {

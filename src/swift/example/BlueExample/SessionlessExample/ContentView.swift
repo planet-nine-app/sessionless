@@ -42,6 +42,14 @@ struct ContentView: View {
         }
     }
     
+    struct ExampleTextField: View {
+        @Binding var enteredText: String
+        
+        var body: some View {
+            TextField("Enter Text", text: $enteredText)
+        }
+    }
+    
     func changeBackgroundColor() -> Color {
         switch accentColor {
         case 0: return Color.purple
@@ -51,11 +59,13 @@ struct ContentView: View {
         }
     }
     
-    struct ExampleTextField: View {
-        @Binding var enteredText: String
-        
-        var body: some View {
-            TextField("Enter Text", text: $enteredText)
+    struct CustomButtonStyle: ButtonStyle {
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+                .padding()
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                .opacity(configuration.isPressed ? 0.5 : 1)
         }
     }
     
@@ -107,11 +117,10 @@ struct ContentView: View {
                 .padding(.all, 8)
             ExampleTextField(enteredText: $enteredText)
                 .padding(.all, 8)
-                    Button("Register") {
+                    Button() {
                         Task {
                             await Network.register(baseURL: baseURL, enteredText: $enteredText.wrappedValue, callback: { err, data in
                                 if let err = err {
-                                    print("error")
                                     print(err)
                                     return
                                 }
@@ -126,9 +135,12 @@ struct ContentView: View {
                                 }
                             })
                         }
-                    }.padding(.all, 8)
-                        .background(changeBackgroundColor())
-                        .foregroundColor(.white)
+                    } label: {
+                        Text("Register")
+                            .frame(width: 160, height: 22)
+                    }.buttonStyle(CustomButtonStyle())
+                    .background(changeBackgroundColor())
+
             
             if uuid.count > 3 && welcomeMessage.count > 3 {
                 Text("\(welcomeMessage) now you can do cool stuff")
@@ -138,7 +150,6 @@ struct ContentView: View {
                         Task {
                             await Network.doCoolStuff(baseURL: baseURL) { err, data in
                                 if let err = err {
-                                    print("error")
                                     print(err)
                                     return
                                 }
@@ -156,7 +167,7 @@ struct ContentView: View {
                         .foregroundColor(.white)
                 } else {
                     if !associated {
-                        Button(secondaryButtonText()) {
+                        Button() {
                             if secondaryButtonTextState == 0 {
                                 guard let url = URL(string: "green://foo?bar=baz") else { return }
                                 UIApplication.shared.open(url)
@@ -171,53 +182,60 @@ struct ContentView: View {
                                     }
                                 }
                             }
-                        }
+                        } label: {
+                            Text(secondaryButtonText())
+                                .frame(width: 160, height: 22)
+                        }.buttonStyle(CustomButtonStyle())
                         .background(changeBackgroundColor())
-                        .foregroundColor(.white)
+
+                        
                     } else {
-                        Button("Spread Blue") {
+                        Button() {
                             Task {
-                                await Network.setValue(value: "blue", baseURL: baseURL) { error, data in
+                                await Network.setValue(value: "blue", baseURL: otherURL) { error, data in
                                     if let error = error {
                                         print(error)
                                         return
                                     }
-                                    print("success")
                                     spreadAlert = true
                                 }
                             }
-                        }
+                        } label: {
+                            Text("Spread Blue")
+                                .frame(width: 160, height: 22)
+                        }.buttonStyle(CustomButtonStyle())
                         .background(changeBackgroundColor())
-                        .foregroundColor(.white)
+
                     }
-                    Button("Check For Green") {
+                    Button() {
                         Task {
-                            await Network.getValue(baseURL: otherURL) { error, data in
+                            await Network.getValue(baseURL: baseURL) { error, data in
                                 if let error = error {
                                     print(error)
                                     return
                                 }
-                                print("success")
                                 accentColor = 1
                             }
                         }
-                    }
+                    } label: {
+                        Text("Check For Green")
+                            .frame(width: 160, height: 22)
+                    }.buttonStyle(CustomButtonStyle())
+                    .background(changeBackgroundColor())
+                    .padding(.top, 24)
                 }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.blue)
         .onOpenURL { url in
-            print(url)
             guard let query = url.query() else { return }
-            print(query)
             if query.contains("bar") {
                 associateAlert = true
             } else {
                 let params = query.components(separatedBy: "&")
                 let values = params.map { String($0.split(separator: "=")[1]) }
                 let associateKey = AssociateKey(uuid: values[0], timestamp: values[1], pubKey: values[2], signature: values[3])
-                print(associateKey)
                 Task {
                     await Network.associate(baseURL: baseURL, associateKey: associateKey) { error, user in
                         if let error = error {

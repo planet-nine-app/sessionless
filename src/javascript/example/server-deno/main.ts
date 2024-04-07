@@ -21,6 +21,7 @@ const dispatch = async (request: Request): Response | Error => {
   }
   if(request.url.indexOf('value') > -1) {
     if(request.method === 'GET') {
+console.log("routing to get value");
       return await getValue(request);
     }
     return await saveValue(request);
@@ -72,10 +73,6 @@ const doCoolStuff = async (request: Request): Response | Error => {
 };
 
 Deno.serve({port: 3000}, async (request: Request) => {
-console.log(request.url);
-  if((request.method !== "POST" && request.method !== "PUT") || !request.body) {
-    return ResponseError(404, "Method not supported");
-  }
   const res = await dispatch(request);
   return new Response(JSON.stringify(res), {
     headers: {
