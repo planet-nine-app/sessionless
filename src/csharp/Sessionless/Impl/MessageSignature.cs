@@ -33,6 +33,8 @@ public record MessageSignatureInt : IMessageSignature {
     /// <summary> Explicit caster to <see cref="MessageSignatureHex"/> </summary> 
     public static explicit operator MessageSignatureHex(MessageSignatureInt signatureInt)
         => signatureInt.ToHex();
+
+    public override string ToString() => ToHex().ToString();
 }
 
 /// <summary> Message signature as hex <see cref="string"/>s </summary>
@@ -73,4 +75,6 @@ public record MessageSignatureHex : IMessageSignature {
     /// <summary> Explicit caster to <see cref="MessageSignatureInt"/> </summary> 
     public static explicit operator MessageSignatureInt(MessageSignatureHex signatureHex)
         => signatureHex.ToInt();
+
+    public override string ToString() => $"{RHex}{SHex}";
 }
