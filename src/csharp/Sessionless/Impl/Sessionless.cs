@@ -17,9 +17,7 @@ namespace SessionlessNET.Impl;
 public class Sessionless(IVault vault) : ISessionless {
     public IVault Vault { get; } = vault;
 
-    public string GenerateUUID() {
-        return Guid.NewGuid().ToString();
-    }
+    public string GenerateUUID() => Guid.NewGuid().ToString();
     public KeyPairHex GenerateKeys() {
         var pair = KeyUtils.GenerateKeyPair();
         return StoreHexPair(pair);
@@ -37,9 +35,7 @@ public class Sessionless(IVault vault) : ISessionless {
     }
 
 
-    public KeyPairHex? GetKeys() {
-        return Vault.Get();
-    }
+    public KeyPairHex? GetKeys() => Vault.Get();
 
     public MessageSignatureHex Sign(string message) {
         var privateHex = GetKeys()?.PrivateKey
