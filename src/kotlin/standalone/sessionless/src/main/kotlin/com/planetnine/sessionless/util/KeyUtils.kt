@@ -129,9 +129,11 @@ object KeyUtils {
         return withContext(context) { generateKeyPair() }
     }
 
-    /** Check if a [String] is comprised of only hex characters
+    /** Check if a [String] is comprised of only even hex characters
+     * - Length must be even
      * - Allowed characters: 0-9 a-f A-F */
-    fun String.isHex(): Boolean {
+    fun String.isBytes(): Boolean {
+        if (this.length % 2 != 0) return false
         return Regex("^[0-9a-fA-F]+$").matches(this)
     }
 
