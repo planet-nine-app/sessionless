@@ -70,7 +70,7 @@ interface ISessionless {
      * @return True if the [SignedMessage.signature] is valid
      * for the given [SignedMessage.message] and [SignedMessage.publicKey].
      * @see sign */
-    fun verify(signedMessage: SignedMessage): Boolean
+    fun verifySignature(signedMessage: SignedMessage): Boolean
 
     /** Creates a unique UUID for a user.
      * @return The generated UUID. */
@@ -79,7 +79,7 @@ interface ISessionless {
     /** Associates [signedMessages] signatures with their respective public keys
      * @return true if all were successfully verified
      * @throws java.lang.IllegalArgumentException if array size<2
-     * @see verify */
+     * @see verifySignature */
     fun associate(vararg signedMessages: SignedMessage): Boolean
 
 //    /** Revokes a gateway's key from the user.
