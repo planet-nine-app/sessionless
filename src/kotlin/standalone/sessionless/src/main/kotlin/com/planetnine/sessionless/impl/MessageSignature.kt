@@ -1,7 +1,7 @@
 package com.planetnine.sessionless.impl
 
 import com.planetnine.sessionless.impl.exceptions.HexFormatRequiredException
-import com.planetnine.sessionless.util.KeyUtils.isHex
+import com.planetnine.sessionless.util.KeyUtils.isBytes
 import java.math.BigInteger
 
 /** Common type for message signatures
@@ -14,7 +14,11 @@ open class MessageSignatureInt(
     val s: BigInteger
 ) : IMessageSignature {
     constructor(ints: Array<BigInteger>)
-            : this(ints[0], ints[1])
+            : this(ints[0], ints[1]) {
+        if (ints.size != 2) {
+            throw IllegalArgumentException("Length must be 2")
+        }
+    }
 
     constructor(signatureHex: MessageSignatureHex)
             : this(BigInteger(signatureHex.rHex, 16), BigInteger(signatureHex.sHex, 16))
@@ -29,7 +33,7 @@ open class MessageSignatureHex(
     val sHex: String
 ) : IMessageSignature {
     init {
-        if (!rHex.isHex() || !sHex.isHex()) {
+        if (!rHex.isBytes() || !sHex.isBytes()) {
             throw HexFormatRequiredException("rHex, sHex")
         }
     }
