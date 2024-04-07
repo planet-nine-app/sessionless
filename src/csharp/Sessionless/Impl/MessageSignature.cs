@@ -42,7 +42,7 @@ public record MessageSignatureHex : IMessageSignature {
 
     /// <exception cref="HexFormatRequiredException"/>
     public MessageSignatureHex(string rHex, string sHex) {
-        if (!rHex.IsHex() || !sHex.IsHex()) {
+        if (!rHex.IsBytes() || !sHex.IsBytes()) {
             throw new HexFormatRequiredException($"{nameof(rHex)}, {nameof(sHex)}");
         }
         RHex = rHex; SHex = sHex;
