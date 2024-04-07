@@ -1,9 +1,8 @@
 package com.planetnine.sessionless.controllers
 
+import com.planetnine.sessionless.util.sessionless.impl.KeyAccessInfo
+import com.planetnine.sessionless.util.sessionless.impl.MessageSignatureHex
 import com.planetnine.sessionless.util.sessionless.impl.Sessionless
-import com.planetnine.sessionless.util.sessionless.models.IdentifiableMessage
-import com.planetnine.sessionless.util.sessionless.models.KeyAccessInfo
-import com.planetnine.sessionless.util.sessionless.models.MessageSignature
 import com.planetnine.sessionless.util.sessionless.models.vaults.IVault
 import com.planetnine.sessionless.util.sessionless.util.KeyUtils.toECHex
 import com.planetnine.sessionless.util.sessionless.util.KeyUtils.toECPrivateKey
@@ -40,7 +39,7 @@ class SessionlessController {
 
         private var users = JSONObject()
 
-        private fun saveUser(userUUID: String, publicKey: String) = synchronized(users) {
+        private fun saveUser(uuid: String, pubKey: String) = synchronized(users) {
             val usersFile = File(USERS_FILE_PATH)
             val usersString: String
             if (!usersFile.exists()) {
@@ -51,12 +50,12 @@ class SessionlessController {
                 usersString = usersFile.readText()
             }
             val json = JSONObject(usersString)
-            json.put(userUUID, publicKey)
+            json.put(uuid, pubKey)
             users = json
             usersFile.writeText(json.toString())
         }
 
-        private fun getUserPublicKey(userUUID: String): String? {
+        private fun getUserPublicKey(uuid: String): String? {
             val usersFile = File(USERS_FILE_PATH)
             if (!usersFile.exists()) return null
             return try {
@@ -64,7 +63,7 @@ class SessionlessController {
                     val usersString = usersFile.readText()
                     val json = JSONObject(usersString)
                     users = json
-                    json.getString(userUUID)
+                    json.getString(uuid)
                 }
             } catch (_: Exception) {
                 null
@@ -77,9 +76,8 @@ class SessionlessController {
         return "Hello, World!"
     }
 
-
     private var currentPrivateKey = ""
-    private fun webSignature(req: HttpServletRequest, message: String): MessageSignature? {
+    private fun webSignature(req: HttpServletRequest, message: String): MessageSignatureHex? {
         val privateKeyString = req.session.getAttribute("user") as? String
             ?: return null
         currentPrivateKey = privateKeyString
@@ -88,17 +86,17 @@ class SessionlessController {
     }
 
     private suspend fun handleWebRegistration(req: HttpServletRequest): RegisterResponse {
-        val userUUID = sessionless.generateUUID()
-        val pair = sessionless.generateKeysAsync(KeyAccessInfo(userUUID))
+        val uuid = sessionless.generateUUID()
+        val pair = sessionless.generateKeysAsync(KeyAccessInfo(uuid))
         val simple = pair.toECHex()
         req.session.setAttribute("user", simple.privateKey)
-        saveUser(userUUID, simple.publicKey)
-        return RegisterResponse(userUUID, "Welcome to this example!")
+        saveUser(uuid, simple.publicKey)
+        return RegisterResponse(uuid, "Welcome to this example!")
     }
 
     data class RegisterResponse(val uuid: String, val welcomeMessage: String)
     data class RegisterReqBody(
-        val signature: MessageSignature?, val publicKey: String?,
+        val signature: MessageSignatureHex?, val pubKey: String?,
         val enteredText: String?, val timestamp: Long?,
     )
 
@@ -109,37 +107,37 @@ class SessionlessController {
     ): RegisterResponse? {
         val signature = body.signature
             ?: return runBlocking(Dispatchers.IO) { handleWebRegistration(req) }
-        val publicKey = body.publicKey ?: return null
+        val pubKey = body.pubKey ?: return null
         val timestamp = body.timestamp ?: return null
         val enteredText = body.enteredText ?: return null
 
         val message = JSONObject().apply {
-            put("publicKey", publicKey)
+            put("pubKey", pubKey)
             put("enteredText", enteredText)
             put("timestamp", timestamp)
         }.toString()
 
-        val verified = sessionless.verify(message, publicKey, signature)
+        val verified = sessionless.verifySignature(message, pubKey, signature)
         if (!verified) {
             println("Signature verification failed!")
             return null
         }
 
         val uuid = sessionless.generateUUID()
-        saveUser(uuid, publicKey)
+        saveUser(uuid, pubKey)
         println("Registered user with UUID: $uuid")
         return RegisterResponse(uuid, "Welcome to this example!")
     }
 
     data class CoolStuffResponse(val doubleCool: String?, val error: String?)
     data class CoolStuffReqBody(
-        val userUUID: String, val signature: MessageSignature?,
+        val uuid: String, val signature: MessageSignatureHex?,
         val timestamp: Long, val coolness: String,
     )
 
     @PutMapping("/cool-stuff")
     fun coolStuff(req: HttpServletRequest, @RequestBody body: CoolStuffReqBody): CoolStuffResponse {
-        val publicKey = getUserPublicKey(body.userUUID)
+        val pubKey = getUserPublicKey(body.uuid)
             ?: return CoolStuffResponse(null, "User not found")
 
         val message = JSONObject().apply {
@@ -152,8 +150,8 @@ class SessionlessController {
         val signature =
             body.signature ?: webSignature(req, message)
             ?: return CoolStuffResponse(null, "Signature error")
- 
-        val verified = sessionless.verify(message, publicKey, signature)
+
+        val verified = sessionless.verifySignature(message, pubKey, signature)
         return if (verified)
             CoolStuffResponse("double cool", null)
         else CoolStuffResponse(null, "Auth error")
