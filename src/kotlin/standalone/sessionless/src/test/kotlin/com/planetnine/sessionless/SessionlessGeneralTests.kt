@@ -59,7 +59,7 @@ class SessionlessGeneralTests {
             signature.sHex + "1",
         )
         val publicHex = generated.toECHex().publicKey
-        val verified = sessionless.verify(
+        val verified = sessionless.verifySignature(
             SignedMessage(
                 message = text,
                 signature = signature,
@@ -67,7 +67,7 @@ class SessionlessGeneralTests {
             )
         )
         // bad signature should lead to verification failure
-        val verifiedBad = sessionless.verify(
+        val verifiedBad = sessionless.verifySignature(
             SignedMessage(
                 message = text,
                 signature = signatureBad,
