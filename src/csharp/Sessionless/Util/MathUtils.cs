@@ -16,7 +16,14 @@ internal static partial class MathUtils {
     // Compile-time regex
     [GeneratedRegex("^[0-9A-Fa-f]+$")]
     private static partial Regex HexRegex();
-    public static bool IsHex(this string str) {
+    /// <summary> Check if <paramref name="str"/> contains even hex characters only (<see cref="byte"/>s as <see cref="string"/>s) 
+    /// <list type="bullet">
+    /// <item> Even length of <paramref name="str"/> </item>
+    /// <item> Allowed characters: 0-9 a-f A-F </item>
+    /// </list>
+    /// </summary>
+    public static bool IsBytes(this string str) {
+        if (str.Length % 2 != 0) return false;
         return HexRegex().IsMatch(str);
     }
 
