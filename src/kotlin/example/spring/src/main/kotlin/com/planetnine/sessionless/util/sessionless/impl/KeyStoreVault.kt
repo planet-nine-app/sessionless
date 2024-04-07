@@ -1,6 +1,5 @@
 package com.planetnine.sessionless.util.sessionless.impl
 
-import com.planetnine.sessionless.util.sessionless.models.KeyAccessInfo
 import com.planetnine.sessionless.util.sessionless.models.vaults.IKeyStoreVault
 import com.planetnine.sessionless.util.sessionless.util.KeyUtils
 import java.security.KeyPair

@@ -1,6 +1,6 @@
 package com.planetnine.sessionless.util.sessionless.util
-
-import com.planetnine.sessionless.util.sessionless.models.SimpleKeyPair
+ 
+import com.planetnine.sessionless.util.sessionless.impl.KeyPairHex
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.bouncycastle.asn1.x509.X509Name
@@ -30,7 +30,6 @@ import java.security.interfaces.ECPublicKey
 import java.util.Date
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
-
 
 object KeyUtils {
     object Defaults {
@@ -130,16 +129,23 @@ object KeyUtils {
         return withContext(context) { generateKeyPair() }
     }
 
+    /** Check if a [String] is comprised of only even hex characters
+     * - Length must be even
+     * - Allowed characters: 0-9 a-f A-F */
+    fun String.isBytes(): Boolean {
+        if (this.length % 2 != 0) return false
+        return Regex("^[0-9a-fA-F]+$").matches(this)
+    }
 
     /** Convert [KeyPair] to [ECPublicKey]/[ECPrivateKey] hex [String]s
      * @see ECPrivateKey.toHex
      * @see ECPublicKey.toHex */
-    fun KeyPair.toECHex(): SimpleKeyPair {
+    fun KeyPair.toECHex(): KeyPairHex {
         val ecPrivateKey = this.private as ECPrivateKey
         val ecPublicKey = this.public as ECPublicKey
         val ecPrivateKeyHex = ecPrivateKey.toHex()
         val ecPublicKeyHex = ecPublicKey.toHex()
-        return SimpleKeyPair(ecPrivateKeyHex, ecPublicKeyHex)
+        return KeyPairHex(ecPrivateKeyHex, ecPublicKeyHex)
     }
 
     fun String.toECPrivateKey(paramSpec: ECParameterSpec = Defaults.parameterSpec): ECPrivateKey {
