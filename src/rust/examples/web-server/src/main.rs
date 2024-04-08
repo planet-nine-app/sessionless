@@ -5,7 +5,6 @@ extern crate serde;
 extern crate lazy_static;
 
 mod handler;
-mod request;
 mod response;
 
 use std::net::SocketAddr;

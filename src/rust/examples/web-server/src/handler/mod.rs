@@ -18,8 +18,8 @@ pub async fn service(request: hyper::Request<Incoming>) -> Result<Response<Full<
 
     let path = head.uri.path();
     let api_result = match path {
-        "/register" => register(&head, body, &mut builder).await,
-        "/cool-stuff" => cool_stuff(&head, body, &mut builder).await,
+        "/register" => Register::handle(&head, body, &mut builder).await,
+        "/cool-stuff" => CoolStuff::handle(&head, body, &mut builder).await,
         _ => {
             if resources::load(&head, body, &mut builder).await.is_ok() {
                 return Ok(builder.build());
