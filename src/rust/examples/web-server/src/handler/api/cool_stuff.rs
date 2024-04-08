@@ -1,7 +1,7 @@
 use super::*;
 
 #[derive(Deserialize, Serialize)]
-#[serde(rename_all="camelCase")]
+#[serde(rename_all = "camelCase")]
 pub struct PayloadCoolStuff {
     pub timestamp: String,
     pub coolness: String,
@@ -9,7 +9,7 @@ pub struct PayloadCoolStuff {
 }
 
 #[derive(Serialize)]
-#[serde(rename_all="camelCase")]
+#[serde(rename_all = "camelCase")]
 pub struct ResponseCoolStuff {
     pub double_cool: String,
 }
@@ -21,14 +21,17 @@ impl EndpointAPI for CoolStuff {
         let body = &*body.collect().await?.to_bytes();
         let payload = load_payload::<PayloadCoolStuff>(body).await?;
 
-        let public_key = DATABASE.lock().await
+        let public_key = DATABASE
+            .lock()
+            .await
             .get(&payload.uuid)
-            .map(|pub_key| *pub_key)
+            .copied()
             .ok_or_else(|| anyhow!("User {} not found!", payload.uuid))?;
 
         let signature = Signature::from_hex(get_header(head, "signature")?)?;
 
-        SESSIONLESS.get()
+        SESSIONLESS
+            .get()
             .ok_or_else(|| anyhow!("Sessionless was not initialized!"))?
             .verify(body, &public_key, &signature)
             .map_err(|err| anyhow!("Failed to verify the payload: {}", err))?;

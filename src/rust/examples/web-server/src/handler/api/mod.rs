@@ -1,21 +1,20 @@
-mod register;
 mod cool_stuff;
+mod register;
 
-pub use register::*;
 pub use cool_stuff::*;
+pub use register::*;
 
-use std::collections::HashMap;
-use http_body_util::BodyExt;
-use serde::de::DeserializeOwned;
-use sessionless::hex::FromHex;
-use tokio::sync::Mutex;
 use crate::response::Builder;
+use crate::SESSIONLESS;
 use anyhow::anyhow;
+use http_body_util::BodyExt;
 use hyper::body::Incoming;
 use hyper::http::request::Parts;
+use serde::de::DeserializeOwned;
+use sessionless::hex::FromHex;
 use sessionless::{PublicKey, Sessionless, Signature};
-use crate::{response, SESSIONLESS};
-use super::*;
+use std::collections::HashMap;
+use tokio::sync::Mutex;
 
 lazy_static! {
     static ref DATABASE: Mutex<HashMap<String, PublicKey>> = Mutex::new(HashMap::new());
@@ -34,7 +33,5 @@ fn get_header<'a>(head: &'a Parts, key: &str) -> anyhow::Result<&'a str> {
 }
 
 async fn load_payload<P: DeserializeOwned>(data: impl AsRef<[u8]>) -> anyhow::Result<P> {
-    serde_json::from_slice::<P>(
-        data.as_ref()
-    ).map_err(|err| anyhow!("Invalid payload: {}", err))
+    serde_json::from_slice::<P>(data.as_ref()).map_err(|err| anyhow!("Invalid payload: {}", err))
 }

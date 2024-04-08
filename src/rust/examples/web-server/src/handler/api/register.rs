@@ -1,7 +1,7 @@
 use super::*;
 
 #[derive(Deserialize, Serialize)]
-#[serde(rename_all="camelCase")]
+#[serde(rename_all = "camelCase")]
 pub struct PayloadRegister {
     pub public_key: String,
     pub timestamp: String,
@@ -9,7 +9,7 @@ pub struct PayloadRegister {
 }
 
 #[derive(Serialize)]
-#[serde(rename_all="camelCase")]
+#[serde(rename_all = "camelCase")]
 pub struct ResponseRegister {
     pub uuid: String,
     pub welcome_message: String,
@@ -25,16 +25,14 @@ impl EndpointAPI for Register {
         let public_key = PublicKey::from_hex(payload.public_key.as_bytes())?;
         let signature = Signature::from_hex(get_header(head, "signature")?)?;
 
-        SESSIONLESS.get()
+        SESSIONLESS
+            .get()
             .ok_or_else(|| anyhow!("Sessionless was not initialized!"))?
             .verify(body, &public_key, &signature)
             .map_err(|err| anyhow!("Failed to verify the payload: {}", err))?;
 
         let uuid = Sessionless::generate_uuid().to_string();
-        let _ = DATABASE.lock().await.insert(
-            uuid.clone(),
-            public_key,
-        );
+        let _ = DATABASE.lock().await.insert(uuid.clone(), public_key);
 
         builder.status = 200;
         builder.set_body(ResponseRegister {
