@@ -1,5 +1,5 @@
-use super::*;
 use super::error::*;
+use super::*;
 
 // ------------ PRIMITIVES ------------
 impl IntoHex for &[u8] {
@@ -62,7 +62,10 @@ impl IntoHex for uuid::Uuid {
         self.as_bytes().as_slice().to_hex()
     }
 
-    fn into_hex(self) -> String where Self: Sized {
+    fn into_hex(self) -> String
+    where
+        Self: Sized,
+    {
         self.into_bytes().as_slice().to_hex()
     }
 }
