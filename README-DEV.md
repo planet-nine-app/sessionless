@@ -126,7 +126,7 @@ const signature = payload.signature;
 
 const publicKey = payload.publicKey;
 
-const message = getMessageForPayload(payload); // This is left to the implementer. getMessage should return the message signed on the client.
+const message = getMessageForPayload(payload); // [This is left to the implementer](#a note about messages). getMessage should return the message signed on the client.
 
 if(sessionless.verifySignature(message, signature, publicKey)) {
   const uuid = sessionless.generateUUID();
@@ -156,6 +156,15 @@ Private key recovery is important, but in a primary system you have options:
 
 1. You can implement username and password recovery, Single sign-on (SSO), or private key cold storage.
 2. You can opt not to persist a user beyond a single device. 
+
+### A note about messages
+
+Some care is necessary when implementing messages in a Sessionless system. 
+Different methods of creating strings from data have different implementations in different languages and platforms.
+The most widely used serialization type for HTTP requests, JSON, for example does not have guaranteed ordering in different languages.
+This means you may have to construct messages as strings directly in order to get your clients and servers to agree.
+
+If you're building a server that expects to see many different clients in many different languages, you'll likely want to establish some protocol for creating messages, and/or create SDKs for clients to take the guesswork away from implementers.
 
 ## Secondary systems
 
