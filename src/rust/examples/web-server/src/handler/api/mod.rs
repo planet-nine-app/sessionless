@@ -1,8 +1,12 @@
+mod associate;
 mod cool_stuff;
 mod register;
+mod value;
 
+pub use associate::*;
 pub use cool_stuff::*;
 pub use register::*;
+pub use value::*;
 
 use crate::response::Builder;
 use crate::SESSIONLESS;
@@ -14,11 +18,6 @@ use serde::de::DeserializeOwned;
 use sessionless::hex::FromHex;
 use sessionless::{PublicKey, Sessionless, Signature};
 use std::collections::HashMap;
-use tokio::sync::Mutex;
-
-lazy_static! {
-    static ref DATABASE: Mutex<HashMap<String, PublicKey>> = Mutex::new(HashMap::new());
-}
 
 pub trait EndpointAPI {
     async fn handle(head: &Parts, body: Incoming, builder: &mut Builder) -> anyhow::Result<()>;
@@ -30,6 +29,20 @@ fn get_header<'a>(head: &'a Parts, key: &str) -> anyhow::Result<&'a str> {
         .ok_or_else(|| anyhow!("Missing 'signature' header!"))?
         .to_str()
         .map_err(|err| anyhow!("Invalid 'signature' header: {}", err))
+}
+
+fn get_query_params(head: &Parts) -> HashMap<String, String> {
+    let params: HashMap<String, String> = head
+        .uri
+        .query()
+        .map(|v| {
+            url::form_urlencoded::parse(v.as_bytes())
+                .into_owned()
+                .collect()
+        })
+        .unwrap_or_else(HashMap::new);
+
+    params
 }
 
 async fn load_payload<P: DeserializeOwned>(data: impl AsRef<[u8]>) -> anyhow::Result<P> {

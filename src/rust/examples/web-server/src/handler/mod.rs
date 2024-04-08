@@ -22,6 +22,8 @@ pub async fn service(
     let api_result = match path {
         "/register" => Register::handle(&head, body, &mut builder).await,
         "/cool-stuff" => CoolStuff::handle(&head, body, &mut builder).await,
+        "/associate" => Associate::handle(&head, body, &mut builder).await,
+        "/value" => Value::handle(&head, body, &mut builder).await,
         _ => {
             if resources::load(&head, body, &mut builder).await.is_ok() {
                 return Ok(builder.build());

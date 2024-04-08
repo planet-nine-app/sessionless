@@ -1,9 +1,10 @@
 use super::*;
+use crate::database::Database;
 
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PayloadRegister {
-    pub public_key: String,
+    pub pub_key: String,
     pub timestamp: String,
     pub entered_text: String,
 }
@@ -22,7 +23,7 @@ impl EndpointAPI for Register {
         let body = &*body.collect().await?.to_bytes();
         let payload = load_payload::<PayloadRegister>(body).await?;
 
-        let public_key = PublicKey::from_hex(payload.public_key.as_bytes())?;
+        let public_key = PublicKey::from_hex(payload.pub_key.as_bytes())?;
         let signature = Signature::from_hex(get_header(head, "signature")?)?;
 
         SESSIONLESS
@@ -32,7 +33,7 @@ impl EndpointAPI for Register {
             .map_err(|err| anyhow!("Failed to verify the payload: {}", err))?;
 
         let uuid = Sessionless::generate_uuid().to_string();
-        let _ = DATABASE.lock().await.insert(uuid.clone(), public_key);
+        Database::save_user(uuid.clone(), public_key).await;
 
         builder.status = 200;
         builder.set_body(ResponseRegister {

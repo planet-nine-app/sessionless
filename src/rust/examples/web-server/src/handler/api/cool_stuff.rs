@@ -1,4 +1,5 @@
 use super::*;
+use crate::database::Database;
 
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -21,11 +22,8 @@ impl EndpointAPI for CoolStuff {
         let body = &*body.collect().await?.to_bytes();
         let payload = load_payload::<PayloadCoolStuff>(body).await?;
 
-        let public_key = DATABASE
-            .lock()
+        let public_key = Database::get_user_pub_key(&payload.uuid)
             .await
-            .get(&payload.uuid)
-            .copied()
             .ok_or_else(|| anyhow!("User {} not found!", payload.uuid))?;
 
         let signature = Signature::from_hex(get_header(head, "signature")?)?;
