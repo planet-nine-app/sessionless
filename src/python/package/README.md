@@ -53,6 +53,6 @@ signature = sessionless.sign_message(msg)
 Users can verify messages and signatures to ensure data integrity, authenticity, and non-repudiation. Users will pass a signature, message, and an encrypted public key as parameters. If public key is not provided, a public key will be generated from the instance's private key.
 ```python
 res = sessionless.verify_signature(signature, msg) # Returns True
-res2 = sessionless.verify_signature(signature, msg, second_primary_key) #Returns False
+res2 = sessionless.verify_signature(signature, msg, second_primary_key) # Returns False
 ```
 

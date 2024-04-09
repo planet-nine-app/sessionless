@@ -65,6 +65,14 @@ class SessionlessSecp256k1Test(unittest.TestCase):
                 self.assertEqual(res4, False)
         
         
-        def test_associating_verification(self):
-                pass
+        def test_associating_message(self):
+                sl = SessionlessSecp256k1(PRIVATE_KEY_1)
+                sig = sl.sign_message(MSG)
+                
+                sl2 = SessionlessSecp256k1(PRIVATE_KEY_2)
+                sig2 = sl2.sign_message(MSG)
+                
+                res = sl.associate_message(sig, MSG, PUBLIC_KEY_1, sig2, MSG, PUBLIC_KEY_2)
+
+                self.assertEqual(res, True)
 
