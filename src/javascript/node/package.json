@@ -1,6 +1,6 @@
 {
   "name": "sessionless-node",
-  "version": "0.0.4",
+  "version": "0.0.9",
   "description": "Node implementation of the sessionless protocol",
   "main": "sessionless.js",
   "scripts": {

@@ -3,49 +3,18 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import chalk from 'chalk';
-import sessionless from '@zachbabb/sessionless-node';
+import sessionless from 'sessionless-node';
 import fs from 'fs';
 import { readFile } from 'node:fs/promises';
 import path from 'path';
 import url from 'url';
+import { getUser, saveUser } from './src/persistence/user.js';
+import { addRoutes } from './src/demo/demo.js';
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
-    credentials: true,
-  })
-);
-
-const saveUser = async (userUUID, publicKey) => {
-
- /**
-  * This is a contrived example for this example, which should be run locally. 
-  * In an actual implementation your user store should be a database.
-  */ 
-
-  try {
-    const usersString = await readFile('./users.json');
-    const users = JSON.parse(usersString);
-    users[userUUID] = publicKey;
-    fs.writeFileSync('./users.json', JSON.stringify(users));
-  } catch(err) {
-    let users = {};
-    users[userUUID] = publicKey;
-    fs.writeFileSync('./users.json', JSON.stringify(users), { flag: 'w' });
-  }
-};
-
-const getUserPublicKey = (userUUID) => {
-  const usersString = fs.readFileSync('./users.json');
-  const users = JSON.parse(usersString);
-  return users[userUUID];
-};
 
 app.use(expressSession({
   secret: 'foo bar baz',
@@ -76,20 +45,20 @@ const handleWebRegistration = async (req, res) => {
 
   req.session.user = keys.privateKey;
 
-  const userUUID = sessionless.generateUUID();
-  users[userUUID] = keys.publicKey;
+  const uuid = sessionless.generateUUID();
+  users[uuid] = keys.publicKey;
 
-  await saveUser(userUUID, keys.publicKey);
+  await saveUser(uuid, keys.publicKey);
 
   res.send({
-    userUUID,
+    uuid,
     welcomeMessage: "Welcome to Sessionless!"
   });
 };
 
 app.use(bodyParser.json());
 
-app.put('/register', async (req, res) => {
+app.post('/register', async (req, res) => {
   const payload = req.body;
   const signature = payload.signature;
 
@@ -97,32 +66,32 @@ app.put('/register', async (req, res) => {
     return handleWebRegistration(req, res);
   }
   
-  const publicKey = payload.publicKey; 
+  const pubKey = payload.pubKey; 
   
   const message = JSON.stringify({ 
-    publicKey, 
+    pubKey, 
     enteredText: payload.enteredText, 
     timestamp: payload.timestamp 
   });
 
-  if(sessionless.verifySignature(signature, message, publicKey)) {
-    const userUUID = sessionless.generateUUID();
-    await saveUser(userUUID, publicKey);
+  if(sessionless.verifySignature(signature, message, pubKey)) {
+    const uuid = sessionless.generateUUID();
+    await saveUser(uuid, pubKey);
     const user = {
-      userUUID,
+      uuid,
       welcomeMessage: "Welcome to this example!"
     };
-    console.log(chalk.green(`user registered with userUUID: ${userUUID}`));
+    console.log(chalk.blue(`\n\nuser registered with uuid: ${uuid}`));
     res.send(user);
   } else {
     console.log(chalk.red('unverified!'));
   }
 });
 
-app.put('/cool-stuff', async (req, res) => {
+app.post('/cool-stuff', async (req, res) => {
   const payload = req.body;
   const message = JSON.stringify({ coolness: payload.coolness, timestamp: payload.timestamp });
-  const publicKey = getUserPublicKey(payload.userUUID); 
+  const publicKey = getUserPublicKey(payload.uuid); 
   const signature = payload.signature || (await webSignature(req, message));
 
   if(sessionless.verifySignature(signature, message, publicKey)) {
@@ -133,9 +102,11 @@ app.put('/cool-stuff', async (req, res) => {
   return res.send({error: 'auth error'});
 });
 
+addRoutes(app);
+
 app.use(express.static('../web'));
 
-app.listen(3000);
+app.listen(3001);
 
 
 
