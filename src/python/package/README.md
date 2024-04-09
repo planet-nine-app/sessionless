@@ -19,20 +19,20 @@ pip install sessionless
 To use this package, please call a new instance of the SessionlessSecp256k1 class. Users can default to providing a private key within the class constructor. If no key is provided, a key will be randomly generated for the user.
 
 ```python
-#This will generate a random private key
-#Passing a private key in hex format within the constructor will assign the value as an instance private key
+# This will generate a random private key
+# Passing a private key in hex format within the constructor will assign the value as an instance private key
 sessionless = SessionlessSecp256k1()
 ```
 
 ### Retrieving the private key
 Users will need to supply methods to retrieve the key. If methods are not supplied, the private key will not be returned. This is to uphold security practices.
 ```python
-sessionless.get_private_key(saveKeys(), getKeys()) #This will return the encrypted private key
+sessionless.get_private_key(saveKeys(), getKeys()) # This will return the encrypted private key
 ```
 Accessing the private key by calling the parameter will throw an attribute error. 
 
 ```python
-sessionless.__private_key #AttributeError: 'SessionlessSecp256k1' object has no attribute '__private_key'. Did you mean: 'get_private_key'?
+sessionless.__private_key # AttributeError: 'SessionlessSecp256k1' object has no attribute '__private_key'. Did you mean: 'get_private_key'?
 ```
 ### Generating a public key
 Users can easily generate public keys from the private key.
@@ -56,3 +56,9 @@ res = sessionless.verify_signature(signature, msg) # Returns True
 res2 = sessionless.verify_signature(signature, msg, second_primary_key) # Returns False
 ```
 
+### Associating messages
+Sessionless is a practical implmentation of delegatable anonymous credentials. Users can verify that two messages are able to be associated using the associate_message() method. 
+```python
+res = sessionless.associate_message(primary_sig, primary_msg, primary_public_key, secondary_sig, secondary_msg, secondary_public_key) # Returns either True or False
+
+```
