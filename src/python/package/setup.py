@@ -1,8 +1,13 @@
 from setuptools import setup, find_packages
 
-VERSION = '0.0.1' 
+def read_markdown_file(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        markdown_content = file.read()
+    return markdown_content
+
+VERSION = '0.0.2' 
 DESCRIPTION = 'Sessionless is an attempt to make authentication handling easier for developers without traditional sessions.'
-LONG_DESCRIPTION = 'Sessionless is an authentication protocol that uses the cryptography employed by Bitcoin and Ethereum to authenticate messages sent between a client and a server. Within this protocol, you create and store a private key on the client and then use that key to sign messages; those messages are then verified by the server via the public key associated with the client. When you verify a message you also certify its provenance. Because no other secret need be shared between client and server, sessions are wholly unnecessary.'
+LONG_DESCRIPTION = read_markdown_file("./README.md")
 
 # Setting up
 setup(
@@ -12,8 +17,9 @@ setup(
         author_email="zach@planetnine.app",
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
+        long_description_content_type="text/markdown",
         packages=find_packages(),
-        install_requires=[],
+        install_requires=["secp256k1", "uuid"],
         keywords=['authentication', 'cryptography', 'authenticate'],
         classifiers= [
             "Development Status :: 3 - Alpha",
