@@ -41,18 +41,27 @@ class SessionlessSecp256k1():
         except Exception as e:
             raise ValueError("Value not provided in correct format. Internal error message: " + e)
         
-    def verify_signature(self, signature, msg):
+    def verify_signature(self, signature, msg, public_key_hex=None):
         try:
             if not isinstance(msg, bytes):
                 msg = pickle.dumps(msg)
             sig = bytes.fromhex(signature)
-            signature = self.__private_key.pubkey.ecdsa_deserialize_compact(sig)
-            return self.__private_key.pubkey.ecdsa_verify(msg, signature)
+            if public_key_hex is not None:
+                public_key = secp256k1.PublicKey()
+                public_key.deserialize(bytes.fromhex(public_key_hex))
+            else:
+                public_key = self.__private_key.pubkey
+            signature = public_key.ecdsa_deserialize_compact(sig)
+            return public_key.ecdsa_verify(msg, signature)
         except Exception as e:
-            return ValueError("Error with parameters. Please ensure values are provided in correct format. Internal error message: " + e)
+            raise ValueError("Error with parameters. Please ensure values are provided in correct format. Internal error message: " + e)
     
-    def associate_message(self, primarySignature, primaryMessage, primaryPublicKey, secondarySignature, secondaryMessage, secondaryPublicKey ):
+    def associate_message(self, primary_sig, primary_msg, primary_public_key, secondary_sig, secondary_msg, secondary_public_key ):
         try:
-            return (self.verifySignature(primarySignature, primaryMessage, primaryPublicKey) and self.verifySignature(secondarySignature, secondaryMessage, secondaryPublicKey))
+            return (self.verifySignature(primary_sig, primary_msg, primary_public_key) and self.verifySignature(secondary_sig, secondary_msg, secondary_public_key))
         except Exception as e:
-            pass
+            raise ValueError("Error with parameters. Please ensure values are provided in correct format. Internal error message: " + e)
+
+
+
+
