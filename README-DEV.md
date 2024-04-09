@@ -126,7 +126,7 @@ const signature = payload.signature;
 
 const publicKey = payload.publicKey;
 
-const message = getMessageForPayload(payload); // This is left to the implementer. getMessage should return the message signed on the client.
+const message = getMessageForPayload(payload); // [This is left to the implementer](#a note about messages). getMessage should return the message signed on the client.
 
 if(sessionless.verifySignature(message, signature, publicKey)) {
   const uuid = sessionless.generateUUID();
@@ -156,6 +156,15 @@ Private key recovery is important, but in a primary system you have options:
 
 1. You can implement username and password recovery, Single sign-on (SSO), or private key cold storage.
 2. You can opt not to persist a user beyond a single device. 
+
+### A note about messages
+
+Some care is necessary when implementing messages in a Sessionless system. 
+Different methods of creating strings from data have different implementations in different languages and platforms.
+The most widely used serialization type for HTTP requests, JSON, for example does not have guaranteed ordering in different languages.
+This means you may have to construct messages as strings directly in order to get your clients and servers to agree.
+
+If you're building a server that expects to see many different clients in many different languages, you'll likely want to establish some protocol for creating messages, and/or create SDKs for clients to take the guesswork away from implementers.
 
 ## Secondary systems
 
@@ -239,6 +248,46 @@ The following criteria will be used to determine whether to merge or not:
 
 * Is the crypto library used well known for that language and actively maintained?
 * Has the README been updated for that specific language?
+
+### Adding an example
+
+Example servers should handle five routes:
+
+* `POST /register`: creates a new user and generates a uuid
+* `POST /cool-stuf`: an enpoint to trigger some behavior in an authorized client
+* `POST /associate`: the endpoint for associating keys
+* `POST /value`: the endpoint for *other* language clients to call after associated to set a value
+* `GET /value`: the endpoint to retrieve the set value
+
+It's left to the implementer to decide the payloads for these endpoints, and how their messages are constructed for signing.
+
+To handle these five routes, you'll have to add some sort of persistence. 
+Writing to a file is definitely ok, but if your platform has some sort of built in data store, that's fine too.
+The model isn't hard, but it needs to handle mapping associated keys. 
+
+A simple approach is to define a user model like so (written here in pseudocode):
+
+```
+object User {
+  uuid: string
+  pubKey: string
+  associatedUsers: map/dictionary/object/table/etc<AssociatedUser>
+  value: string
+}
+```
+
+and an associated user model:
+
+```
+object AssociatedUser {
+  uuid: string
+  pubKey: string
+}
+```
+
+Then use the associated user's `uuid` as the key on the `associatedUsers` map on a user.
+Then when an associated user sends a request with their `uuid`, you can look up their public key.
+This is wildly inefficient at scale since you have to search all users to find the associated key, but for these examples is just fine.
 
 ## Further reading
 

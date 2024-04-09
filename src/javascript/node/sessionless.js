@@ -38,25 +38,28 @@ const getKeys = async () => {
 
 const sign = async (message) => {
   const { privateKey } = await getKeys();
-  const messageHash = keccak256(utf8ToBytes(message.slice(0, 32)));
+  const messageHash = keccak256(utf8ToBytes(message)).slice(32);
   const signatureAsBigInts = secp256k1.sign(messageHash, privateKey);
-  const signature = {
-    r: signatureAsBigInts.r.toString(16),
-    s: signatureAsBigInts.s.toString(16),
-    recovery: signatureAsBigInts.recovery
-  };
+  const signature = signatureAsBigInts.r.toString(16) + signatureAsBigInts.s.toString(16);
   return signature;
 };
 
-const verifySignature = (signature, message, publicKey) => {
-  const messageHash = keccak256(utf8ToBytes(message.slice(0,32)));
+const verifySignature = (sig, message, publicKey) => {
+  const messageHash = keccak256(utf8ToBytes(message)).slice(32);
   
+  let signature = {
+    r: sig.substring(0, 64),
+    s: sig.substring(64)
+  };
+
   let hex = signature.r;
   if (hex.length % 2) { 
     hex = '0' + hex; 
   }
 
   const bn = BigInt('0x' + hex);
+
+  signature.r = bn;
 
   let hex2 = signature.s;
   if (hex2.length % 2) { 
@@ -65,12 +68,10 @@ const verifySignature = (signature, message, publicKey) => {
 
   const bn2 = BigInt('0x' + hex2);
 
-  const signature2 = {
-    r: bn,
-    s: bn2
-  };
-  
-  const res = secp256k1.verify(signature2, messageHash, publicKey);
+  signature.r = bn;
+  signature.s = bn2;
+
+  const res = secp256k1.verify(signature, messageHash, publicKey);
   return res;
 };
 
