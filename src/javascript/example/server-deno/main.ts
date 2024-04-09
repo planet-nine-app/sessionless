@@ -1,7 +1,7 @@
 import sessionless from "npm:sessionless-node";
-console.log(sessionless);
-
-const kv = await Deno.openKv();
+import chalk from "npm:chalk";
+import { getUser, saveUser } from "./src/persistence/user.ts";
+import { associate, getValue, saveValue } from "./src/demo/demo.ts";
 
 const ResponseError = (code, error) => {
   return new Response(error, {
@@ -19,15 +19,16 @@ const dispatch = async (request: Request): Response | Error => {
   if(request.url.indexOf('cool-stuff') > -1) {
     return await doCoolStuff(request);
   }
-};
-
-const saveUser = async (userUUID, publicKey) => {
-  await kv.set([userUUID], publicKey);
-  await kv.set([publicKey], userUUID);
-};
-
-const getUser = async (userUUID) => {
-  return await kv.get([userUUID]);
+  if(request.url.indexOf('value') > -1) {
+    if(request.method === 'GET') {
+console.log("routing to get value");
+      return await getValue(request);
+    }
+    return await saveValue(request);
+  }
+  if(request.url.indexOf('associate') > -1) {
+    return await associate(request);
+  }
 };
 
 const register = async (request: Request): Response | Error => {
@@ -35,28 +36,31 @@ const register = async (request: Request): Response | Error => {
   const signature = payload.signature;
 
   const message = JSON.stringify({
-    publicKey: payload.publicKey,
+    pubKey: payload.pubKey,
     enteredText: payload.enteredText,
     timestamp: payload.timestamp
   });
 
-  if(!signature || !sessionless.verifySignature(signature, message, payload.publicKey)) {
+  if(!signature || !sessionless.verifySignature(signature, message, payload.pubKey)) {
     return ResponseError(401, 'Auth error');
   }
 
-  const userUUID = sessionless.generateUUID();
-  await saveUser(userUUID, payload.publicKey);
-  return {userUUID, welcomeMessage: "Welcome to Sessionless"};
+  const uuid = sessionless.generateUUID();
+  await saveUser(uuid, payload.pubKey);
+
+  console.log(chalk.green(`\n\nuser registered with uuid: ${uuid}`));
+
+  return {uuid, welcomeMessage: "Welcome to Sessionless"};
 };
 
 const doCoolStuff = async (request: Request): Response | Error => {
   const payload = await request.json();
   const signature = payload.signature;
 
-  const user = await getUser(payload.userUUID);
+  const user = await getUser(payload.uuid);
 
   const message = JSON.stringify({
-    userUUID: payload.userUUID,
+    uuid: payload.uuid,
     coolness: payload.coolness,
     timestamp: payload.timestamp
   });
@@ -69,12 +73,7 @@ const doCoolStuff = async (request: Request): Response | Error => {
 };
 
 Deno.serve({port: 3000}, async (request: Request) => {
-console.log(request);
-  if((request.method !== "POST" && request.method !== "PUT") || !request.body) {
-    return ResponseError(404, "Method not supported");
-  }
   const res = await dispatch(request);
-console.log(res);
   return new Response(JSON.stringify(res), {
     headers: {
       "content-type": "application/json; charset=utf-8",

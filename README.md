@@ -8,6 +8,9 @@
 ## Sessionless
 
 *Sessionless* is an attempt to make authentication handling easier for developers and users, while also enabling interesting behavior not possible with traditional sessions.
+No emails, no passwords, and no sessions, just establish auth and get going.
+
+[Here is a simple video of what Sessionless can do.]
 
 With Sessionless, and any subesequent open source projects I start, I'm trying to make them accessible to all parts of the tech industry. 
 Right now that means focusing on dev, UX, and product, but qa, analytics, customer success, etc. are all welcome.
@@ -22,3 +25,5 @@ This is very much a wip, and, as far as I know, not something that there's an es
 
 [README-DEV]: ./README-DEV.md
 [README-UX]: ./README-UX.md
+
+[Here is a simple video of what Sessionless can do.]: https://www.planetnineapp.com/sessionless-demo-1
