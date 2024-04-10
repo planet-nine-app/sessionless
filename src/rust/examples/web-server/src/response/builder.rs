@@ -1,10 +1,10 @@
-use std::borrow::Cow;
+use erased_serde::Serialize;
 use http_body_util::Full;
 use hyper::body::Bytes;
 use hyper::header::CONTENT_TYPE;
-use erased_serde::Serialize;
 use hyper::http::{HeaderName, HeaderValue};
 use hyper::Response;
+use std::borrow::Cow;
 
 static JSON_EMPTY: &str = "{}";
 
@@ -17,8 +17,7 @@ pub struct Builder {
 
 impl Builder {
     pub fn new() -> Self {
-        let builder = hyper::Response::builder()
-            .header(CONTENT_TYPE, "application/json");
+        let builder = hyper::Response::builder().header(CONTENT_TYPE, "application/json");
 
         Self {
             builder,
@@ -53,21 +52,26 @@ impl Builder {
     }
 
     pub fn build(mut self) -> Response<Full<Bytes>> {
-        self.builder = self.builder
-            .status(self.status);
+        self.builder = self.builder.status(self.status);
 
         if let Some(body_raw) = self.body_raw {
-            return self.builder.body(Full::new(match body_raw {
-                Cow::Borrowed(data) => Bytes::from_static(data),
-                Cow::Owned(data) => Bytes::from(data),
-            })).unwrap();
+            return self
+                .builder
+                .body(Full::new(match body_raw {
+                    Cow::Borrowed(data) => Bytes::from_static(data),
+                    Cow::Owned(data) => Bytes::from(data),
+                }))
+                .unwrap();
         }
 
-        let body_json = self.body.map(|obj| {
-            serde_json::to_string(obj.as_ref())
-                .map(|json| Cow::Owned(json))
-                .unwrap_or_else(|_| JSON_EMPTY.into())
-        }).unwrap_or_else(|| JSON_EMPTY.into());
+        let body_json = self
+            .body
+            .map(|obj| {
+                serde_json::to_string(obj.as_ref())
+                    .map(Cow::Owned)
+                    .unwrap_or_else(|_| JSON_EMPTY.into())
+            })
+            .unwrap_or_else(|| JSON_EMPTY.into());
 
         let body = Full::new(match body_json {
             Cow::Borrowed(data) => Bytes::from_static(data.as_bytes()),

@@ -14,8 +14,8 @@ mod tests;
 /// Module for the hex encoding.
 pub mod hex;
 
-use secp256k1::{Secp256k1, All, Message, rand::rngs::OsRng};
-use sha3::{Digest, Keccak256, digest::{Output}, Keccak256Core};
+use secp256k1::{rand::rngs::OsRng, All, Message, Secp256k1};
+use sha3::{digest::Output, Digest, Keccak256, Keccak256Core};
 
 pub type Signature = secp256k1::ecdsa::Signature;
 pub type PrivateKey = secp256k1::SecretKey;
@@ -80,7 +80,7 @@ impl Sessionless {
     /// Constructs a signature for `message` using the context's secret key.
     pub fn sign(&self, message: impl AsRef<[u8]>) -> Signature {
         let message_hash = self.hash_message(message);
-        self.ctx.sign_ecdsa(&message_hash, &self.private_key).into()
+        self.ctx.sign_ecdsa(&message_hash, &self.private_key)
     }
 
     /// Checks if the `signature` is valid for the `message` using the `public key`
@@ -92,7 +92,7 @@ impl Sessionless {
         signature: &Signature,
     ) -> Result<(), secp256k1::Error> {
         let message_hash = self.hash_message(message);
-        self.ctx.verify_ecdsa(&message_hash, &signature, public_key)
+        self.ctx.verify_ecdsa(&message_hash, signature, public_key)
     }
 
     /// Returns the context's public key which can be shared publicly.
@@ -117,6 +117,6 @@ impl Sessionless {
         let digest: Output<Keccak256Core> = hasher.finalize();
 
         // Won't panic if Keccak256 was used to hash the message.
-        Message::from_digest_slice(&*digest).unwrap()
+        Message::from_digest_slice(&digest).unwrap()
     }
 }

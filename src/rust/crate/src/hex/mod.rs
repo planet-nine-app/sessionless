@@ -11,7 +11,10 @@ use hex_core::*;
 pub trait IntoHex {
     fn to_hex(&self) -> String;
 
-    fn into_hex(self) -> String where Self: Sized {
+    fn into_hex(self) -> String
+    where
+        Self: Sized,
+    {
         self.to_hex()
     }
 }
@@ -20,6 +23,7 @@ pub trait IntoHex {
 pub trait FromHex {
     type Error: std::error::Error;
 
-    fn from_hex(bytes: impl AsRef<[u8]>) -> Result<Self, HexError<Self::Error>> where
+    fn from_hex(bytes: impl AsRef<[u8]>) -> Result<Self, HexError<Self::Error>>
+    where
         Self: Sized;
 }

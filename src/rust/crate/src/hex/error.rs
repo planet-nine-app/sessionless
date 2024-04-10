@@ -1,5 +1,5 @@
-use std::fmt::{Debug, Display, Formatter};
 use super::*;
+use std::fmt::{Debug, Display, Formatter};
 
 pub use hex_core::FromHexError;
 

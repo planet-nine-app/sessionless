@@ -7,18 +7,12 @@ fn self_check() {
     let sl = Sessionless::new();
     let sig = sl.sign(message);
 
-    sl.verify(
-        message,
-        sl.public_key(),
-        &sig
-    ).expect("Couldn't verify the self signed message!");
+    sl.verify(message, sl.public_key(), &sig)
+        .expect("Couldn't verify the self signed message!");
 
     let message_tampered = "tset";
-    sl.verify(
-        message_tampered,
-        sl.public_key(),
-        &sig
-    ).expect_err("Verified tampered self signed message!");
+    sl.verify(message_tampered, sl.public_key(), &sig)
+        .expect_err("Verified tampered self signed message!");
 
     let sl2 = Sessionless::from_private_key(*sl.private_key());
     sl2.verify(
@@ -38,18 +32,14 @@ fn peer_check() {
     let sig = sender.sign(message);
     let pub_key = sender.public_key();
 
-    receiver.verify(
-        message,
-        pub_key,
-        &sig
-    ).expect("Receiver couldn't verify message signed by the Sender!");
+    receiver
+        .verify(message, pub_key, &sig)
+        .expect("Receiver couldn't verify message signed by the Sender!");
 
     let message_tampered = "<SOME TAMPERED PAYLOAD>";
-    receiver.verify(
-        message_tampered,
-        pub_key,
-        &sig
-    ).expect_err("Receiver verify tampered message signed by the Sender!");
+    receiver
+        .verify(message_tampered, pub_key, &sig)
+        .expect_err("Receiver verify tampered message signed by the Sender!");
 }
 
 #[test]
