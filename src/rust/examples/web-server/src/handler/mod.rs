@@ -3,23 +3,27 @@ mod resources;
 
 use api::*;
 
-use std::convert::Infallible;
+use crate::response;
 use anyhow::anyhow;
 use http_body_util::Full;
 use hyper::body::{Bytes, Incoming};
-use hyper::Response;
 use hyper::http::request::Parts;
-use crate::response;
+use hyper::Response;
+use std::convert::Infallible;
 
-pub async fn service(request: hyper::Request<Incoming>) -> Result<Response<Full<Bytes>>, Infallible> {
+pub async fn service(
+    request: hyper::Request<Incoming>,
+) -> Result<Response<Full<Bytes>>, Infallible> {
     let mut builder = response::Builder::new();
 
     let (head, body) = request.into_parts();
 
     let path = head.uri.path();
     let api_result = match path {
-        "/register" => register(&head, body, &mut builder).await,
-        "/cool-stuff" => cool_stuff(&head, body, &mut builder).await,
+        "/register" => Register::handle(&head, body, &mut builder).await,
+        "/cool-stuff" => CoolStuff::handle(&head, body, &mut builder).await,
+        "/associate" => Associate::handle(&head, body, &mut builder).await,
+        "/value" => Value::handle(&head, body, &mut builder).await,
         _ => {
             if resources::load(&head, body, &mut builder).await.is_ok() {
                 return Ok(builder.build());
