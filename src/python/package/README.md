@@ -15,50 +15,51 @@ pip install sessionless
 
 ## Development 
 
-### Generating a private key
-To use this package, please call a new instance of the SessionlessSecp256k1 class. Users can default to providing a private key within the class constructor. If no key is provided, a key will be randomly generated for the user.
+### Getting started
+To use this package, please call a new instance of the SessionlessSecp256k1 class. Users will need to provide a get key method. This method will be referenced later on to obtain key values.
 
 ```python
-# This will generate a random private key
-# Passing a private key in hex format within the constructor will assign the value as an instance private key
-sessionless = SessionlessSecp256k1()
+# This will create an instance of the SessionlessSecp256k1 class 
+# Users must pass a method to retrieve keys.
+def get_key():
+    pass
+sessionless = SessionlessSecp256k1(get_key)
 ```
 
-### Retrieving the private key
-Users will need to supply methods to retrieve the key. If methods are not supplied, the private key will not be returned. This is to uphold security practices.
+### Generating private and public keys
+The generate keys method will generate a private key and a public key. To use the method, users must provide a method to save the keys. 
 ```python
-sessionless.generate_keys(saveKeys(), getKeys()) # This will return the encrypted private key
-```
-Accessing the private key by calling the parameter will throw an attribute error. 
-
-```python
-sessionless.__private_key # AttributeError: 'SessionlessSecp256k1' object has no attribute '__private_key'. Did you mean: 'get_private_key'?
-```
-### Generating a public key
-Users can easily generate public keys from the private key.
-```python
-public_key = sessionless.get_public_key_from_private_key()
+def save_key():
+    pass
+private_key, public_key = sessionless.generate_keys(save_key) # This will return the encrypted private key
 ```
 
 ### Signing messages
-Users can easily sign messages by providing a message to the sign_message() method. Messages do not need to be encoded before passing them to the method. The method will return an encrypted signature that users can store as needed.
+Users can easily sign messages by providing a message to the sign method. Messages do not need to be encoded before passing them to the method. The method will return an encrypted signature that users can store as needed.
 ```python
 msg = {
 "message": "The weather is so nice today!"
 }
-signature = sessionless.sign_message(msg)
+signature = sessionless.sign(msg)
 ```
 
 ### Verifying messages
 Users can verify messages and signatures to ensure data integrity, authenticity, and non-repudiation. Users will pass a signature, message, and an encrypted public key as parameters. If public key is not provided, a public key will be generated from the instance's private key.
 ```python
-res = sessionless.verify_signature(signature, msg) # Returns True
-res2 = sessionless.verify_signature(signature, msg, second_primary_key) # Returns False
+res = sessionless.verify_signature(signature, msg, public_key) # Returns True
+res2 = sessionless.verify_signature(first_signature, first_msg, second_primary_key) # Returns False
 ```
 
 ### Associating messages
-Sessionless is a practical implmentation of delegatable anonymous credentials. Users can verify that two messages are able to be associated using the associate_message() method. 
+Users can verify that two messages can be associated using the associate method. 
 ```python
-res = sessionless.associate_message(primary_sig, primary_msg, primary_public_key, secondary_sig, secondary_msg, secondary_public_key) # Returns either True or False
+res = sessionless.associate(primary_sig, primary_msg, primary_public_key, secondary_sig, secondary_msg, secondary_public_key) # Returns either True or False
+
+```
+
+### Generating UUIDs [Universally Unique Identifiers]
+Users can generate unique identifiers as needed by calling the generate UUID method.
+```python
+uuid = sessionless.generate_UUID() # Returns UUID
 
 ```
