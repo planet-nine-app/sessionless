@@ -29,7 +29,7 @@ class SessionlessSecp256k1():
             if inspect.iscoroutinefunction(self.get_keys):
                 private_key_hex = await self.get_keys()
             else: 
-                private_key_hex = await self.get_keys()
+                private_key_hex = self.get_keys()
             private_key = secp256k1.PrivateKey()
             assert private_key.deserialize(private_key_hex) == private_key.private_key
             deserializedSig = private_key.ecdsa_sign(msg)
