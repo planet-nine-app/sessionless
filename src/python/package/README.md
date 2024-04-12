@@ -27,7 +27,7 @@ sessionless = SessionlessSecp256k1()
 ### Retrieving the private key
 Users will need to supply methods to retrieve the key. If methods are not supplied, the private key will not be returned. This is to uphold security practices.
 ```python
-sessionless.get_private_key(saveKeys(), getKeys()) # This will return the encrypted private key
+sessionless.generate_keys(saveKeys(), getKeys()) # This will return the encrypted private key
 ```
 Accessing the private key by calling the parameter will throw an attribute error. 
 
