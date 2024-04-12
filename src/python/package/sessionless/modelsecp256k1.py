@@ -12,15 +12,15 @@ class SessionlessSecp256k1():
     def generate_UUID(self):
         return uuid.uuid4().hex
     
-    def generate_keys(self, saveKeys):
+    def generate_keys(self, save_key):
         try: 
-            if callable(saveKeys):
+            if callable(save_key):
                 private_key_obj = secp256k1.PrivateKey()
                 private_key = private_key_obj.serialize()
                 public_key = private_key_obj.pubkey.serialize().hex()
                 return private_key, public_key
         except Exception:
-            raise TypeError("No default secure storage in python. Please provide a saveKeys and getKeys function to store private key. Internal error message: ")
+            raise TypeError("No default secure storage in python. Please provide a callable method to store private key.")
     
     async def sign(self, msg):
         try:
@@ -36,7 +36,7 @@ class SessionlessSecp256k1():
             sig = private_key.ecdsa_serialize_compact(deserialized_sig)
             return sig.hex()
         except Exception:
-            raise ValueError("Value not provided in correct format. Internal error message: ")
+            raise ValueError("Error with parameters. Please ensure values are provided in correct format.")
         
     def verify_signature(self, signature, msg, public_key_hex):
         try:
@@ -49,10 +49,10 @@ class SessionlessSecp256k1():
             signature = public_key.ecdsa_deserialize_compact(sig)
             return public_key.ecdsa_verify(msg, signature)
         except Exception:
-            raise ValueError("Error with parameters. Please ensure values are provided in correct format. Internal error message: ")
+            raise ValueError("Error with parameters. Please ensure values are provided in correct format.")
     
     def associate(self, primary_sig, primary_msg, primary_public_key, secondary_sig, secondary_msg, secondary_public_key ):
         try:
             return (self.verify_signature(primary_sig, primary_msg, primary_public_key) and self.verify_signature(secondary_sig, secondary_msg, secondary_public_key))
         except Exception:
-            raise ValueError("Error with parameters. Please ensure values are provided in correct format. Internal error message: ")
+            raise ValueError("Error with parameters. Please ensure values are provided in correct format.")
