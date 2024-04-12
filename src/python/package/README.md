@@ -4,7 +4,7 @@
 
 ## About
 
-[Sessionless](https://sessionless.org/) is an open source authentication protocol that uses the cryptography employed by Bitcoin and Ethereum to authenticate messages sent between a client and a server. Within this protocol, you create and store a private key on the client and then use that key to sign messages; those messages are then verified by the server via the public key associated with the client. When you verify a message you also certify its provenance. Because no other secret need be shared between client and server, sessions are wholly unnecessary.
+[Sessionless](https://sessionless.org/) is an open-source authentication protocol that uses the cryptography employed by Bitcoin and Ethereum to authenticate messages sent between a client and a server. Within this protocol, you create and store a private key on the client and then use that key to sign messages; the server then verifies those messages via the public key associated with the client. When you verify a message you also certify its provenance. Sessions are wholly unnecessary because no other secret needs to be shared between client and server.
 
 ## Getting Started 
 
@@ -31,7 +31,7 @@ The generate keys method will generate a private key and a public key. To use th
 ```python
 def save_key():
     pass
-private_key, public_key = sessionless.generate_keys(save_key) # This will return the encrypted private key
+private_key, public_key = sessionless.generate_keys(save_key) # This will return the encrypted private and public key
 ```
 
 ### Signing messages
