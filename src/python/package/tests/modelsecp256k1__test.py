@@ -59,8 +59,13 @@ class SessionlessSecp256k1Test(unittest.TestCase):
         
         
         def test_associate(self):
-                sl = SessionlessSecp256k1(PRIVATE_KEY_1)
+                sl = SessionlessSecp256k1(getKey)
        
                 res = sl.associate(SIG_1, MSG, PUBLIC_KEY_1, SIG_2, MSG, PUBLIC_KEY_2)
 
                 self.assertEqual(res, True)
+
+        def test_generate_UUID(self):
+                sl = SessionlessSecp256k1(getKey)
+                uuid = sl.generate_UUID()
+                self.assertIsNotNone(uuid)
