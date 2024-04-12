@@ -32,8 +32,8 @@ class SessionlessSecp256k1():
                 private_key_hex = self.get_keys()
             private_key = secp256k1.PrivateKey()
             assert private_key.deserialize(private_key_hex) == private_key.private_key
-            deserializedSig = private_key.ecdsa_sign(msg)
-            sig = private_key.ecdsa_serialize_compact(deserializedSig)
+            deserialized_sig = private_key.ecdsa_sign(msg)
+            sig = private_key.ecdsa_serialize_compact(deserialized_sig)
             return sig.hex()
         except Exception:
             raise ValueError("Value not provided in correct format. Internal error message: ")
