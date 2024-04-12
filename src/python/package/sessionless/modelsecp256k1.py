@@ -9,12 +9,12 @@ class SessionlessSecp256k1():
     def __init__(self, get_keys):
         self.get_keys = get_keys
         
-    def generateUUID(self):
+    def generate_UUID(self):
         return uuid.uuid4().hex
     
-    def generate_keys(self, saveKeys, getKeys):
+    def generate_keys(self, saveKeys):
         try: 
-            if callable(saveKeys) and callable(getKeys):
+            if callable(saveKeys):
                 private_key_obj = secp256k1.PrivateKey()
                 private_key = private_key_obj.serialize()
                 public_key = private_key_obj.pubkey.serialize().hex()
