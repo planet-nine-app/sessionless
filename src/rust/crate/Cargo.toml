@@ -1,7 +1,11 @@
 [package]
 name = "sessionless"
 version = "0.1.0"
+authors = ["FssAy"]
 edition = "2021"
+description = "Implementation of the Sessionless protocol."
+repository = "https://github.com/planet-nine-app/sessionless"
+license = "MIT"
 
 [features]
 default = []
