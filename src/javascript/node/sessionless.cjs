@@ -14,18 +14,18 @@ const generateKeys = async (saveKeys, getKeys) => {
     throw new Error(`Since this can be run on any machine with node, there is no default secure storage. You will need to provide a saveKeys and getKeys function`);
   }
   const privateKey = utils_js.bytesToHex(secp256k1.secp256k1.utils.randomPrivateKey());
-  const publicKey = utils_js.bytesToHex(secp256k1.secp256k1.getPublicKey(privateKey));
+  const pubKey = utils_js.bytesToHex(secp256k1.secp256k1.getPublicKey(privateKey));
   saveKeys && (saveKeys instanceof AsyncFunction ? await saveKeys({
     privateKey,
-    publicKey
+    pubKey
   }) : saveKeys({
     privateKey,
-    publicKey
+    pubKey
   }));
   getKeysFromDisk = getKeys;
   return {
     privateKey,
-    publicKey
+    pubKey
   };
 };
 
@@ -45,7 +45,7 @@ const sign = async (message) => {
   return signature;
 };
 
-const verifySignature = (sig, message, publicKey) => {
+const verifySignature = (sig, message, pubKey) => {
   const messageHash = keccak_js.keccak256(utils_js.utf8ToBytes(message)).slice(32);
   
   let signature = {
@@ -72,7 +72,7 @@ const verifySignature = (sig, message, publicKey) => {
   signature.r = bn;
   signature.s = bn2;
 
-  const res = secp256k1.secp256k1.verify(signature, messageHash, publicKey);
+  const res = secp256k1.secp256k1.verify(signature, messageHash, pubKey);
   return res;
 };
 
