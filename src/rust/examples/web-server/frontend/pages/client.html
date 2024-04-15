@@ -64,6 +64,7 @@ Private Key: <a id="txt-private-key">N/A</a> <br>
             enteredText: 'Foo',
             timestamp: 'right now',
         }
+console.log(sign(JSON.stringify(payload)));
 
         await fetch(`${baseURL}/register`, {
             method: 'PUT',

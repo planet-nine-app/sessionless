@@ -72,7 +72,7 @@ const doCoolStuff = async (request: Request): Response | Error => {
   return {doubleCool: 'double cool'};
 };
 
-Deno.serve({port: 3000}, async (request: Request) => {
+Deno.serve({port: 3002}, async (request: Request) => {
   const res = await dispatch(request);
   return new Response(JSON.stringify(res), {
     headers: {
