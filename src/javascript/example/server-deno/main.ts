@@ -85,8 +85,6 @@ console.log(user.pubKey);
 };
 
 Deno.serve({port: 3002}, async (request: Request) => {
-console.log('got request');
-console.log(request);
   const res = await dispatch(request);
 console.log('got res');
 console.log(res);
