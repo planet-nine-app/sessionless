@@ -11,7 +11,7 @@ impl IntoHex for &[u8] {
 // ------------ SIGNATURE ------------
 impl IntoHex for Signature {
     fn to_hex(&self) -> String {
-        self.serialize_der().as_ref().to_hex()
+        self.serialize_compact().as_ref().to_hex()
     }
 }
 
@@ -20,7 +20,7 @@ impl FromHex for Signature {
 
     fn from_hex(bytes: impl AsRef<[u8]>) -> Result<Self, HexError<Self::Error>> {
         let data = decode(bytes.as_ref())?;
-        Signature::from_der(&data).map_err(HexError::Other)
+        Signature::from_compact(&data).map_err(HexError::Other)
     }
 }
 
