@@ -8,19 +8,21 @@ using namespace std;
 
 SessionlessKeys keys;
 
-SessionlessKeys getKeys() {
+SessionlessKeys getKeys()
+{
   return keys;
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[])
+{
   printf("hello world");
-  //SessionlessInterface *interface = new SessionlessInterface();
-  //sessionless = interface->makeSessionless();
-  //sessionless = makeSessionless();
+  // SessionlessInterface *interface = new SessionlessInterface();
+  // sessionless = interface->makeSessionless();
+  // sessionless = makeSessionless();
   Sessionless sessionless(getKeys);
   sessionless.generateKeys(keys);
-printf("\npublic key in main -> ");
-printf(keys.public_key);
+  printf("\npublic key in main -> ");
+  printf(keys.public_key);
   Signature signature;
   sessionless.sign("Here is a message", signature);
   printf("\nsignature in main -> ");
