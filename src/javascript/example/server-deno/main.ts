@@ -49,7 +49,7 @@ console.log('message: ' + message);
   if(!signature || !sessionless.verifySignature(signature, message, payload.pubKey)) {
 console.error('auth error');
     return ResponseError(403, 'Auth error');
-  }
+   }
 
 console.log('verified');
 
@@ -85,6 +85,8 @@ console.log(user.pubKey);
 };
 
 Deno.serve({port: 3002}, async (request: Request) => {
+console.log('got request');
+console.log(request);
   const res = await dispatch(request);
 console.log('got res');
 console.log(res);
