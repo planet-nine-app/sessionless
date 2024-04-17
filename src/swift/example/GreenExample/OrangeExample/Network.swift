@@ -79,10 +79,9 @@ class Network {
             """
         guard let signature = sessionless.sign(message: message) else { return }
         
-        let payload = """
-            {"pubKey":"\(publicKey)","enteredText":"\(enteredText)","timestamp":"\(timestamp)"}
-            """
-        guard let data = payload.data(using: .utf8) else { return }
+        guard let data = message.data(using: .utf8) else { return }
+        
+        print("data \(data)")
         
         print("signature: \(signature)")
         await Network.post(urlString: "\(baseURL)/register", headers: ["signature": signature], payload: data) { err, data in

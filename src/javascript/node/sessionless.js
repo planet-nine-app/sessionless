@@ -38,14 +38,14 @@ const getKeys = async () => {
 
 const sign = async (message) => {
   const { privateKey } = await getKeys();
-  const messageHash = keccak256(utf8ToBytes(message)).slice(32);
+  const messageHash = keccak256(utf8ToBytes(message));
   const signatureAsBigInts = secp256k1.sign(messageHash, privateKey);
   const signature = signatureAsBigInts.r.toString(16) + signatureAsBigInts.s.toString(16);
   return signature;
 };
 
 const verifySignature = (sig, message, pubKey) => {
-  const messageHash = keccak256(utf8ToBytes(message)).slice(32);
+  const messageHash = keccak256(utf8ToBytes(message));
   
   let signature = {
     r: sig.substring(0, 64),
