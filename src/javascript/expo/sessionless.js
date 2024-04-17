@@ -11,8 +11,7 @@ const keysToSaveString = 'EE305432-6349-44E8-AE9D-193071152FE7';
 
 const AsyncFunction = (async () => {}).constructor;
 
-const utf8ToBytes = (stri) => {
-    const str = stri.slice(0, 32);
+const utf8ToBytes = (str) => {
     return Uint8Array.from(Array.from(str).map(letter => letter.charCodeAt(0)));
 };
 
@@ -48,14 +47,14 @@ const getKeys = async () => {
 
 const sign = async (message) => {
   const { privateKey } = await getKeys();
-  const messageHash = keccak256(utf8ToBytes(message)).slice(32);
+  const messageHash = keccak256(utf8ToBytes(message));
   const signatureAsBigInts = secp256k1.sign(messageHash, privateKey);
   const signature = signatureAsBigInts.r.toString(16) + signatureAsBigInts.s.toString(16);
   return signature;
 };
 
 const verifySignature = (sig, message, pubKey) => {
-  const messageHash = keccak256(utf8ToBytes(message)).slice(32);
+  const messageHash = keccak256(utf8ToBytes(message));
 
   let signature = {
     r: sig.substring(0, 64),
