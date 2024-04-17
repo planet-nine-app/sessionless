@@ -3,8 +3,7 @@
   "packages": {
     "specifiers": {
       "npm:chalk": "npm:chalk@5.3.0",
-      "npm:sessionless-node": "npm:sessionless-node@0.10.0",
-      "npm:sessionless-node@^0.10.0": "npm:sessionless-node@0.10.0"
+      "npm:sessionless-node": "npm:sessionless-node@0.10.1"
     },
     "npm": {
       "@noble/curves@1.3.0": {
