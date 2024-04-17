@@ -81,6 +81,11 @@ class Network {
               let data = message.data(using: .utf8)
               else { return }
         
+        guard let data = message.data(using: .utf8) else { return }
+        
+        print("data \(data)")
+        
+        print("signature: \(signature)")
         await Network.post(urlString: "\(baseURL)/register", headers: ["signature": signature], payload: data) { err, data in
             callback(err, data)
         }
