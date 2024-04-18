@@ -8,7 +8,7 @@ This project is a deployable spring server for the sessionless protocol
 
 ---
 
-### api/user/create
+### /register
 ###  Parameters:
 Content-Type: application/json
 ```
@@ -36,7 +36,7 @@ Content-Type: application/json
 
 ---
 
-### api/message/verify
+### /do-cool-stuff
 ### Parameters:
 Content-Type: application/json
 ```
@@ -45,8 +45,8 @@ Content-Type: application/json
     "content": "My message",
     "signature": 
         [
-            7aa8e3512ea528bec690dbddb118425f9f1997bf87f87ada6b96cffe11730f03,
-            226397edd371fd7e8398651c956552f11c1d710a3988e42c02eb24b413a6f8f4
+            "7aa8e3512ea528bec690dbddb118425f9f1997bf87f87ada6b96cffe11730f03",
+            "226397edd371fd7e8398651c956552f11c1d710a3988e42c02eb24b413a6f8f4"
         ]
 }
 ```
