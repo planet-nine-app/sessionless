@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -19,7 +18,6 @@ import java.util.Map;
 
 
 @Controller
-@RequestMapping("/api/user")
 public class UserController {
     
     private final CreateUserUseCase createUserUseCase;
@@ -32,7 +30,7 @@ public class UserController {
         this.userDtoMapper = restUserDtoMapper;
     }
     
-    @PostMapping("/create")
+    @PostMapping("/register")
     public ResponseEntity<Object> createUser(@RequestBody RestUserDto restUserDto) {
         if (isValidPublicKey(restUserDto.publicKey())) {
             User user = createUserUseCase.createUser(userDtoMapper.map(restUserDto));
