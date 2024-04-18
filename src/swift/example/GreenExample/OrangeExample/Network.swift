@@ -77,9 +77,7 @@ class Network {
         let message = """
             {"pubKey":"\(publicKey)","enteredText":"\(enteredText)","timestamp":"\(timestamp)"}
             """
-        guard let signature = sessionless.sign(message: message),
-              let data = message.data(using: .utf8)
-              else { return }
+        guard let signature = sessionless.sign(message: message) else { return }
         
         guard let data = message.data(using: .utf8) else { return }
         
