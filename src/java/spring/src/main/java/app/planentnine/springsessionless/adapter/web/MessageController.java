@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/api/message")
 public class MessageController {
     
     private final VerifyMessageUseCase verifyMessageUseCase;
@@ -24,7 +23,7 @@ public class MessageController {
         this.messageDtoMapper = messageDtoMapper;
     }
     
-    @PostMapping("/verify")
+    @PostMapping("/do-cool-stuff")
     public ResponseEntity<String> verifyMessage(@RequestBody RestMessageDto messageDto){
         boolean verified = verifyMessageUseCase.verifyMessage(messageDtoMapper.map(messageDto));
         if (verified) {

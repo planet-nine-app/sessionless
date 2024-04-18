@@ -19,7 +19,6 @@ import java.util.Map;
 
 
 @Controller
-@RequestMapping("/api/user")
 public class UserController {
     
     private final CreateUserUseCase createUserUseCase;
@@ -32,7 +31,7 @@ public class UserController {
         this.userDtoMapper = restUserDtoMapper;
     }
     
-    @PostMapping("/create")
+    @PostMapping("/register")
     public ResponseEntity<Object> createUser(@RequestBody RestUserDto restUserDto) {
         if (isValidPublicKey(restUserDto.publicKey())) {
             User user = createUserUseCase.createUser(userDtoMapper.map(restUserDto));
