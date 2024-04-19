@@ -1,0 +1,16 @@
+{
+  "tasks": {
+    "dev": "deno run --watch main.ts"
+  },
+  "imports": {
+    "sessionless-node": "npm:sessionless-node@^0.0.9"
+  },
+  "deploy": {
+    "project": "e9be9e76-7080-4c82-bb79-877209d53626",
+    "exclude": [
+      "**/node_modules"
+    ],
+    "include": [],
+    "entrypoint": "main.ts"
+  }
+}

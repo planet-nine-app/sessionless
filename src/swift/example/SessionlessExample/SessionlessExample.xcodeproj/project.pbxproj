@@ -14,8 +14,6 @@
 		CA7059202B77530C00FBB238 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA70591F2B77530C00FBB238 /* Assets.xcassets */; };
 		CA7059232B77530C00FBB238 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7059222B77530C00FBB238 /* Preview Assets.xcassets */; };
 		CA70592D2B77530D00FBB238 /* SessionlessExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA70592C2B77530D00FBB238 /* SessionlessExampleTests.swift */; };
-		CA7059372B77530D00FBB238 /* SessionlessExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7059362B77530D00FBB238 /* SessionlessExampleUITests.swift */; };
-		CA7059392B77530D00FBB238 /* SessionlessExampleUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7059382B77530D00FBB238 /* SessionlessExampleUITestsLaunchTests.swift */; };
 		D45D8EB637ABA6EDD67AC489 /* Pods_SessionlessExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3DF7DFE101F0EDD7124E43D /* Pods_SessionlessExample.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,8 +49,6 @@
 		CA7059282B77530D00FBB238 /* SessionlessExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SessionlessExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA70592C2B77530D00FBB238 /* SessionlessExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionlessExampleTests.swift; sourceTree = "<group>"; };
 		CA7059322B77530D00FBB238 /* SessionlessExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SessionlessExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA7059362B77530D00FBB238 /* SessionlessExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionlessExampleUITests.swift; sourceTree = "<group>"; };
-		CA7059382B77530D00FBB238 /* SessionlessExampleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionlessExampleUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		CA8BF7412B7870DB00FED373 /* SessionlessExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SessionlessExample-Bridging-Header.h"; sourceTree = "<group>"; };
 		CA9D61AB2B7F416A001F5F84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CB36EBB57E910C89D4F5099A /* Pods-SessionlessExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionlessExample.release.xcconfig"; path = "Target Support Files/Pods-SessionlessExample/Pods-SessionlessExample.release.xcconfig"; sourceTree = "<group>"; };
@@ -106,7 +102,6 @@
 			children = (
 				CA70591A2B77530900FBB238 /* SessionlessExample */,
 				CA70592B2B77530D00FBB238 /* SessionlessExampleTests */,
-				CA7059352B77530D00FBB238 /* SessionlessExampleUITests */,
 				CA7059192B77530900FBB238 /* Products */,
 				2532207D633BB85A6351F1C0 /* Pods */,
 				E88AA95118B78EC2A28CA2FF /* Frameworks */,
@@ -150,15 +145,6 @@
 				CA70592C2B77530D00FBB238 /* SessionlessExampleTests.swift */,
 			);
 			path = SessionlessExampleTests;
-			sourceTree = "<group>";
-		};
-		CA7059352B77530D00FBB238 /* SessionlessExampleUITests */ = {
-			isa = PBXGroup;
-			children = (
-				CA7059362B77530D00FBB238 /* SessionlessExampleUITests.swift */,
-				CA7059382B77530D00FBB238 /* SessionlessExampleUITestsLaunchTests.swift */,
-			);
-			path = SessionlessExampleUITests;
 			sourceTree = "<group>";
 		};
 		E88AA95118B78EC2A28CA2FF /* Frameworks */ = {
@@ -427,8 +413,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA7059372B77530D00FBB238 /* SessionlessExampleUITests.swift in Sources */,
-				CA7059392B77530D00FBB238 /* SessionlessExampleUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
