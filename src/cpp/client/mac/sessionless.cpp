@@ -11,7 +11,7 @@
 
 using namespace std;
 
-SessionlessKeys Sessionless::generateKeys() {
+SessionlessKeys Sessionless::generateKeys(SessionlessKeys keys) {
 
   secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_NONE);
 
@@ -35,9 +35,7 @@ SessionlessKeys Sessionless::generateKeys() {
   while (1) {
 	  if (!private_key) {
 		  printf("Failed to generate randomness\n");
-      SessionlessKeys keys;
-      keys.public_key = "error";
-      keys.private_key = "error";
+                SessionlessKeys keys;
 		return keys;
 	    }
 	  if (secp256k1_ec_seckey_verify(ctx, private_key)) {
@@ -55,7 +53,6 @@ SessionlessKeys Sessionless::generateKeys() {
   printf("private\n");
       //print_hex(private_key, sizeof(private_key));
 
-    SessionlessKeys keys;
     stringstream stream;
     for(int i = 0; i < 33; ++i)
       stream << hex << (int)compressed_public_key[i];
@@ -63,37 +60,50 @@ SessionlessKeys Sessionless::generateKeys() {
     printf(stream.str().c_str());
     const string tmp = stream.str();   
     const char* publicKey = tmp.c_str();
-    printf("\n");
+    printf("\npublicKey -> ");
     printf(publicKey);
-    keys.public_key = publicKey;
+    //keys.public_key = publicKey;
     
     stringstream pstream;
     for(int i = 0; i < 32; ++i)
       pstream << hex << (int)private_key[i];
 
-    printf("\n");
+    printf("\nprivateKey -> ");
     printf(pstream.str().c_str());
     printf("\n");
-    const char *privateKey = pstream.str().c_str();
-    keys.private_key = privateKey;
+    const string privTmp = pstream.str();
+    const char *privateKey = privTmp.c_str();
+    //keys.private_key = privateKey;
 
     char *pubKey = new char[33];
     char *privKey = new char[32];
 
-    strcpy(pubKey, publicKey);
-    strcpy(privKey, privateKey);
+cout << privateKey;
+cout << publicKey;
 
-  return {pubKey, privKey};
+    //strcpy(pubKey, publicKey);
+    //strcpy(privKey, privateKey);
+    strcpy(keys.public_key, publicKey);
+    strcpy(keys.private_key, privateKey);
+
+    /*printf("\npubKey -> ");
+    printf(pubKey);
+
+    printf("\nprivKey -> ");
+    printf(privKey);*/
+
+    return keys;
+//  return {pubKey, privKey};
 };
 
 SessionlessKeys Sessionless::getKeys() {
   return getKeys_();
 }
 
-Signature Sessionless::sign(char *message) {
+Signature Sessionless::sign(char *message, Signature signature) {
   secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_NONE);
   int return_val;
-  secp256k1_ecdsa_signature signature;
+  secp256k1_ecdsa_signature ecdsa_signature;
   unsigned char msg_hash[32];
   unsigned char tag[12] = "sessionless";
   unsigned char serialized_signature[64];
@@ -101,37 +111,72 @@ Signature Sessionless::sign(char *message) {
 
   SessionlessKeys keys = getKeys_();
 
+  stringstream privstream;
+  for(int i = 0; i < 32; ++i)
+    privstream << hex << (int)keys.private_key[i];
+
+  printf("\n\nprivateKey in sign -> ");
+  printf(keys.private_key);
+
   return_val = secp256k1_tagged_sha256(ctx, msg_hash, tag, sizeof(tag), castedMessage, sizeof(castedMessage));
 
-  return_val = secp256k1_ecdsa_sign(ctx, &signature, msg_hash, (const unsigned char *)keys.private_key, NULL, NULL);
+  return_val = secp256k1_ecdsa_sign(ctx, &ecdsa_signature, msg_hash, (const unsigned char *)keys.private_key, NULL, NULL);
 
-  return_val = secp256k1_ecdsa_signature_serialize_compact(ctx, serialized_signature, &signature);
+  return_val = secp256k1_ecdsa_signature_serialize_compact(ctx, serialized_signature, &ecdsa_signature);
+
+  stringstream msgstream;
+    for(int i = 0; i < 32; ++i)
+      msgstream << hex << (int)msg_hash[i];
+
+  printf("\n\nmsg_hash -> ");
+  printf(msgstream.str().c_str());
 
   stringstream sigstream;
-    for(int i = 0; i < 64; ++i)
+    for(int i = 0; i < 125; ++i)
       sigstream << hex << (int)serialized_signature[i];
 
-  printf("\n\n");
+  printf("\n\nsignature -> ");
   printf(sigstream.str().c_str());
 
-  char *sig = new char[64];
-  strcpy(sig, sigstream.str().c_str());  
+//  char *sig = new char[64];
+//  strcpy(sig, sigstream.str().c_str());  
 
-  return {sig};
+  strcpy(signature.signature, sigstream.str().c_str());
+//  return {sig};
 };
 
 int Sessionless::verifySignature(const char *signature, char *message, const char *publicKey) {
   secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_NONE);
   unsigned char msg_hash[32];
+  unsigned char serialized_msg_hash[32];
   unsigned char tag[12] = "sessionless";
   const unsigned char *castedMessage = (const unsigned char *)message;
   int return_val;
 
   return_val = secp256k1_tagged_sha256(ctx, msg_hash, tag, sizeof(tag), castedMessage, sizeof(castedMessage));
 
-  SessionlessKeys keys = getKeys_();
+  stringstream msgstream;
+    for(int i = 0; i < 32; ++i)
+      msgstream << hex << (int)msg_hash[i];
 
-  return secp256k1_ecdsa_verify(ctx, (secp256k1_ecdsa_signature *)signature, msg_hash, (const secp256k1_pubkey *)keys.public_key);;
+  printf("\n\nmsg_hash -> ");
+  printf(msgstream.str().c_str());
+
+  stringstream sigstream;
+    for(int i = 0; i < 64; ++i)
+      sigstream << hex << (int)signature[i];
+
+  printf("\n\nsignature -> ");
+  printf(sigstream.str().c_str());
+
+  stringstream pubstream;
+    for(int i = 0; i < 33; ++i)
+      pubstream << hex << (int)publicKey[i];
+
+   printf("\n\npublicKey -> ");
+   printf(pubstream.str().c_str());
+
+  return secp256k1_ecdsa_verify(ctx, (secp256k1_ecdsa_signature *)signature, msg_hash, (const secp256k1_pubkey *)publicKey);;
 };
   
 char * Sessionless::generateUUID() {
