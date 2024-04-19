@@ -16,6 +16,10 @@ const config = {
       serverURL: 'http://165.22.236.104',
       signature: 'payload'
     },
+    magenta: {
+      serverURL: 'http://127.0.0.1:5139',
+      signature: 'header'
+    }
   }
 };
 

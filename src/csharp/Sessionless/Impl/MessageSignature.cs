@@ -50,6 +50,14 @@ public record MessageSignatureHex : IMessageSignature {
         RHex = rHex; SHex = sHex;
     }
 
+    public MessageSignatureHex(string signature) {
+        if (!signature.IsBytes()) {
+            throw new HexFormatRequiredException($"{nameof(signature)}");
+        }
+        RHex = signature.Substring(0, 64);
+        SHex = signature.Substring(64);
+    }
+
     public MessageSignatureHex(MessageSignatureInt signatureInt)
             : this(
                 signatureInt.S.ToString(16),
