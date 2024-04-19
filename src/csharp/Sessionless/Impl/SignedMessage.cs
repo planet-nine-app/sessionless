@@ -1,5 +1,7 @@
 ﻿using Org.BouncyCastle.Crypto.Parameters;
 using SessionlessNET.Impl;
+using SessionlessNET.Impl.Exceptions;
+using SessionlessNET.Util;
 
 namespace SessionlessNET.Models;
 
@@ -24,6 +26,9 @@ public record SignedMessageWithKey : SignedMessage {
 
     public SignedMessageWithKey(string message, MessageSignatureHex signature, string publicKey)
             : base(message, signature) {
+        if (!publicKey.IsBytes()) {
+            throw new HexFormatRequiredException(nameof(publicKey));
+        }
         PublicKey = publicKey;
     }
     public SignedMessageWithKey(SignedMessage signedMessage, string publicKey)
