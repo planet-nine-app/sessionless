@@ -1,0 +1,6 @@
+framework module Pods_SessionlessExample {
+  umbrella header "Pods-SessionlessExample-umbrella.h"
+
+  export *
+  module * { export * }
+}
