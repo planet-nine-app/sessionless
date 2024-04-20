@@ -22,8 +22,8 @@ const config = {
     }
   },
   languages: {
-    javaScript: 'blue',
-    typeScript: 'green',
+    javascript: 'blue',
+    typescript: 'green',
     rust: 'red',
     java: 'bgWhite',
     csharp: 'magenta'
