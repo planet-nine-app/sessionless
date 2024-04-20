@@ -19,6 +19,7 @@ program
       throw new Error('Must provide a color or language');
     }
     colorTest(color, options.language);
+<<<<<<< HEAD
   });
 
 program
@@ -36,6 +37,8 @@ program
 =======
     colorTest(color);
 >>>>>>> f14b856f (C# server)
+=======
+>>>>>>> e2378953 (tests and csharp server example)
   });
 
 program
@@ -48,9 +51,11 @@ program
 program.parse();
 
 const options = program.opts();
+<<<<<<< HEAD
 const limit = options.first ? 1 : undefined;
 console.log(options);
+=======
+>>>>>>> e2378953 (tests and csharp server example)
 const limit = options.first ? 1 : undefined;
-console.log(program.args[0].split(options.separator, limit));
 
 
