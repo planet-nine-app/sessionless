@@ -1,5 +1,6 @@
 #include "sessionless.hpp"
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <sstream>
 
@@ -7,9 +8,13 @@ std::string toHexString(const unsigned char *buffer, const size_t length)
 {
     std::stringstream ss;
     ss << std::hex;
+    
     for (auto i = 0; i < length; ++i)
     {
-        ss << (int)buffer[i];
+        // Format for zero padded hex string
+        ss << std::setw(2) 
+           << std::setfill('0')
+           << (int)buffer[i];
     }
     return ss.str();
 }
