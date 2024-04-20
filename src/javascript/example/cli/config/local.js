@@ -20,7 +20,6 @@ const config = {
       serverURL: 'http://127.0.0.1:5139',
       signature: 'header'
     }
-<<<<<<< HEAD
   },
   languages: {
     javascript: 'blue',
@@ -28,8 +27,6 @@ const config = {
     rust: 'red',
     java: 'bgWhite',
     csharp: 'magenta'
-=======
->>>>>>> a5a1ba7f (more c#)
   }
 };
 
