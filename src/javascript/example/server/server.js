@@ -100,7 +100,8 @@ console.log('verified: ' + verified);
 
 app.post('/cool-stuff', async (req, res) => {
   const payload = req.body;
-  const message = JSON.stringify({ coolness: payload.coolness, timestamp: payload.timestamp });
+  const message = JSON.stringify({ uuid: payload.uuid, coolness: payload.coolness, timestamp: payload.timestamp });
+console.log(req.body);
   const publicKey = getUser(payload.uuid).pubKey; 
   const signature = payload.signature || (await webSignature(req, message));
 
