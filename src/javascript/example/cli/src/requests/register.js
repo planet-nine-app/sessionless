@@ -8,7 +8,6 @@ global.getKeys = () => {
 };
 
 const register = async (color) => {
-  console.log('color is: ' + color);
   const colors = config.colors;
   const colorURL = colors[color].serverURL;
   const colorSignaturePlacement = colors[color].signature;
@@ -23,6 +22,7 @@ const register = async (color) => {
     timestamp: new Date().getTime() + ''
   };
 
+<<<<<<< HEAD
 console.log(JSON.stringify(message));
 
   let signature = await sessionless.sign(JSON.stringify(message));
@@ -34,11 +34,10 @@ console.log(signature);
 
 console.log('message is: ' + JSON.stringify(message));
 
+=======
+>>>>>>> e2378953 (tests and csharp server example)
   const signature = await sessionless.sign(JSON.stringify(message));
 
-console.log('how \'bout local? ' + (await sessionless.verifySignature(signature, JSON.stringify(message), keys.pubKey)));
-
-console.log('posting to: ' + colorURL + '/register');
   let post = superagent.post(colorURL + '/register');
 
   if(colorSignaturePlacement === 'payload') {
