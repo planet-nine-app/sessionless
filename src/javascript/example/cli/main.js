@@ -1,5 +1,6 @@
 import { program } from 'commander';
 import colorTest from './src/commands/color-test.js';
+import config from './config/local.js';
 
 program
   .name('sessionless-cli-example')
@@ -12,17 +13,18 @@ program
   .option('-c, --color <color>')
   .option('-l, --language <language>')
   .action((options) => {
-console.log(options);
-console.log('do test here');
-    colorTest(options.color);
+    const color = options.color || config.languages[options.language];
+    if(!color) {
+      throw new Error('Must provide a color or language');
+    }
+    colorTest(color);
   });
 
 program
   .command('rainbow')
   .description('Test all available colors, and associate keys to Voltron together the rainbow cli')
   .action((options) => {
-console.log(options);
-console.log('do test here');
+    console.log(chalk.red('Unimplemented'));
   });
 
 program.parse();

@@ -71,14 +71,12 @@ public class Sessionless(IVault vault) : ISessionless {
     public bool VerifySignature(SignedMessage signedMessage) {
         var publicHex = GetKeys()?.PublicKey
             ?? throw new KeyPairNotFoundException();
-        if (publicHex != signedMessage.PublicKey) return false;
         return VerifySignature(signedMessage, publicHex);
     }
     public bool VerifySignature(SignedMessage signedMessage, string publicKeyHex) {
         if (!publicKeyHex.IsBytes()) {
             throw new HexFormatRequiredException(nameof(publicKeyHex));
         }
-        if (publicKeyHex != signedMessage.PublicKey) return false;
         // public hex to bytes
         byte[] publicBytes = Hex.Decode(publicKeyHex);
         // public bytes to key object

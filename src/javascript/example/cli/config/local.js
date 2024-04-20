@@ -20,6 +20,13 @@ const config = {
       serverURL: 'http://127.0.0.1:5139',
       signature: 'header'
     }
+  },
+  languages: {
+    javaScript: 'blue',
+    typeScript: 'green',
+    rust: 'red',
+    java: 'bgWhite',
+    csharp: 'magenta'
   }
 };
 

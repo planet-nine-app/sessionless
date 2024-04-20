@@ -7,8 +7,8 @@ namespace server.Models
 
         public RegisteredModel(string uuid, string welcomeMessage)
         {
-            uuid = uuid;
-            welcomeMessage = welcomeMessage;
+            this.uuid = uuid;
+            this.welcomeMessage = welcomeMessage;
         }
     }
 }
