@@ -33,6 +33,9 @@ program
       throw new Error('Must provide a color or language');
     }
     await lotsTest(color, options.language, options.iterations);
+=======
+    colorTest(color);
+>>>>>>> f14b856f (C# server)
   });
 
 program
