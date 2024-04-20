@@ -1,38 +1,28 @@
-#ifndef INCLUDE_SESSIONLESS_HPP
-#define INCLUDE_SESSIONLESS_HPP
+#ifndef SESSIONLESS_HPP
+#define SESSIONLESS_HPP
 
-#include <string>
-#include <iostream>
-#include <functional>
+#include <array>
 
-using namespace std;
+static constexpr size_t SHA256_SIZE_BYTES = 32;
+static constexpr size_t PRIVATE_KEY_SIZE_BYTES = SHA256_SIZE_BYTES;
+static constexpr size_t PUBLIC_KEY_SIZE_BYTES = 33;
+static constexpr size_t SIGNATURE_SIZE_BYTES = 64;
 
-struct SessionlessKeys
+using PublicKey = std::array<unsigned char, PUBLIC_KEY_SIZE_BYTES>;
+using PrivateKey = std::array<unsigned char, PRIVATE_KEY_SIZE_BYTES>;
+using Signature = std::array<unsigned char, SIGNATURE_SIZE_BYTES>;
+
+struct Keys
 {
-  char *public_key = new char[33];
-  char *private_key = new char[32];
+    PublicKey publicKey;
+    PrivateKey privateKey;
 };
 
-struct Signature
+namespace sessionless
 {
-  char *signature = new char[250];
-};
-
-class Sessionless
-{
-public:
-  using GetKeys = SessionlessKeys (*)();
-  // SessionlessInterface * makeSessionless();
-  Sessionless(GetKeys getKeys) : getKeys_(getKeys) {}
-  SessionlessKeys generateKeys(SessionlessKeys keys);
-  SessionlessKeys getKeys();
-  Signature sign(char *message, Signature signature);
-  int verifySignature(const char *signature, char *message, const char *publicKey);
-  char *generateUUID();
-  // virtual ~SessionlessInterface();
-
-private:
-  GetKeys getKeys_;
+    bool generateKeys(Keys &keys);
+    bool sign(const unsigned char *message, const size_t length, const PrivateKey privateKey, Signature &signature);
+    bool verifySignature(Signature signature, PublicKey publicKey, const unsigned char *message, const size_t length);
 };
 
 #endif

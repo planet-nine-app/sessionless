@@ -1,37 +1,53 @@
-#include <stdio.h>
-#include <string>
-#include <iostream>
-#include <sstream>
 #include "sessionless.hpp"
+#include <iostream>
+#include <string>
+#include <sstream>
 
-using namespace std;
-
-SessionlessKeys keys;
-
-SessionlessKeys getKeys()
+std::string toHexString(const unsigned char *buffer, const size_t length)
 {
-  return keys;
+    std::stringstream ss;
+    ss << std::hex;
+    for (auto i = 0; i < length; ++i)
+    {
+        ss << (int)buffer[i];
+    }
+    return ss.str();
 }
 
 int main(int argc, char *argv[])
 {
-  printf("hello world");
-  // SessionlessInterface *interface = new SessionlessInterface();
-  // sessionless = interface->makeSessionless();
-  // sessionless = makeSessionless();
-  Sessionless sessionless(getKeys);
-  sessionless.generateKeys(keys);
-  printf("\npublic key in main -> ");
-  printf(keys.public_key);
-  Signature signature;
-  sessionless.sign("Here is a message", signature);
-  printf("\nsignature in main -> ");
-  printf(signature.signature);
-  int verified = sessionless.verifySignature((const char *)signature.signature, "Here is a message", sessionless.getKeys().public_key);
-  printf("\n\n");
-  printf("verified: ");
-  cout << to_string(verified);
-  printf("\n\nheyoooo\n\n");
-  printf(keys.public_key);
-  printf("\nfoobar");
+    std::cout << "Sessionless demo..." << std::endl;
+
+    Keys keys;
+    if (!sessionless::generateKeys(keys))
+    {
+        std::cout << "Failed to generate keys" << std::endl;
+        return -1;
+    }
+
+    std::cout << "public key -> "
+              << toHexString(keys.publicKey.data(), keys.publicKey.size()) << std::endl;
+    std::cout << "private key -> "
+              << toHexString(keys.privateKey.data(), keys.privateKey.size()) << std::endl;
+
+    const char *msg = "Here is a message";
+    Signature signature;
+    if (!sessionless::sign((unsigned char *)msg, sizeof(msg), keys.privateKey, signature))
+    {
+        std::cout << "Failed to sign message" << std::endl;
+        return -1;
+    }
+
+    std::cout << "Message -> " << msg << std::endl
+              << "Message signature -> " << toHexString(signature.data(), signature.size()) << std::endl;
+
+    std::cout << "Verifying signature..." << std::endl;
+    if (!sessionless::verifySignature(signature, keys.publicKey, (unsigned char *)msg, sizeof(msg)))
+    {
+        std::cout << "Failed to verify signature" << std::endl;
+        return -1;
+    }
+
+    std::cout << "Signature verified" << std::endl;
+    return 0;
 }

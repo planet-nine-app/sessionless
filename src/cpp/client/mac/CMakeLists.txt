@@ -1,13 +1,23 @@
-cmake_minimum_required(VERSION 3.4)
-project (Sessionless)
-add_executable(Sessionless sessionless.hpp sessionless.cpp main.cpp)
-# set(CMAKE_INSTALL_RPATH "@loader_path")
-# set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-# set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-target_include_directories(Sessionless PUBLIC
-  ${PROJECT_SOURCE_DIR}/include
+cmake_minimum_required(VERSION 3.16)
+
+#################################################
+# secp256k1 library
+
+set(SECP256K1_LIB_NAME secp256k1)
+include(FetchContent)
+FetchContent_Declare(
+  ${SECP256K1_LIB_NAME}
+  GIT_REPOSITORY https://github.com/bitcoin-core/secp256k1.git
+  GIT_TAG        v0.4.1
 )
-# target_link_libraries(Sessionless ${PROJECT_SOURCE_DIR}/secp256k1.c.o)
-target_link_libraries(Sessionless ${PROJECT_SOURCE_DIR}/libsecp256k1.dylib)
+FetchContent_MakeAvailable(${SECP256K1_LIB_NAME})
 
+#################################################
+# Sessionless
 
+set(TARGET sessionless)
+project(${TARGET})
+set(CMAKE_CXX_STANDARD 17)
+add_executable(${TARGET})
+target_sources(${TARGET} PRIVATE main.cpp sessionless.cpp)
+target_link_libraries(${TARGET} PRIVATE ${SECP256K1_LIB_NAME})
