@@ -33,3 +33,4 @@
 /Users/zachbabb/Work/planet-nine/sessionless/src/csharp/examples/server/bin/Debug/net8.0/SessionlessNET.pdb
 /Users/zachbabb/Work/planet-nine/sessionless/src/csharp/examples/server/obj/Debug/net8.0/server.csproj.AssemblyReference.cache
 /Users/zachbabb/Work/planet-nine/sessionless/src/csharp/examples/server/obj/Debug/net8.0/server.csproj.Up2Date
+/Users/zachbabb/Work/planet-nine/sessionless/src/csharp/examples/server/bin/Debug/net8.0/users.json

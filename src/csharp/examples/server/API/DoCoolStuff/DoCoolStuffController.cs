@@ -12,8 +12,8 @@ namespace server.Controllers
 
 {
     [ApiController]
-    [Route("/register")]
-    public class RegisterController: ControllerBase
+    [Route("/cool-stuff")]
+    public class DoCoolStuffController: ControllerBase
     {
         Vault Vault;
         Sessionless Sessionless;
@@ -31,29 +31,29 @@ namespace server.Controllers
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public IActionResult PostJson(Models.RegisterModel input) {
+        public IActionResult PostJson(Models.DoCoolStuffModel input) {
             Vault = new Vault(VaultGetter, VaultSaver);
             Sessionless = new(Vault);
+
+            UserModel user = DemoPersistenceController.getUser(input.uuid);
+
+            if(user == null) {
+                return Problem("No user found");
+            }
                         
             var postedSignature = Request.Headers["Signature"];
 
             MessageSignatureHex signature = new MessageSignatureHex(postedSignature);
 
-            var message = JsonSerializer.Serialize<RegisterModel>(input);
+            var message = JsonSerializer.Serialize<DoCoolStuffModel>(input);
 
             SignedMessage signedMessage = new SessionlessNET.Models.SignedMessage(message, signature);
 
-            if(!Sessionless.VerifySignature(signedMessage, input.pubKey)) {
+            if(!Sessionless.VerifySignature(signedMessage, user.pubKey)) {
                 return Problem("Auth error");
             }
 
-            var uuid = Sessionless.GenerateUUID();
-
-            UserModel user = new UserModel(uuid, input.pubKey);
-
-            DemoPersistenceController.saveUser(user);
-
-            var resp = new Models.RegisteredModel(uuid, "Welcome to C#");
+            var resp = new Models.CoolStuffModel("Double Cool!");
 
             return Ok(resp);
         }

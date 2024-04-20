@@ -32,7 +32,7 @@ const doCoolStuff = async (bodyFromRegistration) => {
              .set('Accept', 'application/json')
          .then(res => {
            res.body.color = color;
-           return res;
+           return res.body;
          });
 };
 
