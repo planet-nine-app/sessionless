@@ -14,7 +14,14 @@ const doCoolStuff = async (bodyFromRegistration) => {
     timestamp: new Date().getTime() + ''
   };
 
-  const signature = await sessionless.sign(JSON.stringify(message));
+console.log(message);
+
+  let signature = await sessionless.sign(JSON.stringify(message));
+
+  signature = signature.length % 2 === 1 ? '0' + signature : signature;
+
+console.log(signature.length);
+console.log(signature);
 
   let post = superagent.post(colorURL + '/cool-stuff');
 

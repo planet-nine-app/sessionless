@@ -49,7 +49,7 @@ const sign = async (message) => {
   const { privateKey } = await getKeys();
   const messageHash = keccak256(utf8ToBytes(message));
   const signatureAsBigInts = secp256k1.sign(messageHash, privateKey);
-  const signature = signatureAsBigInts.r.toString(16) + signatureAsBigInts.s.toString(16);
+  const signature = signatureAsBigInts.toCompactHex();
   return signature;
 };
 
