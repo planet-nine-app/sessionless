@@ -2,7 +2,7 @@ package com.planetnine.sessionless.impl
 
 import com.planetnine.sessionless.impl.exceptions.HexFormatRequiredException
 import com.planetnine.sessionless.util.KeyUtils.isBytes
-import com.planetnine.sessionless.util.KeyUtils.toECParameters
+import com.planetnine.sessionless.util.KeyUtils.toECPublicParameters
 import org.bouncycastle.crypto.params.ECPublicKeyParameters
 import java.security.PublicKey
 
@@ -45,7 +45,7 @@ class SignedMessageWithECKey(
         message: String,
         signature: MessageSignatureHex,
         publicKey: PublicKey
-    ) : this(message, signature, publicKey.toECParameters())
+    ) : this(message, signature, publicKey.toECPublicParameters())
 
     constructor(
         signedMessage: SignedMessage,
