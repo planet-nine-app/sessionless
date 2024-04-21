@@ -22,10 +22,6 @@ const register = async (color) => {
     timestamp: new Date().getTime() + ''
   };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 1d7f9ef6 (Fixed js bug, and added lots of users test)
 console.log(JSON.stringify(message));
 
   let signature = await sessionless.sign(JSON.stringify(message));
@@ -34,15 +30,6 @@ console.log(JSON.stringify(message));
 
 console.log(signature.length);
 console.log(signature);
-<<<<<<< HEAD
-
-console.log('message is: ' + JSON.stringify(message));
-
-=======
->>>>>>> e2378953 (tests and csharp server example)
-  const signature = await sessionless.sign(JSON.stringify(message));
-=======
->>>>>>> 1d7f9ef6 (Fixed js bug, and added lots of users test)
 
   let post = superagent.post(colorURL + '/register');
 

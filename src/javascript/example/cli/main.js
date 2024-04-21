@@ -19,26 +19,6 @@ program
       throw new Error('Must provide a color or language');
     }
     colorTest(color, options.language);
-<<<<<<< HEAD
-  });
-
-program
-  .command('lots')
-  .description('Runs lots of color tests')
-  .option('-c --color <color>')
-  .option('-l --language <language>')
-  .option('-i --iterations <iterations>')
-  .action(async (options) => {
-    const color = options.color || config.languages[options.language];
-    if(!color) {
-      throw new Error('Must provide a color or language');
-    }
-    await lotsTest(color, options.language, options.iterations);
-=======
-    colorTest(color);
->>>>>>> f14b856f (C# server)
-=======
->>>>>>> e2378953 (tests and csharp server example)
   });
 
 program
@@ -65,11 +45,6 @@ program
 program.parse();
 
 const options = program.opts();
-<<<<<<< HEAD
-const limit = options.first ? 1 : undefined;
-console.log(options);
-=======
->>>>>>> e2378953 (tests and csharp server example)
 const limit = options.first ? 1 : undefined;
 
 
