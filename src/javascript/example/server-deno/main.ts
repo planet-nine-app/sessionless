@@ -1,4 +1,4 @@
-import sessionless from "npm:sessionless-node";
+import sessionless from "npm:sessionless-node@^0.10.0";
 import chalk from "npm:chalk";
 import { getUser, saveUser } from "./src/persistence/user.ts";
 import { associate, getValue, saveValue } from "./src/demo/demo.ts";
@@ -44,10 +44,11 @@ const register = async (request: Request): Response | Error => {
 
 console.log('about to check signature');
 console.log(JSON.stringify(payload));
+console.log('message: ' + message);
 
   if(!signature || !sessionless.verifySignature(signature, message, payload.pubKey)) {
 console.error('auth error');
-    return ResponseError(401, 'Auth error');
+    return ResponseError(403, 'Auth error');
   }
 
 console.log('verified');
