@@ -7,15 +7,11 @@ import com.planetnine.sessionless.models.ISessionless
 import com.planetnine.sessionless.models.vaults.ICustomVault
 import com.planetnine.sessionless.models.vaults.IVault
 import com.planetnine.sessionless.util.KeyUtils
-import com.planetnine.sessionless.util.KeyUtils.domainParameters
 import com.planetnine.sessionless.util.KeyUtils.toECHex
 import com.planetnine.sessionless.util.KeyUtils.toECPrivateKey
 import com.planetnine.sessionless.util.KeyUtils.toHex
 import com.planetnine.sessionless.util.hashKeccak256
-import org.bouncycastle.crypto.params.ECPrivateKeyParameters
-import org.bouncycastle.crypto.params.ECPublicKeyParameters
 import org.bouncycastle.crypto.signers.ECDSASigner
-import java.math.BigInteger
 import java.security.KeyPair
 import java.security.PrivateKey
 import java.security.interfaces.ECPrivateKey
@@ -49,6 +45,15 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
             val privateKey = getKeys(keyAccessInfo).private
             return sign(message, privateKey)
         }
+
+        override fun verifySignature(
+            signedMessage: SignedMessageWithECKey,
+            keyAccessInfo: KeyAccessInfo
+        ): Boolean {
+            val publicKey = getKeys(keyAccessInfo).public
+            val withKey = signedMessage.withKey(publicKey)
+            return verifySignature(withKey)
+        }
     }
 
     /** [ISessionless.WithCustomVault] implementation with [Sessionless] as superclass */
@@ -79,59 +84,63 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
             val privateKey = privateString.toECPrivateKey(KeyUtils.Defaults.parameterSpec)
             return sign(message, privateKey)
         }
+
+        override fun verifySignature(signedMessage: SignedMessage): Boolean {
+            val pair = getKeys() ?: throw KeyPairNotFoundException()
+            val withKey = signedMessage.withKey(pair.publicKey)
+            return verifySignature(withKey)
+        }
+
     }
 
     override fun sign(message: String, privateKey: PrivateKey): MessageSignatureHex {
+        val privateHex = (privateKey as ECPrivateKey).toHex()
+        val privateKeyParameters = KeyUtils.getECPrivateKeyParameters(privateHex)
         val signer = ECDSASigner().apply {
-            val privateHex = (privateKey as ECPrivateKey).toHex()
-            val privateKeyFormatted = BigInteger(privateHex, 16)
-            val privateKeyParameters = ECPrivateKeyParameters(
-                privateKeyFormatted,
-                KeyUtils.Defaults.parameterSpec.domainParameters
-            )
             init(true, privateKeyParameters)
         }
-        val messageHash = hashKeccak256(message)
+        val messageHash = message.hashKeccak256()
         val signatureArray = signer.generateSignature(messageHash)
         return MessageSignatureInt(signatureArray).toHex()
     }
 
-    override fun verifySignature(signedMessage: SignedMessage): Boolean {
-        val signer = ECDSASigner().apply {
-            val publicInt = BigInteger(signedMessage.publicKey, 16)
-            val paramSpec = KeyUtils.Defaults.parameterSpec
-            val publicKeyPoint = paramSpec.curve.decodePoint(publicInt.toByteArray())
-            val publicKeyParameters = ECPublicKeyParameters(
-                publicKeyPoint, paramSpec.domainParameters
-            )
-            init(false, publicKeyParameters)
-        }
-        val messageHash = hashKeccak256(signedMessage.message)
-        val signature = signedMessage.signature.toInt()
-        return signer.verifySignature(
-            messageHash,
-            signature.r,
-            signature.s
-        )
+    override fun verifySignature(signedMessage: SignedMessageWithKey): Boolean {
+        val publicKeyParameters = KeyUtils.getECPublicKeyParameters(signedMessage.publicKey)
+        val withECKey = signedMessage.withKey(publicKeyParameters)
+        return verifySignature(withECKey)
     }
 
-    /** Verifies a given signature with a public key
-     * - This calls [verifySignature] with [SignedMessage] out of the provided parameters
-     * @see verifySignature */
-    fun verifySignature(
-        message: String,
-        publicKey: String,
-        signature: MessageSignatureHex
-    ): Boolean {
-        return verifySignature(SignedMessage(message, publicKey, signature))
+    override fun verifySignature(signedMessage: SignedMessageWithECKey): Boolean {
+        val signer = ECDSASigner().apply {
+            init(false, signedMessage.publicKey)
+        }
+        val messageHash = signedMessage.message.hashKeccak256()
+        val signatureInt = signedMessage.signature.toInt()
+        return signer.verifySignature(
+            messageHash,
+            signatureInt.r,
+            signatureInt.s
+        )
     }
 
     override fun generateUUID(): String = UUID.randomUUID().toString()
 
-    override fun associate(vararg signedMessages: SignedMessage): Boolean {
-        if (signedMessages.size < 2) {
-            throw IllegalArgumentException("Must have at least two messages to associate")
-        }
+
+    override fun associate(vararg signedMessages: SignedMessageWithKey): Boolean {
+        signedMessages.twoOrThrow()
         return signedMessages.all(::verifySignature)
+    }
+
+    override fun associate(vararg signedMessages: SignedMessageWithECKey): Boolean {
+        signedMessages.twoOrThrow()
+        return signedMessages.all(::verifySignature)
+    }
+
+    companion object {
+        private fun <T> Array<T>.twoOrThrow() {
+            if (size < 2) {
+                throw IllegalArgumentException("Must have at least two messages to associate")
+            }
+        }
     }
 }
