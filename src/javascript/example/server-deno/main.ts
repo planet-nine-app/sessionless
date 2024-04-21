@@ -49,11 +49,7 @@ console.log('message: ' + message);
   if(!signature || !sessionless.verifySignature(signature, message, payload.pubKey)) {
 console.error('auth error');
     return ResponseError(403, 'Auth error');
-<<<<<<< HEAD
-   }
-=======
   }
->>>>>>> 1d7f9ef6 (Fixed js bug, and added lots of users test)
 
 console.log('verified');
 
