@@ -1,3 +1,6 @@
 package com.planetnine.sessionless.impl.exceptions
 
-class KeyPairNotFoundException : IllegalStateException("Key pair was not found")
+import java.security.UnrecoverableKeyException
+
+class KeyPairNotFoundException(extra: String? = null) :
+    UnrecoverableKeyException("Key pair was not found" + (if (extra == null) "" else ": $extra"))
