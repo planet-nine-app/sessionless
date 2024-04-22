@@ -1,0 +1,16 @@
+PODS:
+  - Sessionless (0.1.0)
+
+DEPENDENCIES:
+  - Sessionless (from `../../../client-ios/Sessionless`)
+
+EXTERNAL SOURCES:
+  Sessionless:
+    :path: "../../../client-ios/Sessionless"
+
+SPEC CHECKSUMS:
+  Sessionless: c8bccb18394198b04c2d1da3b02ba52522fc3c98
+
+PODFILE CHECKSUM: 9a69fa00e2c54827248dd82a78446f70ef722c81
+
+COCOAPODS: 1.15.2
