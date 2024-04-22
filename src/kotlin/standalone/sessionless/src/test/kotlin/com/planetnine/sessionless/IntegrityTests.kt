@@ -7,40 +7,37 @@ import org.junit.jupiter.api.Test
 import java.io.File
 
 class IntegrityTests {
-
-    private object Vault : ICustomVault {
-        override fun save(pair: KeyPairHex) {
-            privateKeyFile.writeText(pair.privateKey)
-            publicKeyFile.writeText(pair.publicKey)
-        }
-
-        override fun get(): KeyPairHex? {
-            val pri = privateKeyFile
-            val pub = publicKeyFile
-            if (!pri.exists() || !pub.exists()) {
-                clear()
-                return null
-            }
-            return KeyPairHex(pri.readText(), pub.readText())
-        }
-
-        fun clear() {
-            privateKeyFile.delete()
-            publicKeyFile.delete()
-        }
-    }
-
     private val sessionless = Sessionless.WithCustomVault(Vault)
 
     @Test
     fun a() {
 
     }
+}
 
-    companion object {
-        const val privateKeyPath = "./private.key"
-        const val publicKeyPath = "./public.key"
-        val privateKeyFile get() = File(privateKeyPath)
-        val publicKeyFile get() = File(publicKeyPath)
+private object Vault : ICustomVault {
+    override fun save(pair: KeyPairHex) {
+        privateKeyFile.writeText(pair.privateKey)
+        publicKeyFile.writeText(pair.publicKey)
     }
+
+    override fun get(): KeyPairHex? {
+        val pri = privateKeyFile
+        val pub = publicKeyFile
+        if (!pri.exists() || !pub.exists()) {
+            clear()
+            return null
+        }
+        return KeyPairHex(pri.readText(), pub.readText())
+    }
+
+    fun clear() {
+        privateKeyFile.delete()
+        publicKeyFile.delete()
+    }
+
+    const val privateKeyPath = "./private.key"
+    const val publicKeyPath = "./public.key"
+    val privateKeyFile get() = File(privateKeyPath)
+    val publicKeyFile get() = File(publicKeyPath)
 }
