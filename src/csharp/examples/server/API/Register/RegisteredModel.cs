@@ -1,15 +1,9 @@
 namespace SessionlessExample.Server.Models
 
 {
-    public record RegisteredModel
+    public class RegisteredModel(string uuid, string welcomeMessage)
     {
-        public string uuid { get; set; };
-        public string welcomeMessage { get; set; };
-
-        public RegisteredModel(string uuid, string welcomeMessage)
-        {
-            this.uuid = uuid;
-            this.welcomeMessage = welcomeMessage;
-        }
+	public string uuid { get; set; } = uuid;
+	public string welcomeMessage { get; set; } = welcomeMessage;
     }
 }
