@@ -1,14 +1,12 @@
-namespace server.Models
-{
-    public class UserModel
-    {
-        public string uuid { get; set; } = "default";
+namespace SessionlessExample.Server.Models
 
-        public string pubKey { get; set; } = "default";
-        public UserModel(string uuid, string pubKey)
+{
+    public record UserModel
+    {
+        public class UserModel(string uuid, string pubKey)
         {
-            this.uuid = uuid;
-            this.pubKey = pubKey;
+            public string uuid { get; set; } = uuid;
+            public string pubKey { get; set; } = pubKey;
         }
     }
 }

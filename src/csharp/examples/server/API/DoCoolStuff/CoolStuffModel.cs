@@ -1,11 +1,10 @@
-namespace server.Models
+namespace SessionlessExample.Server.Models
+
 {
-    public class CoolStuffModel
+    public record CoolStuffModel
     {
-        public string doubleCool { get; set; } = "default";
-        public CoolStuffModel(string doubleCoolString)
-        {
-            doubleCool = doubleCoolString;
-        }
+       public class CoolStuffModel(string doubleCool) {
+           public string DoubleCool { get; set; } = doubleCool;
+       }  
     }
 }

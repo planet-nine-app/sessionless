@@ -8,7 +8,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace server.Controllers
+namespace SessionlessExample.Server.Controllers
 
 {
     [ApiController]

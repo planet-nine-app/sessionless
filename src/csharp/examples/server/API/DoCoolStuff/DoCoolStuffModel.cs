@@ -1,6 +1,7 @@
-namespace server.Models
+namespace SessionlessExample.Server.Models
+
 {
-    public class DoCoolStuffModel
+    public record DoCoolStuffModel
     {
         public string uuid { get; set; } = "default";
         public string coolness { get; set; } = "default";
