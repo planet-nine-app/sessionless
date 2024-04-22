@@ -1,6 +1,7 @@
-namespace server.Models
+namespace SessionlessExample.Server.Models
+
 {
-    public class RegisterModel
+    public record RegisterModel
     {
         public string pubKey { get; set; } = "default";
         public string enteredText { get; set; } = "default";

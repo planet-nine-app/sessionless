@@ -1,9 +1,10 @@
-namespace server.Models
+namespace SessionlessExample.Server.Models
+
 {
-    public class RegisteredModel
+    public record RegisteredModel
     {
-        public string uuid { get; set; } = "default";
-        public string welcomeMessage { get; set; } = "default";
+        public string uuid { get; set; };
+        public string welcomeMessage { get; set; };
 
         public RegisteredModel(string uuid, string welcomeMessage)
         {

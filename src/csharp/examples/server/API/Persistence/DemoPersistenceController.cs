@@ -4,7 +4,7 @@ using System.Text.Json;
 using System.IO;
 using server.Models;
 
-namespace server.Controllers;
+namespace SessionlessExample.Server.Controllers;
 
 class DemoPersistenceController {
     
