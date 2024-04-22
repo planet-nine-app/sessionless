@@ -2,6 +2,7 @@ package com.planetnine.sessionless.impl
 
 import com.planetnine.sessionless.impl.exceptions.HexFormatRequiredException
 import com.planetnine.sessionless.util.KeyUtils.isBytes
+import com.planetnine.sessionless.util.KeyUtils.toECPublicKeyParameters
 import com.planetnine.sessionless.util.KeyUtils.toECPublicParameters
 import org.bouncycastle.crypto.params.ECPublicKeyParameters
 import java.security.PublicKey
@@ -10,6 +11,7 @@ open class SignedMessage(
     val message: String,
     val signature: MessageSignatureHex,
 ) {
+
     fun withKey(publicKey: String) =
         SignedMessageWithKey(this, publicKey)
 
@@ -33,6 +35,8 @@ class SignedMessageWithKey(
 
     constructor(signedMessage: SignedMessage, publicKey: String) :
             this(signedMessage.message, signedMessage.signature, publicKey)
+
+    fun toEC() = SignedMessageWithECKey(this, publicKey.toECPublicKeyParameters())
 }
 
 class SignedMessageWithECKey(
