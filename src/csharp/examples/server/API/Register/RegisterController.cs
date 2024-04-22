@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
-using server.Models;
+using SessionlessExample.Server.Models;
 using System.Text.Json;
 using SessionlessNET.Impl;
 using SessionlessNET.Models;
