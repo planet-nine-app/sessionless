@@ -1,6 +1,6 @@
 [package]
 name = "web-client"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 
 [lib]
@@ -13,9 +13,7 @@ default = ["console_error_panic_hook"]
 wasm-bindgen = "0.2.84"
 console_error_panic_hook = { version = "0.1.7", optional = true }
 once_cell = "1.19"
-
-[dependencies.sessionless]
-path = "../../crate"
+sessionless = "0.1"
 
 [dependencies.getrandom]
 version = "*"
