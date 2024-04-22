@@ -10,7 +10,6 @@ import com.planetnine.sessionless.util.KeyUtils
 import com.planetnine.sessionless.util.KeyUtils.toECHex
 import com.planetnine.sessionless.util.KeyUtils.toECPrivateKey
 import com.planetnine.sessionless.util.KeyUtils.toECPrivateKeyParameters
-import com.planetnine.sessionless.util.KeyUtils.toECPublicKeyParameters
 import com.planetnine.sessionless.util.KeyUtils.toHex
 import com.planetnine.sessionless.util.hashKeccak256
 import org.bouncycastle.crypto.signers.ECDSASigner
@@ -49,7 +48,7 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         }
 
         override fun verifySignature(
-            signedMessage: SignedMessageWithECKey,
+            signedMessage: SignedMessage,
             keyAccessInfo: KeyAccessInfo
         ): Boolean {
             val publicKey = getKeys(keyAccessInfo).public
