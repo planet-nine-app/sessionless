@@ -45,10 +45,7 @@ interface ISessionless {
          * See: [sign]
          * @param signedMessage The message that was signed earlier
          * @return True if the signature is valid for the given message and public key */
-        fun verifySignature(
-            signedMessage: SignedMessageWithECKey,
-            keyAccessInfo: KeyAccessInfo
-        ): Boolean
+        fun verifySignature(signedMessage: SignedMessage, keyAccessInfo: KeyAccessInfo): Boolean
     }
 
     interface WithCustomVault : ISessionless {
