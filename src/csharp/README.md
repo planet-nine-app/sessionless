@@ -12,8 +12,8 @@ classDiagram
     +Sign(string, string): MessageSignatureHex
     +Sign(string, ECPrivateKeyParameters): MessageSignatureHex
     +VerifySignature(SignedMessage): bool
-    +VerifySignature(SignedMessage, string): bool
-    +VerifySignature(SignedMessage, ECPublicKeyParameters): bool
+    +VerifySignature(SignedMessageWithKey): bool
+    +VerifySignature(SignedMessageWithECKey): bool
     +Associate(SignedMessages[]): bool
   }
   class Sessionless {
@@ -66,17 +66,36 @@ classDiagram
   IMessageSignature <-- MessageSignatureHex
 ```
 
-### .../Impl/...
+### .../Impl/MessageSignature.cs
 
 ```mermaid
 classDiagram
   class SignedMessage {
     +Message: string
     +Signature: MessageSignatureHex
+    +constructor(string, MessageSignatureHex)
+    +WithKey(string): SignedMessageWithKey
+    +WithKey(ECPublicKeyParameters): SignedMessageWithECKey
+  }
+  class SignedMessageWithKey {
     +PublicKey: string
     +constructor(string, MessageSignatureHex, string)
+    +constructor(SignedMessage, string)
   }
+  class SignedMessageWithECKey {
+    +PublicKey: ECPublicKeyParameters
+    +constructor(string, MessageSignatureHex, ECPublicKeyParameters)
+    +constructor(SignedMessage, ECPublicKeyParameters)
+  }
+  
+  SignedMessage <-- SignedMessageWithKey
+  SignedMessage <-- SignedMessageWithECKey
+```
 
+### .../Impl/...
+
+```mermaid
+classDiagram
   class KeyPairHex {
     +PrivateKey: string
     +PublicKey: string
