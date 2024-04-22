@@ -29,6 +29,7 @@ TODO: Add long description of the pod here.
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '16.0'
+  s.tvos.deployment_target = '16.0'
 
   s.source_files = 'Sessionless/Classes/**/*'
   
