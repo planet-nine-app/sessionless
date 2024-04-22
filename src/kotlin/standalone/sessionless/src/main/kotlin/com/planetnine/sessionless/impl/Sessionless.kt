@@ -104,11 +104,8 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         return MessageSignatureInt(signatureArray).toHex()
     }
 
-    override fun verifySignature(signedMessage: SignedMessageWithKey): Boolean {
-        val publicKeyParameters = signedMessage.publicKey.toECPublicKeyParameters()
-        val withECKey = signedMessage.withKey(publicKeyParameters)
-        return verifySignature(withECKey)
-    }
+    override fun verifySignature(signedMessage: SignedMessageWithKey): Boolean =
+        verifySignature(signedMessage.toEC())
 
     override fun verifySignature(signedMessage: SignedMessageWithECKey): Boolean {
         val signer = ECDSASigner().apply {
