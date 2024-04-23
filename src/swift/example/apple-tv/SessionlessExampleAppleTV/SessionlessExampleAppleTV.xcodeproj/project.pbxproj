@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		CA75F4F12BD638FD003F9957 /* SessionlessExampleAppleTVApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75F4F02BD638FD003F9957 /* SessionlessExampleAppleTVApp.swift */; };
-		CA75F4F32BD638FD003F9957 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75F4F22BD638FD003F9957 /* ContentView.swift */; };
 		CA75F4F52BD63900003F9957 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA75F4F42BD63900003F9957 /* Assets.xcassets */; };
 		CA75F4F82BD63900003F9957 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA75F4F72BD63900003F9957 /* Preview Assets.xcassets */; };
+		CA75F4FF2BD85E79003F9957 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75F4FE2BD85E79003F9957 /* Network.swift */; };
+		CA75F5012BD85E9F003F9957 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75F5002BD85E9F003F9957 /* Persistence.swift */; };
+		CA75F5032BD860CB003F9957 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75F5022BD860CA003F9957 /* ContentView.swift */; };
 		D863719D34232C0FDFDEE1F0 /* Pods_SessionlessExampleAppleTV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85B70F3EECF2075E017E6ADC /* Pods_SessionlessExampleAppleTV.framework */; };
 /* End PBXBuildFile section */
 
@@ -20,9 +22,11 @@
 		85B70F3EECF2075E017E6ADC /* Pods_SessionlessExampleAppleTV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SessionlessExampleAppleTV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA75F4ED2BD638FD003F9957 /* SessionlessExampleAppleTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SessionlessExampleAppleTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA75F4F02BD638FD003F9957 /* SessionlessExampleAppleTVApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionlessExampleAppleTVApp.swift; sourceTree = "<group>"; };
-		CA75F4F22BD638FD003F9957 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		CA75F4F42BD63900003F9957 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA75F4F72BD63900003F9957 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		CA75F4FE2BD85E79003F9957 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		CA75F5002BD85E9F003F9957 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		CA75F5022BD860CA003F9957 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +55,6 @@
 				106B345F7282CDB015C5AB3E /* Pods-SessionlessExampleAppleTV.debug.xcconfig */,
 				37B8FB9F7F8F3435EDC67661 /* Pods-SessionlessExampleAppleTV.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -77,9 +80,11 @@
 			isa = PBXGroup;
 			children = (
 				CA75F4F02BD638FD003F9957 /* SessionlessExampleAppleTVApp.swift */,
-				CA75F4F22BD638FD003F9957 /* ContentView.swift */,
 				CA75F4F42BD63900003F9957 /* Assets.xcassets */,
 				CA75F4F62BD63900003F9957 /* Preview Content */,
+				CA75F4FE2BD85E79003F9957 /* Network.swift */,
+				CA75F5002BD85E9F003F9957 /* Persistence.swift */,
+				CA75F5022BD860CA003F9957 /* ContentView.swift */,
 			);
 			path = SessionlessExampleAppleTV;
 			sourceTree = "<group>";
@@ -206,8 +211,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA75F4F32BD638FD003F9957 /* ContentView.swift in Sources */,
+				CA75F5032BD860CB003F9957 /* ContentView.swift in Sources */,
+				CA75F5012BD85E9F003F9957 /* Persistence.swift in Sources */,
 				CA75F4F12BD638FD003F9957 /* SessionlessExampleAppleTVApp.swift in Sources */,
+				CA75F4FF2BD85E79003F9957 /* Network.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,6 +351,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"SessionlessExampleAppleTV/Preview Content\"";
 				DEVELOPMENT_TEAM = RLJ2FY35FD;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
@@ -371,6 +379,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"SessionlessExampleAppleTV/Preview Content\"";
 				DEVELOPMENT_TEAM = RLJ2FY35FD;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
