@@ -60,6 +60,7 @@ public KeyPairHex GenerateKeys();
 <br/>
 
 ```csharp
+///`KeyPairHex` that was generated
 public Task<KeyPairHex> GenerateKeysAsync();
 ```
 
