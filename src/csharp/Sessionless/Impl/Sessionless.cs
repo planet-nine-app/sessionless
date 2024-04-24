@@ -3,9 +3,7 @@ using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto.Signers;
 using Org.BouncyCastle.Math;
-using Org.BouncyCastle.Math.EC;
 using Org.BouncyCastle.Security;
-using Org.BouncyCastle.Utilities.Encoders;
 using SessionlessNET.Impl.Exceptions;
 using SessionlessNET.Models;
 using SessionlessNET.Util;
@@ -77,15 +75,7 @@ public class Sessionless(IVault vault) : ISessionless {
     }
 
     public bool VerifySignature(SignedMessageWithKey signedMessage) {
-        // key is ensured to be a string of bytes by SignedMessageWithKey constructor
-        // public hex to bytes
-        byte[] publicBytes = Hex.Decode(signedMessage.PublicKey);
-        // public bytes to key object
-        ECDomainParameters curve = KeyUtils.Defaults.DomainParameters;
-        ECPoint qPoint = curve.Curve.DecodePoint(publicBytes);
-        var publicKey = new ECPublicKeyParameters(qPoint, curve);
-        var withKey = signedMessage.WithKey(publicKey);
-        return VerifySignature(withKey);
+        return VerifySignature(signedMessage.ToEC());
     }
 
     public bool VerifySignature(SignedMessageWithECKey signedMessage) {
