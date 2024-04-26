@@ -66,21 +66,21 @@ public interface ISessionless {
     /// <returns> True if the signature is valid for the given message and public key </returns>
     public bool VerifySignature(SignedMessage signedMessage);
     /// <summary>
-    /// Verifies a given <paramref name="signedMessage"/> with the provided <paramref name="publicKeyHex"/>.
+    /// Verifies a given <paramref name="signedMessage"/> with the included <see cref="SignedMessageWithKey.PublicKey"/>.
     /// <br/>
     /// <br/> See: <seealso cref="Sign(string, string)"/>
     /// </summary>
     /// <param name="signedMessage">The message that was signed earlier </param>
     /// <returns> True if the signature is valid for the given message and public key </returns>
-    public bool VerifySignature(SignedMessage signedMessage, string publicKeyHex);
+    public bool VerifySignature(SignedMessageWithKey signedMessage);
     /// <summary>
-    /// Verifies a given <paramref name="signedMessage"/> with the provided <paramref name="publicKey"/>.
+    /// Verifies a given <paramref name="signedMessage"/> with the included <see cref="SignedMessageWithECKey.PublicKey"/>
     /// <br/>
     /// <br/> See: <seealso cref="Sign(string, ECPrivateKeyParameters)"/>
     /// </summary>
     /// <param name="signedMessage">The message that was signed earlier </param>
     /// <returns> True if the signature is valid for the given message and public key </returns>
-    public bool VerifySignature(SignedMessage signedMessage, ECPublicKeyParameters publicKey);
+    public bool VerifySignature(SignedMessageWithECKey signedMessage);
 
     /// <summary>
     /// Verifies each of the <paramref name="messages"/>
