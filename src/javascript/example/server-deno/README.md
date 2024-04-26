@@ -4,6 +4,9 @@ This server runs on the Deno runtime.
 If you're unfamiliar with Deno, its key features are native typescript support, built in fetch server, built in key/value data store (in beta), and free dev deployment to serverless containers.
 This makes it ideal for rapidly prototyping backends. Since it also supports all npm packages, it's got a lot going for it. So I've chosen it as the runtime for our hosted example.
 
+To run this server locally use `deno run -A --unstable main.ts`. 
+This will install dependencies and start the server listening.
+
 This server is hosted at https://rare-robin-97.deno.dev.
 It has the following endpoints:
 

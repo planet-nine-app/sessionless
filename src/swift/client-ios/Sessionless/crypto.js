@@ -3392,13 +3392,9 @@ const getKeys = async () => {
 
 const sign = (message, privateKey) => {
   const messageHash = keccak256(utf8ToBytes(message));
-    try {
-        let sig = secp256k1.sign(messageHash, privateKey);
-        console.log(sig.r);
-        return sig;
-    } catch (err) {
-        console.log(err);
-    }
+  const signatureAsBigInts = secp256k1.sign(messageHash, privateKey);
+  const signature = signatureAsBigInts.toCompactHex();
+  return signature;
 };
 
 const verifySignature = (signature, message, publicKey) => {
