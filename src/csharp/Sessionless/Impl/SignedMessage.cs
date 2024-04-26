@@ -22,6 +22,7 @@ public record SignedMessage {
 
 /// <summary> <see cref="SignedMessage"/> but with a public key <see cref="string"/> </summary>
 public record SignedMessageWithKey : SignedMessage {
+    /// <summary> Public key as a <see cref="string"/> of bytes </summary>
     public string PublicKey { get; }
 
     public SignedMessageWithKey(string message, MessageSignatureHex signature, string publicKey)
@@ -33,6 +34,11 @@ public record SignedMessageWithKey : SignedMessage {
     }
     public SignedMessageWithKey(SignedMessage signedMessage, string publicKey)
             : this(signedMessage.Message, signedMessage.Signature, publicKey) { }
+
+    /// <summary> Convert to <see cref="SignedMessageWithECKey"/> </summary>
+
+    public SignedMessageWithECKey ToEC()
+        => new(this, PublicKey.ToEC());
 }
 
 /// <summary> <see cref="SignedMessage"/> but with a public key of type <see cref="ECPublicKeyParameters"/> </summary>

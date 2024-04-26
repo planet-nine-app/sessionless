@@ -258,15 +258,6 @@ classDiagram
     +constructor(string, MessageSignatureHex, ECPublicKeyParameters)
     +constructor(SignedMessage, ECPublicKeyParameters)
   }
-  class SignedMessageWithECKey {
-    +PublicKey: ECPublicKeyParameters
-    +constructor(string, MessageSignatureHex, ECPublicKeyParameters)
-    +constructor(SignedMessage, ECPublicKeyParameters)
-  }
-  
-  SignedMessage <-- SignedMessageWithKey
-  SignedMessage <-- SignedMessageWithECKey
-```
 
   SignedMessage <-- SignedMessageWithKey
   SignedMessage <-- SignedMessageWithECKey
