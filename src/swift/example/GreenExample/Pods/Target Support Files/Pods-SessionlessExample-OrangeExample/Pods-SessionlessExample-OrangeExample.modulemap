@@ -1,0 +1,6 @@
+framework module Pods_SessionlessExample_OrangeExample {
+  umbrella header "Pods-SessionlessExample-OrangeExample-umbrella.h"
+
+  export *
+  module * { export * }
+}

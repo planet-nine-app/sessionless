@@ -7,6 +7,10 @@ target 'SessionlessExample' do
 
   # Pods for SessionlessExample
   pod 'Sessionless', :path => '../../client-ios/Sessionless'
+  
+  target 'OrangeExample' do
+    pod 'Sessionless', :path => '../../client-ios/Sessionless'
+  end
 
   target 'SessionlessExampleTests' do
     inherit! :search_paths
