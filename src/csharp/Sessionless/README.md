@@ -6,7 +6,7 @@ This is the C# implementation of the Sessionless protocol--a protocol for provid
 
 ### Install
 
-- `dotnet new install SessionlessNET`
+- `dotnet add package SessionlessNET`
 
 ### Import
 
