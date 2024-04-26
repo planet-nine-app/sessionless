@@ -8,9 +8,9 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SessionlessExample.Server.Controllers
+namespace SessionlessExample.Server.Controllers;
 
-{
+
     [ApiController]
     [Route("/cool-stuff")]
     public class DoCoolStuffController: ControllerBase
@@ -37,13 +37,17 @@ namespace SessionlessExample.Server.Controllers
 
             UserModel user = DemoPersistenceController.getUser(input.uuid);
 
-            if(user == null) {
+            if(user is null) {
                 return Problem("No user found");
             }
                         
             var postedSignature = Request.Headers["Signature"];
 
-            MessageSignatureHex signature = new MessageSignatureHex(postedSignature);
+            if(postedSignature is null) {
+                return Problem("No signature");
+            }
+
+            MessageSignatureHex signature = new(postedSignature);
 
             var message = JsonSerializer.Serialize<DoCoolStuffModel>(input);
 
@@ -58,4 +62,4 @@ namespace SessionlessExample.Server.Controllers
             return Ok(resp);
         }
     }
-}
+
