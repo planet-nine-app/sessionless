@@ -3358,8 +3358,7 @@ const random = require('ethereum-cryptography/random.js');
 const bytesToHex = utils.bytesToHex;
 const getRandomBytesSync = random.getRandomBytesSync;
     
-    const utf8ToBytes = (stri) => {
-      const str = stri.slice(0, 32);
+    const utf8ToBytes = (str) => {
       return Uint8Array.from(Array.from(str).map(letter => letter.charCodeAt(0)));
     };
 
@@ -3393,7 +3392,10 @@ const getKeys = async () => {
     
         
 const sign = (message, privateKey) => {
-    const messageHash = keccak256(utf8ToBytes(message)).slice(32);
+    console.log(message);
+    const messageHash = keccak256(utf8ToBytes(message));
+    console.log("messageHash vvvvvvv");
+    console.log(bytesToHex(messageHash));
         try {
         const sig = secp256k1.sign(messageHash, privateKey);
         console.log(sig.r);
@@ -3406,7 +3408,7 @@ const sign = (message, privateKey) => {
 };
         
 const verifySignature = (sig, message, publicKey) => {
-  const messageHash = keccak256(utf8ToBytes(message)).slice(32);
+  const messageHash = keccak256(utf8ToBytes(message));
   let signature = {
     r: sig.substring(0, 64),
     s: sig.substring(64)

@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { secp256k1 } from 'ethereum-cryptography/secp256k1';
 import { keccak256 } from "ethereum-cryptography/keccak.js";
 import { bytesToHex } from "ethereum-cryptography/utils.js";
@@ -10,29 +11,8 @@ const keysToSaveString = 'EE305432-6349-44E8-AE9D-193071152FE7';
 
 const AsyncFunction = (async () => {}).constructor;
 
-const utf8ToBytes = (stri) => {
-    const str = stri.slice(0, 32);
+const utf8ToBytes = (str) => {
     return Uint8Array.from(Array.from(str).map(letter => letter.charCodeAt(0)));
-};
-
-const decimalToHex = (str) => {
-    let decimal = str.toString().split('');
-    let sum = [];
-    let hex = [];
-    let i;
-    let s;
-    while(decimal.length){
-        s = 1 * decimal.shift()
-        for(i = 0; s || i < sum.length; i++){
-            s += (sum[i] || 0) * 10;
-            sum[i] = s % 16;
-            s = (s - sum[i]) / 16;
-        }
-    }
-    while(sum.length){
-        hex.push(sum.pop().toString(16));
-    }
-    return hex.join('');
 };
 
 const generateKeys = async (saveKeys, getKeysOverride) => {
@@ -41,17 +21,17 @@ const generateKeys = async (saveKeys, getKeysOverride) => {
   }
   const byteArray = new Uint8Array(32);
   const privateKey = bytesToHex(crypto.getRandomValues(byteArray)); 
-  const publicKey = bytesToHex(secp256k1.getPublicKey(privateKey));
+  const pubKey = bytesToHex(secp256k1.getPublicKey(privateKey));
   saveKeys && (saveKeys instanceof AsyncFunction ? await saveKeys({
     privateKey,
-    publicKey
+    pubKey
   }) : saveKeys({
     privateKey,
-    publicKey
+    pubKey
   }));
   await SecureStore.setItemAsync(keysToSaveString, JSON.stringify({
     privateKey,
-    publicKey
+    pubKey
   }));
   getKeysFromDisk = getKeysOverride;
 };
@@ -69,17 +49,47 @@ const sign = async (message) => {
   const { privateKey } = await getKeys();
   const messageHash = keccak256(utf8ToBytes(message));
   const signatureAsBigInts = secp256k1.sign(messageHash, privateKey);
-  const signature = {
-    r: decimalToHex(signatureAsBigInts.r),
-    s: decimalToHex(signatureAsBigInts.s),
-    recovery: signatureAsBigInts.recovery
-  };
+  const signature = signatureAsBigInts.toCompactHex();
   return signature;
 };
 
-const verifySignature = async (signature, message, publicKey) => {
+const verifySignature = (sig, message, pubKey) => {
   const messageHash = keccak256(utf8ToBytes(message));
-  return secp256k1.verify(signature, messageHash, publicKey);
+
+  let signature = {
+    r: sig.substring(0, 64),
+    s: sig.substring(64)
+  };
+
+  let hex = signature.r;
+  if (hex.length % 2) {
+    hex = '0' + hex;
+  }
+
+  const bn = BigInt('0x' + hex);
+
+  signature.r = bn;
+
+  let hex2 = signature.s;
+  if (hex2.length % 2) {
+    hex2 = '0' + hex2;
+  }
+
+  const bn2 = BigInt('0x' + hex2);
+
+  signature.r = bn;
+  signature.s = bn2;
+
+  const res = secp256k1.verify(signature, messageHash, pubKey);
+  return res;
+};
+
+const generateUUID = () => {
+  return  uuidv4();
+};
+
+const associate = (primarySignature, primaryMessage, primaryPublicKey, secondarySignature, secondaryMessage, secondaryPublicKey) => {
+  return (verifySignature(primarySignature, primaryMessage, primaryPublicKey) && verifySignature(secondarySignature, secondaryMessage, secondaryPublicKey));
 };
 
 const sessionless = {
@@ -87,7 +97,8 @@ const sessionless = {
   getKeys,
   sign,
   verifySignature,
-  generateUUID
+  generateUUID,
+  associate
 };
 
 export default sessionless;
