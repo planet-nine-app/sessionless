@@ -26,7 +26,7 @@ Private Key: <a id="txt-private-key">N/A</a> <br>
 
     const storageKeyUUID = 'uuid';
     const storageKeyPrivateKey = 'private-key';
-
+  
     const baseURL = function (){
         const protocol = window.location.protocol.replace(':', '');
         const domain = window.location.hostname;
@@ -75,6 +75,7 @@ Private Key: <a id="txt-private-key">N/A</a> <br>
             enteredText: 'Foo',
             timestamp: 'right now',
         }
+console.log(sign(JSON.stringify(payload)));
 
         await fetch(`${baseURL}/register`, {
             method: 'PUT',

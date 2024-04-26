@@ -1,4 +1,4 @@
-import sessionless from 'npm:sessionless-node';
+import sessionless from 'npm:sessionless-node@^0.10.0';
 import chalk from 'npm:chalk';
 import { associateKey, getUser, getValue as gv, getUserByAssociatedKey, saveUser, setValue } from '../persistence/user.ts';
 
