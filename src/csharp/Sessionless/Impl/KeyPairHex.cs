@@ -3,6 +3,7 @@ using SessionlessNET.Util;
 
 namespace SessionlessNET.Impl;
 
+/// <summary> Pair of public/private keys as byte <see cref="string"/>s </summary>
 public record KeyPairHex {
     public string PrivateKey { get; }
     public string PublicKey { get; }
