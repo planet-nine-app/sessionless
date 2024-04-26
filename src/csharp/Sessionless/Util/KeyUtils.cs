@@ -4,8 +4,11 @@ using Org.BouncyCastle.Asn1.X9;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Math.EC;
 using Org.BouncyCastle.Security;
+using Org.BouncyCastle.Utilities.Encoders;
 using SessionlessNET.Impl;
+using SessionlessNET.Impl.Exceptions;
 
 namespace SessionlessNET.Util;
 
@@ -86,5 +89,19 @@ public static class KeyUtils {
         var publicHexPadded = new string('0', padLength) + publicHex;
         // with prefix: 66 chars
         return prefix + publicHexPadded;
+    }
+
+    /// <summary> Convert <paramref name="publicKeyHex"/> to <see cref="ECPublicKeyParameters"/> using the <see cref="Defaults"/> </summary>
+    /// <param name="publicKeyHex"> Public key in hex (bytes) <see cref="string"/> format </param>
+    /// <returns> <paramref name="publicKeyHex"/> as <see cref="ECPublicKeyParameters"/> </returns>
+    /// <exception cref="HexFormatRequiredException"/>
+    public static ECPublicKeyParameters ToEC(this string publicKeyHex) {
+        if (!publicKeyHex.IsBytes()) {
+            throw new HexFormatRequiredException(nameof(publicKeyHex));
+        }
+        byte[] publicBytes = Hex.Decode(publicKeyHex);
+        ECDomainParameters curve = Defaults.DomainParameters;
+        ECPoint qPoint = curve.Curve.DecodePoint(publicBytes);
+        return new(qPoint, curve);
     }
 }
