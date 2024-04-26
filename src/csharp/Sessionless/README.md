@@ -2,9 +2,14 @@
 
 This is the C# implementation of the Sessionless protocol--a protocol for providing auth without user data like emails, passwords, or sessions.
 
+
 ## Usage
 
 ### Install
+
+<a href="https://nuget.org/packages/SessionlessNET">
+    <img src="https://buildstats.info/nuget/SessionlessNET" alt="SessionlessNET nuget package" />
+</a>
 
 - `dotnet add package SessionlessNET`
 
