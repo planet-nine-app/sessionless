@@ -1,4 +1,5 @@
 import unittest
+from sessionless import SessionlessSecp256k1
 
 PRIVATE_KEY_1 = "8dea0f7f726273b6971c1a4bcc3d60d8006fc087a4b9c4e7ae633918dff54f26"
 PRIVATE_KEY_2 = "68eab2d2fae06bbd24d633ecb72d9a8d6c9e2de0aef7499028d471b8ad4cb204"
