@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "./**/*.rs": {
+      "runtime": "vercel-rust@4.0.6"
+    }
+  }
+}
