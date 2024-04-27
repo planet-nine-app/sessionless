@@ -1,0 +1,28 @@
+[package]
+name = "sessionless"
+version = "0.1.1"
+authors = ["FssAy"]
+edition = "2021"
+description = "Implementation of the Sessionless protocol."
+repository = "https://github.com/planet-nine-app/sessionless"
+license = "MIT"
+
+[features]
+default = []
+
+[dependencies]
+sha3 = "0.10"
+hex = "0.4"
+
+[dependencies.secp256k1]
+version = "0.28"
+features = [
+    "rand-std",
+]
+
+[dependencies.uuid]
+version = "1.8"
+optional = true
+features = [
+    "v4",
+]

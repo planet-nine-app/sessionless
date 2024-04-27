@@ -16,7 +16,7 @@ class SessionlessSecp256k1():
             saveKeys({"privateKey": privateKey, "publicKey": publicKey})
             return privateKey, publicKey
         except Exception:
-            raise TypeError("No default secure storage in python. Please provide a saveKeys and getKeys function to store private key. Internal error message: ")
+            raise TypeError("No default secure storage in python. Please provide a callable method to store private key.")
     
     async def sign(self, msg, getKey):
         try:
