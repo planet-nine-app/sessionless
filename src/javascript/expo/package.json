@@ -1,6 +1,6 @@
 {
   "name": "sessionless-expo",
-  "version": "0.0.3",
+  "version": "0.10.1",
   "description": "React Native Expo implementation for sessionless",
   "main": "sessionless.js",
   "scripts": {

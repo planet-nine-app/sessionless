@@ -1,0 +1,9 @@
+# Generated build files
+/target
+Cargo.lock
+bin/
+pkg/
+wasm-pack.log
+
+# IDE project settings
+/.idea
