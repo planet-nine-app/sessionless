@@ -1,58 +1,51 @@
 import secp256k1
 import pickle
 import uuid
-import inspect
 
-
-class SessionlessSecp256k1():
-    
-    def __init__(self, get_keys):
-        self.get_keys = get_keys
-        
-    def generate_UUID(self):
+class SessionlessSecp256k1():       
+    def generateUUID(self):
         return uuid.uuid4().hex
     
-    def generate_keys(self, saveKeys):
+    def generateKeys(self, saveKeys):
         try: 
-            if callable(saveKeys):
-                private_key_obj = secp256k1.PrivateKey()
-                private_key = private_key_obj.serialize()
-                public_key = private_key_obj.pubkey.serialize().hex()
-                return private_key, public_key
+            if not callable(saveKeys):
+                raise Exception
+            privateKeyObj = secp256k1.PrivateKey()
+            privateKey = privateKeyObj.serialize()
+            publicKey = privateKeyObj.pubkey.serialize().hex()
+            saveKeys({"privateKey": privateKey, "publicKey": publicKey})
+            return privateKey, publicKey
         except Exception:
             raise TypeError("No default secure storage in python. Please provide a saveKeys and getKeys function to store private key. Internal error message: ")
     
-    async def sign(self, msg):
+    async def sign(self, msg, getKey):
         try:
+            privateKey = getKey()
             if not isinstance(msg, bytes):
                 msg = pickle.dumps(msg)
-            if inspect.iscoroutinefunction(self.get_keys):
-                private_key_hex = await self.get_keys()
-            else: 
-                private_key_hex = await self.get_keys()
-            private_key = secp256k1.PrivateKey()
-            assert private_key.deserialize(private_key_hex) == private_key.private_key
-            deserializedSig = private_key.ecdsa_sign(msg)
-            sig = private_key.ecdsa_serialize_compact(deserializedSig)
+            privateKeyObj = secp256k1.PrivateKey()
+            privateKeyObj.deserialize(privateKey)
+            deserializedSig = privateKeyObj.ecdsa_sign(msg)
+            sig = privateKeyObj.ecdsa_serialize_compact(deserializedSig)
             return sig.hex()
         except Exception:
-            raise ValueError("Value not provided in correct format. Internal error message: ")
+            raise ValueError("Value not provided in correct format.")
         
-    def verify_signature(self, signature, msg, public_key_hex):
+    def verifySignature(self, signature, msg, publicKey):
         try:
             if not isinstance(msg, bytes):
                 msg = pickle.dumps(msg)
             sig = bytes.fromhex(signature)
-            public_key = secp256k1.PublicKey()
-            assert public_key.deserialize(bytes.fromhex(public_key_hex)) == public_key.public_key
+            publicKeyObj = secp256k1.PublicKey()
+            publicKeyObj.deserialize(bytes.fromhex(publicKey))
             
-            signature = public_key.ecdsa_deserialize_compact(sig)
-            return public_key.ecdsa_verify(msg, signature)
+            signature = publicKeyObj.ecdsa_deserialize_compact(sig)
+            return publicKeyObj.ecdsa_verify(msg, signature)
         except Exception:
-            raise ValueError("Error with parameters. Please ensure values are provided in correct format. Internal error message: ")
+            raise ValueError("Error with parameters. Please ensure values are provided in correct format.")
     
-    def associate(self, primary_sig, primary_msg, primary_public_key, secondary_sig, secondary_msg, secondary_public_key ):
+    def associate(self, primarySignature, primaryMsg, primaryPublicKey, secondarySignature, secondaryMsg, secondaryPublicKey ):
         try:
-            return (self.verify_signature(primary_sig, primary_msg, primary_public_key) and self.verify_signature(secondary_sig, secondary_msg, secondary_public_key))
+            return (self.verifySignature(primarySignature, primaryMsg, primaryPublicKey) and self.verifySignature(secondarySignature, secondaryMsg, secondaryPublicKey))
         except Exception:
-            raise ValueError("Error with parameters. Please ensure values are provided in correct format. Internal error message: ")
+            raise ValueError("Error with parameters. Please ensure values are provided in correct format.")
