@@ -1,0 +1,15 @@
+[package]
+name = "slapper"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+# [dependencies.async-std]
+# version = "1.6"
+# features = ["attributes"]
+
+[dependencies]
+clap = { version = "4.5.4", features = ["derive"] }
+colored = "2.1.0"
+sessionless = "0.1.1"
