@@ -1,0 +1,27 @@
+{
+  "name": "Sessionless",
+  "version": "0.1.0",
+  "summary": "A short description of Sessionless.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/zach-planet-nine/Sessionless",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zach-planet-nine": "zach@planetnine.app"
+  },
+  "source": {
+    "git": "https://github.com/zach-planet-nine/Sessionless.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "16.0"
+  },
+  "source_files": "Sessionless/Classes/**/*",
+  "resource_bundles": {
+    "Sessionless": [
+      "Sessionless/Classes/**/*.js"
+    ]
+  }
+}

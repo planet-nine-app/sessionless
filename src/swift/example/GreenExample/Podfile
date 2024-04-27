@@ -1,0 +1,24 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'SessionlessExample' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for SessionlessExample
+  pod 'Sessionless', :path => '../../client-ios/Sessionless'
+  
+  target 'OrangeExample' do
+    pod 'Sessionless', :path => '../../client-ios/Sessionless'
+  end
+
+  target 'SessionlessExampleTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'SessionlessExampleUITests' do
+    # Pods for testing
+  end
+
+end

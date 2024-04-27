@@ -1,0 +1,1086 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1325F5EA84F152C02F175B1291EA5C00 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		2A699F08408E9DB191869EE850815080 /* Pods-SessionlessExampleTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0136F27A5660CA91D09900501A55E22E /* Pods-SessionlessExampleTests-dummy.m */; };
+		2DA26D936385D2776425255A14AC27C9 /* Sessionless-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B31A83B5684EDCC880BD90BD522CB2DB /* Sessionless-dummy.m */; };
+		305544F0E1078EFF5A7592C51E51B96B /* Pods-SessionlessExample-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E7869997FB7C78ECB2819D20DACDB0B4 /* Pods-SessionlessExample-dummy.m */; };
+		37B7B3063E24F6E8C944162D627BEC5B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		5C7A0831FFE97B51B05DCE0B8F10FFF9 /* Pods-SessionlessExampleTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = BF6AC6C7D56066532626A3EC8AC99FAC /* Pods-SessionlessExampleTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8A095E213DD6583609D16A0A2BE52B0A /* Sessionless.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0B51FF97B0F1D53A2B24FF263C730A /* Sessionless.swift */; };
+		92B3840DCC1A76B4206471983AF8732B /* crypto.js in Sources */ = {isa = PBXBuildFile; fileRef = ADD21F039EF751DF42D049D5520821AA /* crypto.js */; };
+		98579A182C85C39B1AD7DF69D45F8954 /* Pods-SessionlessExample-SessionlessExampleUITests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F3510295D2F816971C2D00B30FD90B30 /* Pods-SessionlessExample-SessionlessExampleUITests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D42944D9A480B56B106AA5906FC9098 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		A1E284AA0623341F33EF3EE8CE223B70 /* crypto.js in Resources */ = {isa = PBXBuildFile; fileRef = ADD21F039EF751DF42D049D5520821AA /* crypto.js */; };
+		A5438D52505787FFF8E20765F43E5942 /* Pods-SessionlessExample-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A3E725D8957E7D6F89151A7F7D901D38 /* Pods-SessionlessExample-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AF03000E6FE9611F3B47B39D5247001C /* Sessionless-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = AC0546376903937BDA278467FAB7E035 /* Sessionless-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B5F2459B47CC82B9A9F161A26839907B /* Pods-SessionlessExample-SessionlessExampleUITests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DA640013046185D0759558896826C6 /* Pods-SessionlessExample-SessionlessExampleUITests-dummy.m */; };
+		C1C86AA83DD5D41063DD309F5166FF5E /* Sessionless-Sessionless in Resources */ = {isa = PBXBuildFile; fileRef = F3622A3358F0D2F46F0408EBCD7F5439 /* Sessionless-Sessionless */; };
+		FA2E26D21C01CE987629992F67C398DA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0E97328D5D475AC23AFD2E2942363517 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1DC98BB15C69917D39574FFAEACDA31D;
+			remoteInfo = "Pods-SessionlessExample";
+		};
+		3EA67D2C1535A281A8FDA661B0E5C695 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4C10336AA3AFDEEB3327E03CBF00BD7F;
+			remoteInfo = Sessionless;
+		};
+		85D5F495474055FFDF5EEE2CB86CBE6C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4C10336AA3AFDEEB3327E03CBF00BD7F;
+			remoteInfo = Sessionless;
+		};
+		C5063D47226492F4D1978B556788F9C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 79194B9414605DE67FF84298586D8C6A;
+			remoteInfo = "Sessionless-Sessionless";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0136F27A5660CA91D09900501A55E22E /* Pods-SessionlessExampleTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SessionlessExampleTests-dummy.m"; sourceTree = "<group>"; };
+		0227E292258CB9D38D3C8E0AD54F164E /* ResourceBundle-Sessionless-Sessionless-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-Sessionless-Sessionless-Info.plist"; sourceTree = "<group>"; };
+		02646FBFC94C0BDD3555B27ED96AF4F2 /* Pods-SessionlessExample-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SessionlessExample-Info.plist"; sourceTree = "<group>"; };
+		0C991E21D3B1801DD7B809DEF98C76C0 /* Pods-SessionlessExample-SessionlessExampleUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SessionlessExample-SessionlessExampleUITests.release.xcconfig"; sourceTree = "<group>"; };
+		0D40D2E25EA5480C08D67C3C88ECF7C4 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		167B69BACA57961F0E1263586F57F0DA /* Sessionless.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Sessionless.release.xcconfig; sourceTree = "<group>"; };
+		1A95B012D754F14100BA47DF10D93DE4 /* Sessionless-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Sessionless-prefix.pch"; sourceTree = "<group>"; };
+		1DF7EF15F3C10BDE5266616D334D2036 /* Pods-SessionlessExample-SessionlessExampleUITests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SessionlessExample-SessionlessExampleUITests-Info.plist"; sourceTree = "<group>"; };
+		2F8018F90E7D0457718736C6DE95620C /* Sessionless.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = Sessionless.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		37F45F2F1718199E3A250B7F58F0DD16 /* Sessionless */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Sessionless; path = Sessionless.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		383B9568C9741909E5021645AD280278 /* Pods-SessionlessExample-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SessionlessExample-acknowledgements.markdown"; sourceTree = "<group>"; };
+		46D3353ACAB5E077F0CDCF144FC426AE /* Pods-SessionlessExample-SessionlessExampleUITests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-SessionlessExample-SessionlessExampleUITests.modulemap"; sourceTree = "<group>"; };
+		581B73475EEEB03E1DCD68434C123071 /* Pods-SessionlessExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SessionlessExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		5947CC1CA145DE6CF95767333091C424 /* Pods-SessionlessExample-SessionlessExampleUITests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SessionlessExample-SessionlessExampleUITests-acknowledgements.plist"; sourceTree = "<group>"; };
+		64672D60449BD4EE27BCBAE95EC589E4 /* Pods-SessionlessExampleTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SessionlessExampleTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		682DECBCE876CEE4AB3856FF23670A7E /* Sessionless.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Sessionless.modulemap; sourceTree = "<group>"; };
+		6F0A8446F6D1FAE0E16242B006E3D91E /* Pods-SessionlessExample-SessionlessExampleUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SessionlessExample-SessionlessExampleUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		706BA180DBAF8562642A7AF4DD913310 /* Pods-SessionlessExampleTests */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-SessionlessExampleTests"; path = Pods_SessionlessExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		70F4821DB1B581FA906197ED2E1F0ADD /* Pods-SessionlessExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SessionlessExample.debug.xcconfig"; sourceTree = "<group>"; };
+		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		736D41CB64223B9B7414BABB771BD16A /* Pods-SessionlessExample.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-SessionlessExample.modulemap"; sourceTree = "<group>"; };
+		982064630568EB984FEBDD3DD1393A7D /* Pods-SessionlessExample */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-SessionlessExample"; path = Pods_SessionlessExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A3E725D8957E7D6F89151A7F7D901D38 /* Pods-SessionlessExample-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SessionlessExample-umbrella.h"; sourceTree = "<group>"; };
+		A45214382ADDB54C5E29C7ED271A7D11 /* Sessionless.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Sessionless.debug.xcconfig; sourceTree = "<group>"; };
+		AC0546376903937BDA278467FAB7E035 /* Sessionless-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Sessionless-umbrella.h"; sourceTree = "<group>"; };
+		ADD21F039EF751DF42D049D5520821AA /* crypto.js */ = {isa = PBXFileReference; includeInIndex = 1; name = crypto.js; path = Sessionless/Classes/crypto.js; sourceTree = "<group>"; };
+		B0C8BE1E3E6ACEEC9EA88AEA25C490D0 /* Pods-SessionlessExampleTests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SessionlessExampleTests-Info.plist"; sourceTree = "<group>"; };
+		B31A83B5684EDCC880BD90BD522CB2DB /* Sessionless-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Sessionless-dummy.m"; sourceTree = "<group>"; };
+		B8430983454D488852EE8D1A742E1A64 /* Pods-SessionlessExampleTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SessionlessExampleTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		BAD4F64DE3852275365A029ABE49574A /* Pods-SessionlessExample-SessionlessExampleUITests */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-SessionlessExample-SessionlessExampleUITests"; path = Pods_SessionlessExample_SessionlessExampleUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF6AC6C7D56066532626A3EC8AC99FAC /* Pods-SessionlessExampleTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SessionlessExampleTests-umbrella.h"; sourceTree = "<group>"; };
+		C73EB4A171ED134F4FF20EA57B6AAF30 /* Pods-SessionlessExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SessionlessExample.release.xcconfig"; sourceTree = "<group>"; };
+		C798B00569C6C4A2DA84A8A1E3400701 /* Pods-SessionlessExample-SessionlessExampleUITests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SessionlessExample-SessionlessExampleUITests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		C7E0AB4BC59C7878426CA096CC909C8E /* Sessionless-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Sessionless-Info.plist"; sourceTree = "<group>"; };
+		D1DA640013046185D0759558896826C6 /* Pods-SessionlessExample-SessionlessExampleUITests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SessionlessExample-SessionlessExampleUITests-dummy.m"; sourceTree = "<group>"; };
+		D1E0B059B2341FEF6B0EE0C0A5816972 /* Pods-SessionlessExample-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SessionlessExample-frameworks.sh"; sourceTree = "<group>"; };
+		D6E75BD9CBD9D09F3BD574B48A673879 /* Pods-SessionlessExampleTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-SessionlessExampleTests.modulemap"; sourceTree = "<group>"; };
+		DF4D67BF8230215901816025CEFE463B /* Pods-SessionlessExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SessionlessExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E7869997FB7C78ECB2819D20DACDB0B4 /* Pods-SessionlessExample-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SessionlessExample-dummy.m"; sourceTree = "<group>"; };
+		EC0B51FF97B0F1D53A2B24FF263C730A /* Sessionless.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Sessionless.swift; path = Sessionless/Classes/Sessionless.swift; sourceTree = "<group>"; };
+		F3510295D2F816971C2D00B30FD90B30 /* Pods-SessionlessExample-SessionlessExampleUITests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SessionlessExample-SessionlessExampleUITests-umbrella.h"; sourceTree = "<group>"; };
+		F3622A3358F0D2F46F0408EBCD7F5439 /* Sessionless-Sessionless */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "Sessionless-Sessionless"; path = Sessionless.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		F415531DB067641DA705A12007DA3942 /* Pods-SessionlessExample-SessionlessExampleUITests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SessionlessExample-SessionlessExampleUITests-frameworks.sh"; sourceTree = "<group>"; };
+		FCD0B6A544E73FFA70D9AB9F4BD272BD /* Pods-SessionlessExample-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SessionlessExample-acknowledgements.plist"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		106B21CE2BCDD28E9ED69BA9BDB17996 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1325F5EA84F152C02F175B1291EA5C00 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1EF6C5E7B1AEF6F55908EF2C1409E777 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA2E26D21C01CE987629992F67C398DA /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7FB1B3FBBC0AE972861A0563DD579650 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37B7B3063E24F6E8C944162D627BEC5B /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B6B0523F97E5D7167B1DD68E4986212E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D42944D9A480B56B106AA5906FC9098 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F01D0D02997AED267743998ED1D58837 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		299A127DF19D62FA6B05DA5311EF1C09 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				6185CFA0D2C04AFD3C475BCC1ECDADCC /* Pods-SessionlessExample */,
+				56309C8CC23E6B12E836B66116317259 /* Pods-SessionlessExample-SessionlessExampleUITests */,
+				29FBCE710B739007A6CD4C414E094A3F /* Pods-SessionlessExampleTests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		29FBCE710B739007A6CD4C414E094A3F /* Pods-SessionlessExampleTests */ = {
+			isa = PBXGroup;
+			children = (
+				D6E75BD9CBD9D09F3BD574B48A673879 /* Pods-SessionlessExampleTests.modulemap */,
+				B8430983454D488852EE8D1A742E1A64 /* Pods-SessionlessExampleTests-acknowledgements.markdown */,
+				64672D60449BD4EE27BCBAE95EC589E4 /* Pods-SessionlessExampleTests-acknowledgements.plist */,
+				0136F27A5660CA91D09900501A55E22E /* Pods-SessionlessExampleTests-dummy.m */,
+				B0C8BE1E3E6ACEEC9EA88AEA25C490D0 /* Pods-SessionlessExampleTests-Info.plist */,
+				BF6AC6C7D56066532626A3EC8AC99FAC /* Pods-SessionlessExampleTests-umbrella.h */,
+				DF4D67BF8230215901816025CEFE463B /* Pods-SessionlessExampleTests.debug.xcconfig */,
+				581B73475EEEB03E1DCD68434C123071 /* Pods-SessionlessExampleTests.release.xcconfig */,
+			);
+			name = "Pods-SessionlessExampleTests";
+			path = "Target Support Files/Pods-SessionlessExampleTests";
+			sourceTree = "<group>";
+		};
+		3BA1DEEDDEA610D162D08F1F1E3FE5F2 /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				78530B0D2C1366256F29AFED70CD61D5 /* Sessionless */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		550005CF68501ECBD38F0119A3C5B722 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				0D40D2E25EA5480C08D67C3C88ECF7C4 /* LICENSE */,
+				2F8018F90E7D0457718736C6DE95620C /* Sessionless.podspec */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
+		56309C8CC23E6B12E836B66116317259 /* Pods-SessionlessExample-SessionlessExampleUITests */ = {
+			isa = PBXGroup;
+			children = (
+				46D3353ACAB5E077F0CDCF144FC426AE /* Pods-SessionlessExample-SessionlessExampleUITests.modulemap */,
+				C798B00569C6C4A2DA84A8A1E3400701 /* Pods-SessionlessExample-SessionlessExampleUITests-acknowledgements.markdown */,
+				5947CC1CA145DE6CF95767333091C424 /* Pods-SessionlessExample-SessionlessExampleUITests-acknowledgements.plist */,
+				D1DA640013046185D0759558896826C6 /* Pods-SessionlessExample-SessionlessExampleUITests-dummy.m */,
+				F415531DB067641DA705A12007DA3942 /* Pods-SessionlessExample-SessionlessExampleUITests-frameworks.sh */,
+				1DF7EF15F3C10BDE5266616D334D2036 /* Pods-SessionlessExample-SessionlessExampleUITests-Info.plist */,
+				F3510295D2F816971C2D00B30FD90B30 /* Pods-SessionlessExample-SessionlessExampleUITests-umbrella.h */,
+				6F0A8446F6D1FAE0E16242B006E3D91E /* Pods-SessionlessExample-SessionlessExampleUITests.debug.xcconfig */,
+				0C991E21D3B1801DD7B809DEF98C76C0 /* Pods-SessionlessExample-SessionlessExampleUITests.release.xcconfig */,
+			);
+			name = "Pods-SessionlessExample-SessionlessExampleUITests";
+			path = "Target Support Files/Pods-SessionlessExample-SessionlessExampleUITests";
+			sourceTree = "<group>";
+		};
+		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		6185CFA0D2C04AFD3C475BCC1ECDADCC /* Pods-SessionlessExample */ = {
+			isa = PBXGroup;
+			children = (
+				736D41CB64223B9B7414BABB771BD16A /* Pods-SessionlessExample.modulemap */,
+				383B9568C9741909E5021645AD280278 /* Pods-SessionlessExample-acknowledgements.markdown */,
+				FCD0B6A544E73FFA70D9AB9F4BD272BD /* Pods-SessionlessExample-acknowledgements.plist */,
+				E7869997FB7C78ECB2819D20DACDB0B4 /* Pods-SessionlessExample-dummy.m */,
+				D1E0B059B2341FEF6B0EE0C0A5816972 /* Pods-SessionlessExample-frameworks.sh */,
+				02646FBFC94C0BDD3555B27ED96AF4F2 /* Pods-SessionlessExample-Info.plist */,
+				A3E725D8957E7D6F89151A7F7D901D38 /* Pods-SessionlessExample-umbrella.h */,
+				70F4821DB1B581FA906197ED2E1F0ADD /* Pods-SessionlessExample.debug.xcconfig */,
+				C73EB4A171ED134F4FF20EA57B6AAF30 /* Pods-SessionlessExample.release.xcconfig */,
+			);
+			name = "Pods-SessionlessExample";
+			path = "Target Support Files/Pods-SessionlessExample";
+			sourceTree = "<group>";
+		};
+		78530B0D2C1366256F29AFED70CD61D5 /* Sessionless */ = {
+			isa = PBXGroup;
+			children = (
+				ADD21F039EF751DF42D049D5520821AA /* crypto.js */,
+				EC0B51FF97B0F1D53A2B24FF263C730A /* Sessionless.swift */,
+				550005CF68501ECBD38F0119A3C5B722 /* Pod */,
+				BB74D1F0714E55E2747FF8E44647D405 /* Support Files */,
+			);
+			name = Sessionless;
+			path = "../../../client-ios/Sessionless";
+			sourceTree = "<group>";
+		};
+		9BBC322E11115EDCDED8E75742DD6B5D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				982064630568EB984FEBDD3DD1393A7D /* Pods-SessionlessExample */,
+				BAD4F64DE3852275365A029ABE49574A /* Pods-SessionlessExample-SessionlessExampleUITests */,
+				706BA180DBAF8562642A7AF4DD913310 /* Pods-SessionlessExampleTests */,
+				37F45F2F1718199E3A250B7F58F0DD16 /* Sessionless */,
+				F3622A3358F0D2F46F0408EBCD7F5439 /* Sessionless-Sessionless */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BB74D1F0714E55E2747FF8E44647D405 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				0227E292258CB9D38D3C8E0AD54F164E /* ResourceBundle-Sessionless-Sessionless-Info.plist */,
+				682DECBCE876CEE4AB3856FF23670A7E /* Sessionless.modulemap */,
+				B31A83B5684EDCC880BD90BD522CB2DB /* Sessionless-dummy.m */,
+				C7E0AB4BC59C7878426CA096CC909C8E /* Sessionless-Info.plist */,
+				1A95B012D754F14100BA47DF10D93DE4 /* Sessionless-prefix.pch */,
+				AC0546376903937BDA278467FAB7E035 /* Sessionless-umbrella.h */,
+				A45214382ADDB54C5E29C7ED271A7D11 /* Sessionless.debug.xcconfig */,
+				167B69BACA57961F0E1263586F57F0DA /* Sessionless.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../../example/SessionlessExample/Pods/Target Support Files/Sessionless";
+			sourceTree = "<group>";
+		};
+		CF1408CF629C7361332E53B88F7BD30C = {
+			isa = PBXGroup;
+			children = (
+				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
+				3BA1DEEDDEA610D162D08F1F1E3FE5F2 /* Development Pods */,
+				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
+				9BBC322E11115EDCDED8E75742DD6B5D /* Products */,
+				299A127DF19D62FA6B05DA5311EF1C09 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				578452D2E740E91742655AC8F1636D1F /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		610B70AD2569D637F487937951171FE3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5438D52505787FFF8E20765F43E5942 /* Pods-SessionlessExample-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A25DD6B6C6E3B913E663D59F0E0AA46A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98579A182C85C39B1AD7DF69D45F8954 /* Pods-SessionlessExample-SessionlessExampleUITests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBECCEE3EC8599DC967190839D966B17 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AF03000E6FE9611F3B47B39D5247001C /* Sessionless-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB658EF7D4F3A1414621083185367EC8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C7A0831FFE97B51B05DCE0B8F10FFF9 /* Pods-SessionlessExampleTests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		13E0052D474EABC63AEC41C3926F00A1 /* Pods-SessionlessExample-SessionlessExampleUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9E782F8614EF9D6616E60E9B9D0D4414 /* Build configuration list for PBXNativeTarget "Pods-SessionlessExample-SessionlessExampleUITests" */;
+			buildPhases = (
+				A25DD6B6C6E3B913E663D59F0E0AA46A /* Headers */,
+				9ACB2EAAB91E1128B066D1B7D19E820E /* Sources */,
+				7FB1B3FBBC0AE972861A0563DD579650 /* Frameworks */,
+				56828418194C281FE1F80D046DF5E271 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8702D13FB63235B36BAA1A0D83AC3794 /* PBXTargetDependency */,
+			);
+			name = "Pods-SessionlessExample-SessionlessExampleUITests";
+			productName = Pods_SessionlessExample_SessionlessExampleUITests;
+			productReference = BAD4F64DE3852275365A029ABE49574A /* Pods-SessionlessExample-SessionlessExampleUITests */;
+			productType = "com.apple.product-type.framework";
+		};
+		1DC98BB15C69917D39574FFAEACDA31D /* Pods-SessionlessExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9373588723D7351610E3C0C37B46122 /* Build configuration list for PBXNativeTarget "Pods-SessionlessExample" */;
+			buildPhases = (
+				610B70AD2569D637F487937951171FE3 /* Headers */,
+				3A62AB61254691FE66496890541E4874 /* Sources */,
+				106B21CE2BCDD28E9ED69BA9BDB17996 /* Frameworks */,
+				F518EF1AB8A436778559BE2E50B7B9B3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D2AA03CB8C781DB168FDF6BA01A121C2 /* PBXTargetDependency */,
+			);
+			name = "Pods-SessionlessExample";
+			productName = Pods_SessionlessExample;
+			productReference = 982064630568EB984FEBDD3DD1393A7D /* Pods-SessionlessExample */;
+			productType = "com.apple.product-type.framework";
+		};
+		4C10336AA3AFDEEB3327E03CBF00BD7F /* Sessionless */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE810646A91AE47BDC4B5508440C3006 /* Build configuration list for PBXNativeTarget "Sessionless" */;
+			buildPhases = (
+				BBECCEE3EC8599DC967190839D966B17 /* Headers */,
+				127B929A8A8EEFD8BBBB927E63F906D7 /* Sources */,
+				1EF6C5E7B1AEF6F55908EF2C1409E777 /* Frameworks */,
+				553B875966EEDBD30D07826B160D5935 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3D1524F0E90B397151DE16D8E1A74383 /* PBXTargetDependency */,
+			);
+			name = Sessionless;
+			productName = Sessionless;
+			productReference = 37F45F2F1718199E3A250B7F58F0DD16 /* Sessionless */;
+			productType = "com.apple.product-type.framework";
+		};
+		79194B9414605DE67FF84298586D8C6A /* Sessionless-Sessionless */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E44BF3A002B3CF5EAD053D854E2B19BB /* Build configuration list for PBXNativeTarget "Sessionless-Sessionless" */;
+			buildPhases = (
+				B614CC79B75A4726C18D924E200519B7 /* Sources */,
+				F01D0D02997AED267743998ED1D58837 /* Frameworks */,
+				5F19BFD05D5ACB4EF8CE190296D91F3E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Sessionless-Sessionless";
+			productName = Sessionless;
+			productReference = F3622A3358F0D2F46F0408EBCD7F5439 /* Sessionless-Sessionless */;
+			productType = "com.apple.product-type.bundle";
+		};
+		E96827E02106651E7348D4F91E94293D /* Pods-SessionlessExampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D6599ECAE97C98C594F2840E9C6044D3 /* Build configuration list for PBXNativeTarget "Pods-SessionlessExampleTests" */;
+			buildPhases = (
+				EB658EF7D4F3A1414621083185367EC8 /* Headers */,
+				43EE9A1907C841AE264652097F8D49AC /* Sources */,
+				B6B0523F97E5D7167B1DD68E4986212E /* Frameworks */,
+				3E7EADE73501076DF192DC5D3ECB9BAF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6E5420D01CB518D53A87DF7D1FCB0F80 /* PBXTargetDependency */,
+			);
+			name = "Pods-SessionlessExampleTests";
+			productName = Pods_SessionlessExampleTests;
+			productReference = 706BA180DBAF8562642A7AF4DD913310 /* Pods-SessionlessExampleTests */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			productRefGroup = 9BBC322E11115EDCDED8E75742DD6B5D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1DC98BB15C69917D39574FFAEACDA31D /* Pods-SessionlessExample */,
+				13E0052D474EABC63AEC41C3926F00A1 /* Pods-SessionlessExample-SessionlessExampleUITests */,
+				E96827E02106651E7348D4F91E94293D /* Pods-SessionlessExampleTests */,
+				4C10336AA3AFDEEB3327E03CBF00BD7F /* Sessionless */,
+				79194B9414605DE67FF84298586D8C6A /* Sessionless-Sessionless */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3E7EADE73501076DF192DC5D3ECB9BAF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		553B875966EEDBD30D07826B160D5935 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C1C86AA83DD5D41063DD309F5166FF5E /* Sessionless-Sessionless in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		56828418194C281FE1F80D046DF5E271 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5F19BFD05D5ACB4EF8CE190296D91F3E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1E284AA0623341F33EF3EE8CE223B70 /* crypto.js in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F518EF1AB8A436778559BE2E50B7B9B3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		127B929A8A8EEFD8BBBB927E63F906D7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92B3840DCC1A76B4206471983AF8732B /* crypto.js in Sources */,
+				8A095E213DD6583609D16A0A2BE52B0A /* Sessionless.swift in Sources */,
+				2DA26D936385D2776425255A14AC27C9 /* Sessionless-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3A62AB61254691FE66496890541E4874 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				305544F0E1078EFF5A7592C51E51B96B /* Pods-SessionlessExample-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		43EE9A1907C841AE264652097F8D49AC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A699F08408E9DB191869EE850815080 /* Pods-SessionlessExampleTests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9ACB2EAAB91E1128B066D1B7D19E820E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5F2459B47CC82B9A9F161A26839907B /* Pods-SessionlessExample-SessionlessExampleUITests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B614CC79B75A4726C18D924E200519B7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3D1524F0E90B397151DE16D8E1A74383 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Sessionless-Sessionless";
+			target = 79194B9414605DE67FF84298586D8C6A /* Sessionless-Sessionless */;
+			targetProxy = C5063D47226492F4D1978B556788F9C3 /* PBXContainerItemProxy */;
+		};
+		6E5420D01CB518D53A87DF7D1FCB0F80 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-SessionlessExample";
+			target = 1DC98BB15C69917D39574FFAEACDA31D /* Pods-SessionlessExample */;
+			targetProxy = 0E97328D5D475AC23AFD2E2942363517 /* PBXContainerItemProxy */;
+		};
+		8702D13FB63235B36BAA1A0D83AC3794 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Sessionless;
+			target = 4C10336AA3AFDEEB3327E03CBF00BD7F /* Sessionless */;
+			targetProxy = 85D5F495474055FFDF5EEE2CB86CBE6C /* PBXContainerItemProxy */;
+		};
+		D2AA03CB8C781DB168FDF6BA01A121C2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Sessionless;
+			target = 4C10336AA3AFDEEB3327E03CBF00BD7F /* Sessionless */;
+			targetProxy = 3EA67D2C1535A281A8FDA661B0E5C695 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		24206DEFDE5C3EAC155B006E76E61834 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DF4D67BF8230215901816025CEFE463B /* Pods-SessionlessExampleTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-SessionlessExampleTests/Pods-SessionlessExampleTests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SessionlessExampleTests/Pods-SessionlessExampleTests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		24C16291BFF089CCA643C62BB4C8D6F8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A45214382ADDB54C5E29C7ED271A7D11 /* Sessionless.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/Sessionless/Sessionless-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Sessionless/Sessionless-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/Sessionless/Sessionless.modulemap";
+				PRODUCT_MODULE_NAME = Sessionless;
+				PRODUCT_NAME = Sessionless;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		359DA5E288F402CE278716C2D2516DDD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6F0A8446F6D1FAE0E16242B006E3D91E /* Pods-SessionlessExample-SessionlessExampleUITests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-SessionlessExample-SessionlessExampleUITests/Pods-SessionlessExample-SessionlessExampleUITests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SessionlessExample-SessionlessExampleUITests/Pods-SessionlessExample-SessionlessExampleUITests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		4E49C1DD2EA794046F6108A0DA5E7209 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0C991E21D3B1801DD7B809DEF98C76C0 /* Pods-SessionlessExample-SessionlessExampleUITests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-SessionlessExample-SessionlessExampleUITests/Pods-SessionlessExample-SessionlessExampleUITests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SessionlessExample-SessionlessExampleUITests/Pods-SessionlessExample-SessionlessExampleUITests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		7C3FBC45C4966EFE20583918767EFBE2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		9F688F9CAE39D0C6496062FFFD3C2E58 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A45214382ADDB54C5E29C7ED271A7D11 /* Sessionless.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/Sessionless";
+				IBSC_MODULE = Sessionless;
+				INFOPLIST_FILE = "Target Support Files/Sessionless/ResourceBundle-Sessionless-Sessionless-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				PRODUCT_NAME = Sessionless;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		AAAA0EFDCA908E3F88B82423C974B672 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 581B73475EEEB03E1DCD68434C123071 /* Pods-SessionlessExampleTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-SessionlessExampleTests/Pods-SessionlessExampleTests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SessionlessExampleTests/Pods-SessionlessExampleTests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		CA83F2D4324725236A172E3EB17E2AC8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 70F4821DB1B581FA906197ED2E1F0ADD /* Pods-SessionlessExample.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-SessionlessExample/Pods-SessionlessExample-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SessionlessExample/Pods-SessionlessExample.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		D17407C992380D1771A0CF0213066538 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 167B69BACA57961F0E1263586F57F0DA /* Sessionless.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/Sessionless";
+				IBSC_MODULE = Sessionless;
+				INFOPLIST_FILE = "Target Support Files/Sessionless/ResourceBundle-Sessionless-Sessionless-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				PRODUCT_NAME = Sessionless;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		E51F93FDAAD47900CEF0130664C8EFDA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 167B69BACA57961F0E1263586F57F0DA /* Sessionless.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/Sessionless/Sessionless-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Sessionless/Sessionless-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/Sessionless/Sessionless.modulemap";
+				PRODUCT_MODULE_NAME = Sessionless;
+				PRODUCT_NAME = Sessionless;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		F42B411C9E102245DD6AEB8582ED51BC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C73EB4A171ED134F4FF20EA57B6AAF30 /* Pods-SessionlessExample.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-SessionlessExample/Pods-SessionlessExample-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SessionlessExample/Pods-SessionlessExample.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		FF0A36149038A192FFD678E1D4A40D3B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7C3FBC45C4966EFE20583918767EFBE2 /* Debug */,
+				FF0A36149038A192FFD678E1D4A40D3B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9E782F8614EF9D6616E60E9B9D0D4414 /* Build configuration list for PBXNativeTarget "Pods-SessionlessExample-SessionlessExampleUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				359DA5E288F402CE278716C2D2516DDD /* Debug */,
+				4E49C1DD2EA794046F6108A0DA5E7209 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A9373588723D7351610E3C0C37B46122 /* Build configuration list for PBXNativeTarget "Pods-SessionlessExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA83F2D4324725236A172E3EB17E2AC8 /* Debug */,
+				F42B411C9E102245DD6AEB8582ED51BC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE810646A91AE47BDC4B5508440C3006 /* Build configuration list for PBXNativeTarget "Sessionless" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				24C16291BFF089CCA643C62BB4C8D6F8 /* Debug */,
+				E51F93FDAAD47900CEF0130664C8EFDA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D6599ECAE97C98C594F2840E9C6044D3 /* Build configuration list for PBXNativeTarget "Pods-SessionlessExampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				24206DEFDE5C3EAC155B006E76E61834 /* Debug */,
+				AAAA0EFDCA908E3F88B82423C974B672 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E44BF3A002B3CF5EAD053D854E2B19BB /* Build configuration list for PBXNativeTarget "Sessionless-Sessionless" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F688F9CAE39D0C6496062FFFD3C2E58 /* Debug */,
+				D17407C992380D1771A0CF0213066538 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+}
