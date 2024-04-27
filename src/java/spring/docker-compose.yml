@@ -1,0 +1,38 @@
+version: "3.8"
+
+name: "sessionless-backend"
+services:
+  sessionless_api:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    env_file:
+      - env/.env_api
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    depends_on:
+      sessionless_postgres:
+        condition: service_healthy
+  sessionless_postgres:
+    image: "postgres:16-alpine"
+    restart: on-failure
+    env_file:
+      - env/.env_db
+    volumes:
+      - "postgres:/var/lib/postgresql/data"
+    ports:
+      - "127.0.0.1:26370:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d sessionless -U sessionless_api"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+volumes:
+  postgres:
+    driver: local

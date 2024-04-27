@@ -8,20 +8,6 @@
 import Foundation
 import JavaScriptCore
 
-
-
-public struct Signature {
-    public let r: String
-    public let s: String
-    public let v: Int32
-    
-    public func toString() -> String {
-        return """
-            {"r":"\(r)","s":"\(s)","v":"\(v)"}
-            """
-    }
-}
-
 public class Sessionless {
     public struct Keys {
         public let publicKey: String
@@ -91,6 +77,7 @@ public class Sessionless {
         let context = JSContext()
         let console = context?.objectForKeyedSubscript("console")
         context?.objectForKeyedSubscript("console").setObject(unsafeBitCast(logFunction, to: AnyObject.self), forKeyedSubscript: "log")
+        
         context?.evaluateScript(jsSourceContents)
         
         let sessionless = context?.objectForKeyedSubscript("globalThis")?.objectForKeyedSubscript("sessionless")
@@ -156,20 +143,17 @@ public class Sessionless {
         return nil
     }
     
-    public func sign(message: String) -> Signature? {
+    public func sign(message: String) -> String? {
         guard let keys = getKeys(),
               let signaturejs = signMessageJS?.call(withArguments: [message, keys.privateKey]) else {
             return nil
         }
-        print("signaturejs \(signaturejs)")
-        let signature = Signature(r: signaturejs.objectForKeyedSubscript("r").toString(), s: signaturejs.objectForKeyedSubscript("s").toString(), v: signaturejs.objectForKeyedSubscript("v").toInt32())
-        print("signature \(signature)")
-        print(signature.r)
+        let signature = signaturejs.toString()
         return signature
     }
     
-    public func verifySignature(signature: Signature, message: String, publicKey: String) -> Bool {
-        return verifySignatureJS?.call(withArguments: [signature.toString(), message, publicKey]).toBool() ?? false
+    public func verifySignature(signature: String, message: String, publicKey: String) -> Bool {
+        return verifySignatureJS?.call(withArguments: [signature, message, publicKey]).toBool() ?? false
     }
     
     public func generateUUID() -> String {

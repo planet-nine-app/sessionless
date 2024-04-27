@@ -1,0 +1,71 @@
+{
+  "version": "3",
+  "packages": {
+    "specifiers": {
+      "npm:chalk": "npm:chalk@5.3.0",
+      "npm:sessionless-node": "npm:sessionless-node@0.10.0",
+      "npm:sessionless-node@^0.10.0": "npm:sessionless-node@0.10.0"
+    },
+    "npm": {
+      "@noble/curves@1.3.0": {
+        "integrity": "sha512-t01iSXPuN+Eqzb4eBX0S5oubSqXbK/xXa1Ne18Hj8f9pStxztHCE2gfboSp/dZRLSqfuLpRK2nDXDK+W9puocA==",
+        "dependencies": {
+          "@noble/hashes": "@noble/hashes@1.3.3"
+        }
+      },
+      "@noble/hashes@1.3.3": {
+        "integrity": "sha512-V7/fPHgl+jsVPXqqeOzT8egNj2iBIVt+ECeMMG8TdcnTikP3oaBtUVqpT/gYCR68aEBJSF+XbYUxStjbFMqIIA==",
+        "dependencies": {}
+      },
+      "@scure/base@1.1.6": {
+        "integrity": "sha512-ok9AWwhcgYuGG3Zfhyqg+zwl+Wn5uE+dwC0NV/2qQkx4dABbb/bx96vWu8NSj+BNjjSjno+JRYRjle1jV08k3g==",
+        "dependencies": {}
+      },
+      "@scure/bip32@1.3.3": {
+        "integrity": "sha512-LJaN3HwRbfQK0X1xFSi0Q9amqOgzQnnDngIt+ZlsBC3Bm7/nE7K0kwshZHyaru79yIVRv/e1mQAjZyuZG6jOFQ==",
+        "dependencies": {
+          "@noble/curves": "@noble/curves@1.3.0",
+          "@noble/hashes": "@noble/hashes@1.3.3",
+          "@scure/base": "@scure/base@1.1.6"
+        }
+      },
+      "@scure/bip39@1.2.2": {
+        "integrity": "sha512-HYf9TUXG80beW+hGAt3TRM8wU6pQoYur9iNypTROm42dorCGmLnFe3eWjz3gOq6G62H2WRh0FCzAR1PI+29zIA==",
+        "dependencies": {
+          "@noble/hashes": "@noble/hashes@1.3.3",
+          "@scure/base": "@scure/base@1.1.6"
+        }
+      },
+      "chalk@5.3.0": {
+        "integrity": "sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==",
+        "dependencies": {}
+      },
+      "ethereum-cryptography@2.1.3": {
+        "integrity": "sha512-BlwbIL7/P45W8FGW2r7LGuvoEZ+7PWsniMvQ4p5s2xCyw9tmaDlpfsN9HjAucbF+t/qpVHwZUisgfK24TCW8aA==",
+        "dependencies": {
+          "@noble/curves": "@noble/curves@1.3.0",
+          "@noble/hashes": "@noble/hashes@1.3.3",
+          "@scure/bip32": "@scure/bip32@1.3.3",
+          "@scure/bip39": "@scure/bip39@1.2.2"
+        }
+      },
+      "sessionless-node@0.10.0": {
+        "integrity": "sha512-I2cZmC7Cewlq5GsDByoRmpO4dBRYlUAdMy0UegbXfIWRIpuvhwyn4tYl1TBnzj3K/E8RTTGcv396Bam017rJkg==",
+        "dependencies": {
+          "ethereum-cryptography": "ethereum-cryptography@2.1.3",
+          "uuid": "uuid@9.0.1"
+        }
+      },
+      "uuid@9.0.1": {
+        "integrity": "sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==",
+        "dependencies": {}
+      }
+    }
+  },
+  "remote": {},
+  "workspace": {
+    "dependencies": [
+      "npm:sessionless-node@^0.10.0"
+    ]
+  }
+}

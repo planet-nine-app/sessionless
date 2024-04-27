@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "swiftui-particles",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/benlmyers/swiftui-particles",
+      "state" : {
+        "branch" : "main",
+        "revision" : "6ae6f5b130a7970775453e808863d2af50b64552"
+      }
+    }
+  ],
+  "version" : 2
+}
