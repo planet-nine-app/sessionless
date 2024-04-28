@@ -1,5 +1,5 @@
 
-pub fn url_for_color(color: String) -> String {
+pub fn url_for_color(color: &String) -> String {
 
     let blue = "blue".to_string();
     let green = "green".to_string();
@@ -14,7 +14,7 @@ pub fn url_for_color(color: String) -> String {
     }
 }
 
-pub fn signature_placement_for_color(color: String) -> String {
+pub fn signature_placement_for_color(color: &String) -> String {
 
     let blue = "blue".to_string();
     let green = "green".to_string();
