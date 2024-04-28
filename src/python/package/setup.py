@@ -5,7 +5,7 @@ def read_markdown_file(file_path):
         markdown_content = file.read()
     return markdown_content
 
-VERSION = '0.0.2' 
+VERSION = '0.0.4' 
 DESCRIPTION = 'Sessionless is an attempt to make authentication handling easier for developers without traditional sessions.'
 LONG_DESCRIPTION = read_markdown_file("./README.md")
 
