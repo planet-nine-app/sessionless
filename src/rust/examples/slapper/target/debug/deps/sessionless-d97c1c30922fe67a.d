@@ -1,0 +1,10 @@
+/Users/zachbabb/Work/planet-nine/sessionless/src/rust/examples/slapper/target/debug/deps/libsessionless-d97c1c30922fe67a.rmeta: /Users/zachbabb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sessionless-0.1.1/src/lib.rs /Users/zachbabb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sessionless-0.1.1/src/hex/mod.rs /Users/zachbabb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sessionless-0.1.1/src/hex/error.rs /Users/zachbabb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sessionless-0.1.1/src/hex/impls.rs
+
+/Users/zachbabb/Work/planet-nine/sessionless/src/rust/examples/slapper/target/debug/deps/libsessionless-d97c1c30922fe67a.rlib: /Users/zachbabb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sessionless-0.1.1/src/lib.rs /Users/zachbabb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sessionless-0.1.1/src/hex/mod.rs /Users/zachbabb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sessionless-0.1.1/src/hex/error.rs /Users/zachbabb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sessionless-0.1.1/src/hex/impls.rs
+
+/Users/zachbabb/Work/planet-nine/sessionless/src/rust/examples/slapper/target/debug/deps/sessionless-d97c1c30922fe67a.d: /Users/zachbabb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sessionless-0.1.1/src/lib.rs /Users/zachbabb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sessionless-0.1.1/src/hex/mod.rs /Users/zachbabb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sessionless-0.1.1/src/hex/error.rs /Users/zachbabb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sessionless-0.1.1/src/hex/impls.rs
+
+/Users/zachbabb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sessionless-0.1.1/src/lib.rs:
+/Users/zachbabb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sessionless-0.1.1/src/hex/mod.rs:
+/Users/zachbabb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sessionless-0.1.1/src/hex/error.rs:
+/Users/zachbabb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sessionless-0.1.1/src/hex/impls.rs:
