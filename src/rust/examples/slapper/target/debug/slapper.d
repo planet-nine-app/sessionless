@@ -1,1 +1,0 @@
-/Users/zachbabb/Work/planet-nine/sessionless/src/rust/examples/slapper/target/debug/slapper: /Users/zachbabb/Work/planet-nine/sessionless/src/rust/examples/slapper/src/commands/color_test.rs /Users/zachbabb/Work/planet-nine/sessionless/src/rust/examples/slapper/src/commands/mod.rs /Users/zachbabb/Work/planet-nine/sessionless/src/rust/examples/slapper/src/main.rs
