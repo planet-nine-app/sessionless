@@ -10,15 +10,19 @@ FetchContent_Declare(
   GIT_REPOSITORY https://github.com/bitcoin-core/secp256k1.git
   GIT_TAG        v0.4.1
 )
+
+set(SECP256K1_BUILD_TESTS OFF)
+set(SECP256K1_BUILD_EXHAUSTIVE_TESTS OFF)
+set(SECP256K1_BUILD_BENCHMARK OFF)
+
 FetchContent_MakeAvailable(${SECP256K1_LIB_NAME})
 
 #################################################
-# Sessionless
+# Sessionless library
 
 set(TARGET sessionless)
 project(${TARGET})
 set(CMAKE_CXX_STANDARD 17)
-add_executable(${TARGET})
-target_sources(${TARGET} PRIVATE src/main.cpp src/sessionless.cpp)
-target_include_directories(${TARGET} PRIVATE src)
+add_library(${TARGET} STATIC src/sessionless.cpp)
+target_include_directories(${TARGET} PUBLIC src)
 target_link_libraries(${TARGET} PRIVATE ${SECP256K1_LIB_NAME})
