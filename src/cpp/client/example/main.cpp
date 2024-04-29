@@ -8,11 +8,11 @@ std::string toHexString(const unsigned char *buffer, const size_t length)
 {
     std::stringstream ss;
     ss << std::hex;
-    
+
     for (auto i = 0; i < length; ++i)
     {
         // Format for zero padded hex string
-        ss << std::setw(2) 
+        ss << std::setw(2)
            << std::setfill('0')
            << (int)buffer[i];
     }
