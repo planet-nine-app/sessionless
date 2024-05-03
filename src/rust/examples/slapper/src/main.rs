@@ -18,7 +18,7 @@ struct Cli {
 
     /// Iterations to test
     #[arg(short, long)]
-    iterations: Option<i32>,
+    iterations: Option<u32>,
 
     #[command(subcommand)]
     command: Option<Commands>,
@@ -40,7 +40,8 @@ fn test(color: Option<String>, language: Option<String>, iterations: Option<i32>
     println!("iterations: {iter}");
 }
 
-/*async*/ fn lots(color: Option<String>, language: Option<String>, iterations: Option<i32>) {
+/*async*/ fn lots(_color: Option<String>, _language: Option<String>, _iterations: Option<i32>) {
+    // TODO: Implement this. Remove the _'s from args above when you do
     println!("Lots");
 }
 
