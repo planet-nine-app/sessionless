@@ -7,12 +7,14 @@ mod do_cool_stuff;
 mod server_config;
 
 #[derive(Deserialize)]
+#[serde(rename_all="camelCase")]
 pub struct WelcomeResponse {
     uuid: String,
     welcomeMessage: String
 }
 
 #[derive(Deserialize)]
+#[serde(rename_all="camelCase")]
 pub struct CoolnessResponse {
     doubleCool: String
 }
@@ -24,6 +26,4 @@ pub fn register(color: &String) -> (Sessionless, WelcomeResponse) {
     return register::register(base_url, placement);
 }
 
-pub fn do_cool_stuff(color: &String, SESSIONLESS: Sessionless, register_response: WelcomeResponse) {
-    do_cool_stuff::do_cool_stuff(color, SESSIONLESS, register_response);
-}
+pub use do_cool_stuff::do_cool_stuff;
