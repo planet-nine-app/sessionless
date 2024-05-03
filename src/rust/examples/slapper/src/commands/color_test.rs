@@ -2,7 +2,7 @@ use colored::Colorize;
 
 use crate::requests;
 
-/*async*/ pub fn color_test(color: Option<String>, language: Option<String>, iterations: Option<i32>) {
+/*async*/ pub fn color_test(color: Option<String>, language: Option<String>, iterations: Option<u32>) {
     let unwrapped_color = color.unwrap_or("no color".to_string());
     
     if unwrapped_color == "no color" {
