@@ -2,13 +2,13 @@ use sessionless::hex::IntoHex;
 use sessionless::Sessionless;
 use reqwest;
 use colored::Colorize;
-use crate::requests::server_config;
 use crate::requests::{WelcomeResponse, CoolnessResponse};
+use crate::utils::Color;
 
-pub fn do_cool_stuff(color: &String, sessionless: Sessionless, welcome_response: WelcomeResponse) {
+pub fn do_cool_stuff(color: Color, sessionless: Sessionless, welcome_response: WelcomeResponse) {
     
-    let base_url = server_config::url_for_color(color);
-    let placement = server_config::signature_placement_for_color(color);
+    let base_url = color.get_url();
+    let placement = color.get_signature_placement();
 
     let message = format!(r#"{{"uuid":"{0}","coolness":"max","timestamp":"right now"}}"#, welcome_response.uuid);
 
@@ -41,7 +41,7 @@ pub fn do_cool_stuff(color: &String, sessionless: Sessionless, welcome_response:
     };
 
     if coolness_response.double_cool == "double cool".to_string() {
-        let success = format!("Aww yeah! The {color} server thinks you're {0}!", coolness_response.double_cool);
+        let success = format!("Aww yeah! The {:?} server thinks you're {}!", color, coolness_response.double_cool);
         println!("{}", success.to_string().green());
     } else {
         let fail = "Oh no, something went wrong.".red();

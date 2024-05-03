@@ -1,6 +1,12 @@
+#[macro_use]
+extern crate strum_macros;
+
+use std::str::FromStr;
 use clap::{Parser, Subcommand};
+use crate::utils::Color;
 
 mod commands;
+mod utils;
 pub mod requests;
 
 #[derive(Parser)]
@@ -43,12 +49,21 @@ fn test(color: Option<String>, language: Option<String>, iterations: Option<i32>
 fn main() {
     let cli = Cli::parse();
 
+    // IDK how `clap` works, so I'll parse all the values here
+    // instead of implementing `Parse` trait. - FssAy
+
+    let color = cli
+        .color
+        .map(|value| Color::from_str(&*value)
+            .expect("Provided value is not an accepted Color!")
+        );
+
     match &cli.command {
         Some(Commands::Test) => {
-            commands::color_test(cli.color, cli.language, cli.iterations);
+            commands::color_test(color, cli.language, cli.iterations);
         },
         Some(Commands::Lots) => {
-            commands::lots(cli.color, cli.language, cli.iterations);
+            commands::lots(color, cli.language, cli.iterations);
         },
         None => {}
     }
