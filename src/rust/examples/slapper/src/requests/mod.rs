@@ -1,5 +1,4 @@
 use sessionless::{Sessionless};
-use reqwest::{Request, Response, Result};
 use serde::{Deserialize};
 
 mod register;
@@ -10,13 +9,14 @@ mod server_config;
 #[serde(rename_all="camelCase")]
 pub struct WelcomeResponse {
     uuid: String,
-    welcomeMessage: String
+    #[allow(dead_code)]  // todo: Find out why this field is never used.
+    welcome_message: String
 }
 
 #[derive(Deserialize)]
 #[serde(rename_all="camelCase")]
 pub struct CoolnessResponse {
-    doubleCool: String
+    double_cool: String
 }
 
 pub fn register(color: &String) -> (Sessionless, WelcomeResponse) {
