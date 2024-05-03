@@ -40,20 +40,20 @@ fn test(color: Option<String>, language: Option<String>, iterations: Option<i32>
     println!("iterations: {iter}");
 }
 
-/*async*/ fn lots(_color: Option<String>, _language: Option<String>, _iterations: Option<u32>) {
+fn lots(_color: Option<String>, _language: Option<String>, _iterations: Option<u32>) {
     // TODO: Implement this. Remove the _'s from args above when you do
     println!("Lots");
 }
 
-/*async*/ fn main() {
+fn main() {
     let cli = Cli::parse();
 
     match &cli.command {
         Some(Commands::Test) => {
-            commands::color_test(cli.color, cli.language, cli.iterations)/*.await*/;
+            commands::color_test(cli.color, cli.language, cli.iterations);
         },
         Some(Commands::Lots) => {
-            lots(cli.color, cli.language, cli.iterations)/*.await*/;
+            lots(cli.color, cli.language, cli.iterations);
         },
         None => {}
     }
