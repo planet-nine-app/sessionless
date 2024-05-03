@@ -1,5 +1,3 @@
-use std::path::PathBuf;
-
 use clap::{Parser, Subcommand};
 
 mod commands;
@@ -31,6 +29,8 @@ enum Commands {
     Lots 
 }
 
+// Never used function, I am not sure of its purpose - FssAy
+#[allow(dead_code)]
 fn test(color: Option<String>, language: Option<String>, iterations: Option<i32>) {
     let col = color.unwrap_or("foo".to_string());
     let lang = language.unwrap_or("foo".to_string());
