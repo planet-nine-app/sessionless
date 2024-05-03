@@ -40,11 +40,6 @@ fn test(color: Option<String>, language: Option<String>, iterations: Option<i32>
     println!("iterations: {iter}");
 }
 
-fn lots(_color: Option<String>, _language: Option<String>, _iterations: Option<u32>) {
-    // TODO: Implement this. Remove the _'s from args above when you do
-    println!("Lots");
-}
-
 fn main() {
     let cli = Cli::parse();
 
@@ -53,7 +48,7 @@ fn main() {
             commands::color_test(cli.color, cli.language, cli.iterations);
         },
         Some(Commands::Lots) => {
-            lots(cli.color, cli.language, cli.iterations);
+            commands::lots(cli.color, cli.language, cli.iterations);
         },
         None => {}
     }
