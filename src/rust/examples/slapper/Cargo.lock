@@ -1034,6 +1034,7 @@ dependencies = [
  "colored",
  "reqwest",
  "serde",
+ "serde_json",
  "sessionless",
  "strum",
  "strum_macros",
