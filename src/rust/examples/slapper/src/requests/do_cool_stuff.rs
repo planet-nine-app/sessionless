@@ -4,7 +4,7 @@ use sessionless::Sessionless;
 use reqwest;
 use serde::{Deserialize, Serialize};
 use crate::requests::{RegisterResponse, Payload, Response};
-use crate::utils::Color;
+use crate::utils::{Color, Placement};
 
 #[derive(Debug, Serialize)]
 struct CoolPayload<'a> {
@@ -22,6 +22,7 @@ pub struct CoolResponse {
 }
 
 impl Payload for CoolPayload<'_> {}
+
 impl Response for CoolResponse {}
 
 pub fn do_cool_stuff(
@@ -30,8 +31,6 @@ pub fn do_cool_stuff(
     welcome_response: RegisterResponse
 ) -> anyhow::Result<()> {
     let client = reqwest::blocking::Client::new();
-    let base_url = color.get_url();
-    let placement = color.get_signature_placement();
 
     let mut message = CoolPayload {
         uuid: welcome_response.uuid,
@@ -44,21 +43,24 @@ pub fn do_cool_stuff(
 
     let mut request_builder = client
         .post({
-            let url = format!("{}/cool-stuff", base_url);
+            let url = format!("{}/cool-stuff", color.get_url());
             debug!("{}", url);
             url
         })
         .header("Content-Type", "application/json")
         .header("Accept", "application/json");
 
-    if placement == "payload".to_string() {
-        message.signature = Some(signature);
-        request_builder = request_builder
-            .body(message.as_json());
-    } else {
-        request_builder = request_builder
-            .header("signature", signature)
-            .body(message.as_json());
+    match color.get_signature_placement() {
+        Placement::Payload => {
+            message.signature = Some(signature);
+            request_builder = request_builder
+                .body(message.as_json());
+        }
+        Placement::Header => {
+            request_builder = request_builder
+                .header("signature", signature)
+                .body(message.as_json());
+        }
     }
 
     let coolness_response = match request_builder

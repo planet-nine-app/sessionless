@@ -1,3 +1,5 @@
+use crate::utils::Placement;
+
 #[derive(Copy, Clone, Debug, PartialEq, EnumString)]
 #[strum(serialize_all = "snake_case")]
 pub enum Color {
@@ -8,9 +10,6 @@ pub enum Color {
 }
 
 impl Color {
-    const SIG_PLACEMENT_PAYLOAD: &'static str = "payload";
-    const SIG_PLACEMENT_HEADER: &'static str = "header";
-
     pub fn get_url(&self) -> &'static str {
         use Color::*;
         match self {
@@ -21,11 +20,11 @@ impl Color {
         }
     }
 
-    pub fn get_signature_placement(&self) -> &'static str {
+    pub fn get_signature_placement(&self) -> Placement {
         use Color::*;
         match self {
-            Blue | Green => Self::SIG_PLACEMENT_PAYLOAD,
-            Red | Magenta => Self::SIG_PLACEMENT_HEADER,
+            Blue | Green => Placement::Payload,
+            Red | Magenta => Placement::Header,
         }
     }
 }

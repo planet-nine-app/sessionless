@@ -4,7 +4,7 @@ use sessionless::Sessionless;
 use reqwest;
 use serde::{Deserialize, Serialize};
 use crate::requests::{Payload, Response};
-use crate::utils::Color;
+use crate::utils::{Color, Placement};
 
 #[derive(Debug, Serialize)]
 struct RegisterPayload<'a> {
@@ -24,13 +24,12 @@ pub struct RegisterResponse {
 }
 
 impl Payload for RegisterPayload<'_> {}
+
 impl Response for RegisterResponse {}
 
 pub fn register(color: Color) -> anyhow::Result<(Sessionless, RegisterResponse)> {
     let sessionless = Sessionless::new();
     let client = reqwest::blocking::Client::new();
-
-    let placement = color.get_signature_placement();
 
     let mut message = RegisterPayload {
         pub_key: sessionless.public_key().to_hex(),
@@ -50,14 +49,17 @@ pub fn register(color: Color) -> anyhow::Result<(Sessionless, RegisterResponse)>
         .header("Content-Type", "application/json")
         .header("Accept", "application/json");
 
-    if placement == "payload" {
-        message.signature = Some(signature);
-        request_builder = request_builder
-            .body(message.as_json());
-    } else {
-        request_builder = request_builder
-            .header("signature", signature)
-            .body(message.as_json());
+    match color.get_signature_placement() {
+        Placement::Payload => {
+            message.signature = Some(signature);
+            request_builder = request_builder
+                .body(message.as_json());
+        }
+        Placement::Header => {
+            request_builder = request_builder
+                .header("signature", signature)
+                .body(message.as_json());
+        }
     }
 
     let welcome_response = match request_builder
