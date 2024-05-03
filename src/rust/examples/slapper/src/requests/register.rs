@@ -5,15 +5,15 @@ use reqwest::blocking::Response;
 use crate::requests::WelcomeResponse;
 
 pub fn register(base_url: String, placement: String) -> (Sessionless, WelcomeResponse) {
-    let SESSIONLESS = Sessionless::new();
+    let sessionless = Sessionless::new();
 
-    let public_key = SESSIONLESS.public_key().to_hex();
+    let public_key = sessionless.public_key().to_hex();
     let entered_text = "Foo";
     let timestamp = "right now";
 
     let message = format!(r#"{{"pubKey":"{0}","enteredText":"{1}","timestamp":"{2}"}}"#, public_key, entered_text, timestamp);   
     println!("Signing {0}", message); 
-    let signature = SESSIONLESS.sign(message.clone()).into_hex();
+    let signature = sessionless.sign(message.clone()).into_hex();
 
     let client = reqwest::blocking::Client::new();
     let url = format!("{0}/register", {base_url.to_string()});
@@ -40,5 +40,5 @@ pub fn register(base_url: String, placement: String) -> (Sessionless, WelcomeRes
         Err(_) => panic!("Error serializing JSON")
     };
 //    let welcome_response: WelcomeResponse = result.expect("response should be json").json::<WelcomeResponse>();
-    return (SESSIONLESS, welcome_response);
+    return (sessionless, welcome_response);
 }

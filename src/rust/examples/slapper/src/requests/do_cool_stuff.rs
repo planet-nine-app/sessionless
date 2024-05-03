@@ -7,14 +7,14 @@ use serde::{Deserialize};
 use crate::requests::server_config;
 use crate::requests::{WelcomeResponse, CoolnessResponse};
 
-pub fn do_cool_stuff(color: &String, SESSIONLESS: Sessionless, welcome_response: WelcomeResponse) {
+pub fn do_cool_stuff(color: &String, sessionless: Sessionless, welcome_response: WelcomeResponse) {
     
     let base_url = server_config::url_for_color(color);
     let placement = server_config::signature_placement_for_color(color);
 
     let message = format!(r#"{{"uuid":"{0}","coolness":"max","timestamp":"right now"}}"#, welcome_response.uuid);
 
-    let signature = SESSIONLESS.sign(message.clone()).into_hex();
+    let signature = sessionless.sign(message.clone()).into_hex();
 
     let client = reqwest::blocking::Client::new();
     let url = format!("{0}/cool-stuff", {base_url.to_string()});
