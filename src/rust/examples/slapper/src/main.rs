@@ -40,7 +40,7 @@ fn test(color: Option<String>, language: Option<String>, iterations: Option<i32>
     println!("iterations: {iter}");
 }
 
-/*async*/ fn lots(_color: Option<String>, _language: Option<String>, _iterations: Option<i32>) {
+/*async*/ fn lots(_color: Option<String>, _language: Option<String>, _iterations: Option<u32>) {
     // TODO: Implement this. Remove the _'s from args above when you do
     println!("Lots");
 }
