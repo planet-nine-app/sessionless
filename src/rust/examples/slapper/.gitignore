@@ -1,0 +1,5 @@
+# Generated build files
+/target
+
+# IDE project settings
+/.idea
