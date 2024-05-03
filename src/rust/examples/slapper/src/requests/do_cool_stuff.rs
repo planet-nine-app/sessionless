@@ -1,7 +1,7 @@
+use anyhow::anyhow;
 use sessionless::hex::IntoHex;
 use sessionless::Sessionless;
 use reqwest;
-use colored::Colorize;
 use serde::{Deserialize, Serialize};
 use crate::requests::{RegisterResponse, Payload, Response};
 use crate::utils::Color;
@@ -24,7 +24,11 @@ pub struct CoolResponse {
 impl Payload for CoolPayload<'_> {}
 impl Response for CoolResponse {}
 
-pub fn do_cool_stuff(color: Color, sessionless: Sessionless, welcome_response: RegisterResponse) {
+pub fn do_cool_stuff(
+    color: Color,
+    sessionless: Sessionless,
+    welcome_response: RegisterResponse
+) -> anyhow::Result<()> {
     let client = reqwest::blocking::Client::new();
     let base_url = color.get_url();
     let placement = color.get_signature_placement();
@@ -41,7 +45,7 @@ pub fn do_cool_stuff(color: Color, sessionless: Sessionless, welcome_response: R
     let mut request_builder = client
         .post({
             let url = format!("{}/cool-stuff", base_url);
-            println!("{}", url);
+            debug!("{}", url);
             url
         })
         .header("Content-Type", "application/json")
@@ -59,18 +63,22 @@ pub fn do_cool_stuff(color: Color, sessionless: Sessionless, welcome_response: R
 
     let coolness_response = match request_builder
         .send()
-        .expect("Something went awry!")
+        .map_err(|err| anyhow!("CoolStuff request - Failure: {err}"))?
         .json::<CoolResponse>()
     {
         Ok(cr) => cr,
-        Err(_) => panic!("Error serializing JSON")
+        Err(err) => return Err(
+            anyhow!("CoolStuff request - Invalid JSON response: {err}")
+        )
     };
 
     if coolness_response.double_cool == "double cool" {
-        let success = format!("Aww yeah! The {:?} server thinks you're {}!", color, coolness_response.double_cool);
-        println!("{}", success.to_string().green());
+        info!("Aww yeah! The {:?} server thinks you're {}!", color, coolness_response.double_cool);
     } else {
-        let fail = "Oh no, something went wrong.".red();
-        println!("{}", fail.to_string());
+        return Err(
+            anyhow!("CoolStuff request - Response is not 'double cool'")
+        );
     }
+
+    Ok(())
 }

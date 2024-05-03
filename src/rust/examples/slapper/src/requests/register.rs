@@ -1,3 +1,4 @@
+use anyhow::anyhow;
 use sessionless::hex::IntoHex;
 use sessionless::Sessionless;
 use reqwest;
@@ -25,7 +26,7 @@ pub struct RegisterResponse {
 impl Payload for RegisterPayload<'_> {}
 impl Response for RegisterResponse {}
 
-pub fn register(color: Color) -> (Sessionless, RegisterResponse) {
+pub fn register(color: Color) -> anyhow::Result<(Sessionless, RegisterResponse)> {
     let sessionless = Sessionless::new();
     let client = reqwest::blocking::Client::new();
 
@@ -43,7 +44,7 @@ pub fn register(color: Color) -> (Sessionless, RegisterResponse) {
     let mut request_builder = client
         .post({
             let url = format!("{}/register", color.get_url());
-            println!("{}", url);
+            debug!("{}", url);
             url
         })
         .header("Content-Type", "application/json")
@@ -61,12 +62,14 @@ pub fn register(color: Color) -> (Sessionless, RegisterResponse) {
 
     let welcome_response = match request_builder
         .send()
-        .expect("Something went awry!")
+        .map_err(|err| anyhow!("Register request - Failure: {err}"))?
         .json::<RegisterResponse>()
     {
         Ok(wr) => wr,
-        Err(_) => panic!("Error serializing JSON")
+        Err(err) => return Err(
+            anyhow!("Register request - Invalid JSON response: {err}")
+        )
     };
 
-    return (sessionless, welcome_response);
+    return Ok((sessionless, welcome_response));
 }

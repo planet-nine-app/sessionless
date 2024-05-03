@@ -15,7 +15,7 @@ trait Payload: Debug + Serialize {
 
     fn sign(&self, sessionless: &Sessionless) -> Signature {
         let message_json = self.as_json();
-        println!("Signing {}", message_json);
+        debug!("Signing {}", message_json);
         sessionless.sign(message_json.as_bytes())
     }
 }
