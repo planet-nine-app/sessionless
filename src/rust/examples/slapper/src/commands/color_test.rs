@@ -1,14 +1,11 @@
 use crate::requests;
+use crate::utils::Color;
 
-pub fn color_test(color: Option<String>, _language: Option<String>, _iterations: Option<u32>) {
-    let unwrapped_color = color.unwrap_or("no color".to_string());
+pub fn color_test(color: Option<Color>, _language: Option<String>, _iterations: Option<u32>) {
+    let color = color.expect("Need a color for a color test");
 
-    if unwrapped_color == "no color" {
-        panic!("Need a color for a color test");
-    }
-
-    let register_tuple = requests::register(&unwrapped_color);
-    requests::do_cool_stuff(&unwrapped_color, register_tuple.0, register_tuple.1);
+    let register_tuple = requests::register(color);
+    requests::do_cool_stuff(color, register_tuple.0, register_tuple.1);
     /*    if cool_stuff_response.doubleCool != null {
             let success = "Aww yeah! The {language} server thinks you're {coolStuffResponse.doubleCool}".green();
             println!("{}", success.to_string());
