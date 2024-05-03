@@ -1,10 +1,33 @@
-use anyhow::anyhow;
 use sessionless::hex::IntoHex;
-use sessionless::Sessionless;
-use reqwest;
+use sessionless::{Sessionless, Signature};
 use serde::{Deserialize, Serialize};
-use crate::requests::{Payload, Response};
-use crate::utils::{Color, Placement};
+use crate::requests::{Payload, Request, Response};
+use crate::utils::Color;
+
+pub struct RegisterRequest;
+
+impl Request for RegisterRequest {
+    type Input = ();
+    type Output = RegisterResponse;
+
+    fn endpoint() -> &'static str {
+        "register"
+    }
+
+    fn execute(color: Color, sessionless: &Sessionless, _: Self::Input) -> anyhow::Result<Self::Output> {
+        let message = RegisterPayload {
+            pub_key: sessionless.public_key().to_hex(),
+            entered_text: "Foo",
+            timestamp: "right now",
+            signature: None,
+        };
+
+        let request_builder = Self::prepare(message, color, sessionless)?;
+        let response = Self::send::<RegisterResponse>(request_builder)?;
+
+        Ok(response)
+    }
+}
 
 #[derive(Debug, Serialize)]
 struct RegisterPayload<'a> {
@@ -15,6 +38,12 @@ struct RegisterPayload<'a> {
     signature: Option<String>,
 }
 
+impl Payload for RegisterPayload<'_> {
+    fn update_signature(&mut self, signature: Option<Signature>) {
+        self.signature = signature.map(|sig| sig.to_hex())
+    }
+}
+
 #[derive(Deserialize)]
 #[serde(rename_all="camelCase")]
 pub struct RegisterResponse {
@@ -23,55 +52,4 @@ pub struct RegisterResponse {
     welcome_message: String
 }
 
-impl Payload for RegisterPayload<'_> {}
-
 impl Response for RegisterResponse {}
-
-pub fn register(color: Color) -> anyhow::Result<(Sessionless, RegisterResponse)> {
-    let sessionless = Sessionless::new();
-    let client = reqwest::blocking::Client::new();
-
-    let mut message = RegisterPayload {
-        pub_key: sessionless.public_key().to_hex(),
-        entered_text: "Foo",
-        timestamp: "right now",
-        signature: None,
-    };
-
-    let signature = message.sign(&sessionless).to_hex();
-
-    let mut request_builder = client
-        .post({
-            let url = format!("{}/register", color.get_url());
-            debug!("{}", url);
-            url
-        })
-        .header("Content-Type", "application/json")
-        .header("Accept", "application/json");
-
-    match color.get_signature_placement() {
-        Placement::Payload => {
-            message.signature = Some(signature);
-            request_builder = request_builder
-                .body(message.as_json());
-        }
-        Placement::Header => {
-            request_builder = request_builder
-                .header("signature", signature)
-                .body(message.as_json());
-        }
-    }
-
-    let welcome_response = match request_builder
-        .send()
-        .map_err(|err| anyhow!("Register request - Failure: {err}"))?
-        .json::<RegisterResponse>()
-    {
-        Ok(wr) => wr,
-        Err(err) => return Err(
-            anyhow!("Register request - Invalid JSON response: {err}")
-        )
-    };
-
-    return Ok((sessionless, welcome_response));
-}
