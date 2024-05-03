@@ -7,7 +7,7 @@ use crate::utils::Color;
 
 mod commands;
 mod utils;
-pub mod requests;
+mod requests;
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
