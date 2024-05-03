@@ -1,7 +1,6 @@
 use sessionless::hex::IntoHex;
-use sessionless::{PublicKey, Sessionless, Signature};
+use sessionless::Sessionless;
 use reqwest;
-use reqwest::blocking::Response;
 use crate::requests::WelcomeResponse;
 
 pub fn register(base_url: String, placement: String) -> (Sessionless, WelcomeResponse) {

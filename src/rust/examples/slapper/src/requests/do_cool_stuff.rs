@@ -1,9 +1,7 @@
 use sessionless::hex::IntoHex;
-use sessionless::{PublicKey, Sessionless, Signature};
+use sessionless::Sessionless;
 use reqwest;
-use reqwest::blocking::Response;
 use colored::Colorize;
-use serde::{Deserialize};
 use crate::requests::server_config;
 use crate::requests::{WelcomeResponse, CoolnessResponse};
 
@@ -42,8 +40,8 @@ pub fn do_cool_stuff(color: &String, sessionless: Sessionless, welcome_response:
         Err(_) => panic!("Error serializing JSON")
     };
 
-    if coolness_response.doubleCool == "double cool".to_string() {
-        let success = format!("Aww yeah! The {color} server thinks you're {0}!", coolness_response.doubleCool);
+    if coolness_response.double_cool == "double cool".to_string() {
+        let success = format!("Aww yeah! The {color} server thinks you're {0}!", coolness_response.double_cool);
         println!("{}", success.to_string().green());
     } else {
         let fail = "Oh no, something went wrong.".red();
