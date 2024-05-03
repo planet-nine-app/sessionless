@@ -16,16 +16,16 @@ pub fn register(color: Color) -> (Sessionless, WelcomeResponse) {
 
     let message = format!(r#"{{"pubKey":"{0}","enteredText":"{1}","timestamp":"{2}"}}"#, public_key, entered_text, timestamp);   
     println!("Signing {0}", message); 
-    let signature = sessionless.sign(message.clone()).into_hex();
+    let signature = sessionless.sign(message.as_bytes()).into_hex();
 
     let client = reqwest::blocking::Client::new();
-    let url = format!("{0}/register", {base_url.to_string()});
+    let url = format!("{}/register", base_url);
     println!("{}", url);
     let mut post = client.post(url)
         .header("Content-Type", "application/json")
         .header("Accept", "application/json");
 
-    if placement == "payload".to_string() {
+    if placement == "payload" {
         let payload = format!(r#"{{"pubKey":"{0}","enteredText":"{1}","timestamp":"{2}","signature":"{3}"}}"#, public_key, entered_text, timestamp, signature);
         post = post.body(payload)
     } else {

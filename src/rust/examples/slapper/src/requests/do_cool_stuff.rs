@@ -6,16 +6,15 @@ use crate::requests::{WelcomeResponse, CoolnessResponse};
 use crate::utils::Color;
 
 pub fn do_cool_stuff(color: Color, sessionless: Sessionless, welcome_response: WelcomeResponse) {
-    
     let base_url = color.get_url();
     let placement = color.get_signature_placement();
 
     let message = format!(r#"{{"uuid":"{0}","coolness":"max","timestamp":"right now"}}"#, welcome_response.uuid);
 
-    let signature = sessionless.sign(message.clone()).into_hex();
+    let signature = sessionless.sign(message.as_bytes()).into_hex();
 
     let client = reqwest::blocking::Client::new();
-    let url = format!("{0}/cool-stuff", {base_url.to_string()});
+    let url = format!("{}/cool-stuff", base_url);
     println!("{}", url);
     let mut post = client.post(url)
         .header("Content-Type", "application/json")
