@@ -1,8 +1,13 @@
 #[macro_use]
 extern crate strum_macros;
 
+#[macro_use]
+extern crate log;
+
 use std::str::FromStr;
+use anyhow::anyhow;
 use clap::{Parser, Subcommand};
+use simple_logger::SimpleLogger;
 use crate::utils::Color;
 
 mod commands;
@@ -47,26 +52,34 @@ fn test(color: Option<String>, language: Option<String>, iterations: Option<i32>
 }
 
 fn main() {
+    SimpleLogger::new().init().expect("Failed to initialize the logger!");
+    if let Err(err) = core() {
+        error!("{err}");
+    }
+}
+
+fn core() -> anyhow::Result<()> {
     let cli = Cli::parse();
 
     // IDK how `clap` works, so I'll parse all the values here
     // instead of implementing `Parse` trait. - FssAy
 
-    let color = cli
-        .color
-        .map(|value| Color::from_str(&*value)
-            .expect("Provided value is not an accepted Color!")
-        );
+    let color = if let Some(color) = cli.color {
+        Some(Color::from_str(&*color)?)
+    } else {
+        None
+    };
 
     match &cli.command {
         Some(Commands::Test) => {
-            commands::color_test(color, cli.language, cli.iterations);
+            commands::color_test(color, cli.language, cli.iterations)
         },
         Some(Commands::Lots) => {
-            commands::lots(color, cli.language, cli.iterations);
+            commands::lots(color, cli.language, cli.iterations)
         },
-        None => {}
+        None => Err(
+            anyhow!("No command provided!")
+        ),
     }
-
     // Continued program logic goes here...
 }
