@@ -1,45 +1,75 @@
 use sessionless::hex::IntoHex;
-use sessionless::Sessionless;
+use sessionless::{Sessionless, Signature};
 use reqwest;
 use colored::Colorize;
+use serde::Serialize;
 use crate::requests::{WelcomeResponse, CoolnessResponse};
 use crate::utils::Color;
 
+#[derive(Debug, Serialize)]
+struct Message<'a> {
+    uuid: String,
+    coolness: &'a str,
+    timestamp: &'a str,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    signature: Option<String>,
+}
+
+impl<'a> Message<'a> {
+    fn as_json(&self) -> String {
+        serde_json::to_string(&self).unwrap()
+    }
+
+    fn sign(&self, sessionless: &Sessionless) -> Signature {
+        let message_json = self.as_json();
+        println!("Signing {}", message_json);
+        sessionless.sign(message_json.as_bytes())
+    }
+}
+
 pub fn do_cool_stuff(color: Color, sessionless: Sessionless, welcome_response: WelcomeResponse) {
+    let client = reqwest::blocking::Client::new();
     let base_url = color.get_url();
     let placement = color.get_signature_placement();
 
-    let message = format!(r#"{{"uuid":"{0}","coolness":"max","timestamp":"right now"}}"#, welcome_response.uuid);
+    let mut message = Message {
+        uuid: welcome_response.uuid,
+        coolness: "max",
+        timestamp: "right now",
+        signature: None,
+    };
 
-    let signature = sessionless.sign(message.as_bytes()).into_hex();
+    let signature = message.sign(&sessionless).to_hex();
 
-    let client = reqwest::blocking::Client::new();
-    let url = format!("{}/cool-stuff", base_url);
-    println!("{}", url);
-    let mut post = client.post(url)
+    let mut request_builder = client
+        .post({
+            let url = format!("{}/cool-stuff", base_url);
+            println!("{}", url);
+            url
+        })
         .header("Content-Type", "application/json")
         .header("Accept", "application/json");
 
     if placement == "payload".to_string() {
-        let payload = format!(r#"{{"uuid":"{0}","coolness":"max","timestamp":"right now","signature":"{signature}"}}"#, welcome_response.uuid);
-        post = post.body(payload);
+        message.signature = Some(signature);
+        request_builder = request_builder
+            .body(message.as_json());
     } else {
-        post = post.header("signature", signature)
-        .body(message);
+        request_builder = request_builder
+            .header("signature", signature)
+            .body(message.as_json());
     }
 
-    let result = post.send();
-    let response = match result {
-        Ok(resp) => resp,
-        Err(_) => panic!("Something went awry!")
-    };
-    let json_result = response.json::<CoolnessResponse>();
-    let coolness_response: CoolnessResponse = match json_result {
+    let coolness_response = match request_builder
+        .send()
+        .expect("Something went awry!")
+        .json::<CoolnessResponse>()
+    {
         Ok(cr) => cr,
         Err(_) => panic!("Error serializing JSON")
     };
 
-    if coolness_response.double_cool == "double cool".to_string() {
+    if coolness_response.double_cool == "double cool" {
         let success = format!("Aww yeah! The {:?} server thinks you're {}!", color, coolness_response.double_cool);
         println!("{}", success.to_string().green());
     } else {
