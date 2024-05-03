@@ -1,13 +1,13 @@
 use sessionless::hex::IntoHex;
-use sessionless::{Sessionless, Signature};
+use sessionless::Sessionless;
 use reqwest;
 use colored::Colorize;
-use serde::Serialize;
-use crate::requests::{WelcomeResponse, CoolnessResponse};
+use serde::{Deserialize, Serialize};
+use crate::requests::{RegisterResponse, Payload, Response};
 use crate::utils::Color;
 
 #[derive(Debug, Serialize)]
-struct Message<'a> {
+struct CoolPayload<'a> {
     uuid: String,
     coolness: &'a str,
     timestamp: &'a str,
@@ -15,24 +15,21 @@ struct Message<'a> {
     signature: Option<String>,
 }
 
-impl<'a> Message<'a> {
-    fn as_json(&self) -> String {
-        serde_json::to_string(&self).unwrap()
-    }
-
-    fn sign(&self, sessionless: &Sessionless) -> Signature {
-        let message_json = self.as_json();
-        println!("Signing {}", message_json);
-        sessionless.sign(message_json.as_bytes())
-    }
+#[derive(Deserialize)]
+#[serde(rename_all="camelCase")]
+pub struct CoolResponse {
+    pub double_cool: String
 }
 
-pub fn do_cool_stuff(color: Color, sessionless: Sessionless, welcome_response: WelcomeResponse) {
+impl Payload for CoolPayload<'_> {}
+impl Response for CoolResponse {}
+
+pub fn do_cool_stuff(color: Color, sessionless: Sessionless, welcome_response: RegisterResponse) {
     let client = reqwest::blocking::Client::new();
     let base_url = color.get_url();
     let placement = color.get_signature_placement();
 
-    let mut message = Message {
+    let mut message = CoolPayload {
         uuid: welcome_response.uuid,
         coolness: "max",
         timestamp: "right now",
@@ -63,7 +60,7 @@ pub fn do_cool_stuff(color: Color, sessionless: Sessionless, welcome_response: W
     let coolness_response = match request_builder
         .send()
         .expect("Something went awry!")
-        .json::<CoolnessResponse>()
+        .json::<CoolResponse>()
     {
         Ok(cr) => cr,
         Err(_) => panic!("Error serializing JSON")
