@@ -1,12 +1,12 @@
 use sessionless::hex::IntoHex;
-use sessionless::{Sessionless, Signature};
+use sessionless::Sessionless;
 use reqwest;
-use serde::Serialize;
-use crate::requests::WelcomeResponse;
+use serde::{Deserialize, Serialize};
+use crate::requests::{Payload, Response};
 use crate::utils::Color;
 
 #[derive(Debug, Serialize)]
-struct Message<'a> {
+struct RegisterPayload<'a> {
     pub_key: String,
     entered_text: &'a str,
     timestamp: &'a str,
@@ -14,25 +14,24 @@ struct Message<'a> {
     signature: Option<String>,
 }
 
-impl<'a> Message<'a> {
-    fn as_json(&self) -> String {
-        serde_json::to_string(&self).unwrap()
-    }
-
-    fn sign(&self, sessionless: &Sessionless) -> Signature {
-        let message_json = self.as_json();
-        println!("Signing {}", message_json);
-        sessionless.sign(message_json.as_bytes())
-    }
+#[derive(Deserialize)]
+#[serde(rename_all="camelCase")]
+pub struct RegisterResponse {
+    pub uuid: String,
+    #[allow(dead_code)]  // todo: Find out why this field is never used.
+    welcome_message: String
 }
 
-pub fn register(color: Color) -> (Sessionless, WelcomeResponse) {
+impl Payload for RegisterPayload<'_> {}
+impl Response for RegisterResponse {}
+
+pub fn register(color: Color) -> (Sessionless, RegisterResponse) {
     let sessionless = Sessionless::new();
     let client = reqwest::blocking::Client::new();
 
     let placement = color.get_signature_placement();
 
-    let mut message = Message {
+    let mut message = RegisterPayload {
         pub_key: sessionless.public_key().to_hex(),
         entered_text: "Foo",
         timestamp: "right now",
@@ -63,7 +62,7 @@ pub fn register(color: Color) -> (Sessionless, WelcomeResponse) {
     let welcome_response = match request_builder
         .send()
         .expect("Something went awry!")
-        .json::<WelcomeResponse>()
+        .json::<RegisterResponse>()
     {
         Ok(wr) => wr,
         Err(_) => panic!("Error serializing JSON")
