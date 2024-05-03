@@ -2,9 +2,13 @@ use sessionless::hex::IntoHex;
 use sessionless::Sessionless;
 use reqwest;
 use crate::requests::WelcomeResponse;
+use crate::utils::Color;
 
-pub fn register(base_url: String, placement: String) -> (Sessionless, WelcomeResponse) {
+pub fn register(color: Color) -> (Sessionless, WelcomeResponse) {
     let sessionless = Sessionless::new();
+
+    let base_url = color.get_url();
+    let placement = color.get_signature_placement();
 
     let public_key = sessionless.public_key().to_hex();
     let entered_text = "Foo";
