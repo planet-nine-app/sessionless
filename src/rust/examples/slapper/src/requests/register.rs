@@ -1,44 +1,55 @@
 use sessionless::hex::IntoHex;
-use sessionless::{PublicKey, Sessionless, Signature};
-use reqwest;
-use reqwest::blocking::Response;
-use crate::requests::WelcomeResponse;
+use sessionless::{Sessionless, Signature};
+use serde::{Deserialize, Serialize};
+use crate::requests::{Payload, Request, Response};
+use crate::utils::Color;
 
-pub fn register(base_url: String, placement: String) -> (Sessionless, WelcomeResponse) {
-    let sessionless = Sessionless::new();
+pub struct RegisterRequest;
 
-    let public_key = sessionless.public_key().to_hex();
-    let entered_text = "Foo";
-    let timestamp = "right now";
+impl Request for RegisterRequest {
+    type Input = ();
+    type Output = RegisterResponse;
 
-    let message = format!(r#"{{"pubKey":"{0}","enteredText":"{1}","timestamp":"{2}"}}"#, public_key, entered_text, timestamp);   
-    println!("Signing {0}", message); 
-    let signature = sessionless.sign(message.clone()).into_hex();
-
-    let client = reqwest::blocking::Client::new();
-    let url = format!("{0}/register", {base_url.to_string()});
-    println!("{}", url);
-    let mut post = client.post(url)
-        .header("Content-Type", "application/json")
-        .header("Accept", "application/json");
-
-    if placement == "payload".to_string() {
-        let payload = format!(r#"{{"pubKey":"{0}","enteredText":"{1}","timestamp":"{2}","signature":"{3}"}}"#, public_key, entered_text, timestamp, signature);
-        post = post.body(payload)
-    } else {
-        post = post.header("signature", signature)
-        .body(message);
+    fn endpoint() -> &'static str {
+        "register"
     }
-    let result = post.send(); 
-    let response = match result {
-        Ok(resp) => resp,
-        Err(_) => panic!("Something went awry!")
-    };
-    let json_result = response.json::<WelcomeResponse>();
-    let welcome_response: WelcomeResponse = match json_result {
-        Ok(wr) => wr,
-        Err(_) => panic!("Error serializing JSON")
-    };
-//    let welcome_response: WelcomeResponse = result.expect("response should be json").json::<WelcomeResponse>();
-    return (sessionless, welcome_response);
+
+    fn execute(color: Color, sessionless: &Sessionless, _: Self::Input) -> anyhow::Result<Self::Output> {
+        let message = RegisterPayload {
+            pub_key: sessionless.public_key().to_hex(),
+            entered_text: "Foo",
+            timestamp: "right now",
+            signature: None,
+        };
+
+        let request_builder = Self::prepare(message, color, sessionless)?;
+        let response = Self::send::<RegisterResponse>(request_builder)?;
+
+        Ok(response)
+    }
 }
+
+#[derive(Debug, Serialize)]
+struct RegisterPayload<'a> {
+    pub_key: String,
+    entered_text: &'a str,
+    timestamp: &'a str,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    signature: Option<String>,
+}
+
+impl Payload for RegisterPayload<'_> {
+    fn update_signature(&mut self, signature: Option<Signature>) {
+        self.signature = signature.map(|sig| sig.to_hex())
+    }
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all="camelCase")]
+pub struct RegisterResponse {
+    pub uuid: String,
+    #[allow(dead_code)]  // todo: Find out why this field is never used.
+    welcome_message: String
+}
+
+impl Response for RegisterResponse {}

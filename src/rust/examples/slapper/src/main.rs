@@ -1,9 +1,18 @@
-use std::path::PathBuf;
+#[macro_use]
+extern crate strum_macros;
 
+#[macro_use]
+extern crate log;
+
+use std::str::FromStr;
+use anyhow::anyhow;
 use clap::{Parser, Subcommand};
+use simple_logger::SimpleLogger;
+use crate::utils::Color;
 
 mod commands;
-pub mod requests;
+mod utils;
+mod requests;
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
@@ -31,6 +40,8 @@ enum Commands {
     Lots 
 }
 
+// Never used function, I am not sure of its purpose - FssAy
+#[allow(dead_code)]
 fn test(color: Option<String>, language: Option<String>, iterations: Option<i32>) {
     let col = color.unwrap_or("foo".to_string());
     let lang = language.unwrap_or("foo".to_string());
@@ -40,23 +51,35 @@ fn test(color: Option<String>, language: Option<String>, iterations: Option<i32>
     println!("iterations: {iter}");
 }
 
-/*async*/ fn lots(_color: Option<String>, _language: Option<String>, _iterations: Option<i32>) {
-    // TODO: Implement this. Remove the _'s from args above when you do
-    println!("Lots");
+fn main() {
+    SimpleLogger::new().init().expect("Failed to initialize the logger!");
+    if let Err(err) = core() {
+        error!("{err}");
+    }
 }
 
-/*async*/ fn main() {
+fn core() -> anyhow::Result<()> {
     let cli = Cli::parse();
+
+    // IDK how `clap` works, so I'll parse all the values here
+    // instead of implementing `Parse` trait. - FssAy
+
+    let color = if let Some(color) = cli.color {
+        Some(Color::from_str(&*color)?)
+    } else {
+        None
+    };
 
     match &cli.command {
         Some(Commands::Test) => {
-            commands::color_test(cli.color, cli.language, cli.iterations)/*.await*/;
+            commands::color_test(color, cli.language, cli.iterations)
         },
         Some(Commands::Lots) => {
-            lots(cli.color, cli.language, cli.iterations)/*.await*/;
+            commands::lots(color, cli.language, cli.iterations)
         },
-        None => {}
+        None => Err(
+            anyhow!("No command provided!")
+        ),
     }
-
     // Continued program logic goes here...
 }
