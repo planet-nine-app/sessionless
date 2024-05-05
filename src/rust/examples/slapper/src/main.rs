@@ -40,17 +40,6 @@ enum Commands {
     Lots 
 }
 
-// Never used function, I am not sure of its purpose - FssAy
-#[allow(dead_code)]
-fn test(color: Option<String>, language: Option<String>, iterations: Option<i32>) {
-    let col = color.unwrap_or("foo".to_string());
-    let lang = language.unwrap_or("foo".to_string());
-    let iter = iterations.unwrap_or(42);
-    println!("color: {col}");
-    println!("language: {lang}");
-    println!("iterations: {iter}");
-}
-
 fn main() {
     SimpleLogger::new().init().expect("Failed to initialize the logger!");
     if let Err(err) = core() {
