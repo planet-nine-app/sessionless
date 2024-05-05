@@ -1,52 +1,64 @@
+use anyhow::anyhow;
 use sessionless::hex::IntoHex;
-use sessionless::{PublicKey, Sessionless, Signature};
-use reqwest;
-use reqwest::blocking::Response;
-use colored::Colorize;
-use serde::{Deserialize};
-use crate::requests::server_config;
-use crate::requests::{WelcomeResponse, CoolnessResponse};
+use sessionless::{Sessionless, Signature};
+use serde::{Deserialize, Serialize};
+use crate::requests::{Payload, Response, Request};
+use crate::requests::register::RegisterResponse;
+use crate::utils::Color;
 
-pub fn do_cool_stuff(color: &String, sessionless: Sessionless, welcome_response: WelcomeResponse) {
-    
-    let base_url = server_config::url_for_color(color);
-    let placement = server_config::signature_placement_for_color(color);
+pub struct CoolRequest;
 
-    let message = format!(r#"{{"uuid":"{0}","coolness":"max","timestamp":"right now"}}"#, welcome_response.uuid);
+impl Request for CoolRequest {
+    type Input = RegisterResponse;
+    type Output = ();
 
-    let signature = sessionless.sign(message.clone()).into_hex();
-
-    let client = reqwest::blocking::Client::new();
-    let url = format!("{0}/cool-stuff", {base_url.to_string()});
-    println!("{}", url);
-    let mut post = client.post(url)
-        .header("Content-Type", "application/json")
-        .header("Accept", "application/json");
-
-    if placement == "payload".to_string() {
-        let payload = format!(r#"{{"uuid":"{0}","coolness":"max","timestamp":"right now","signature":"{signature}"}}"#, welcome_response.uuid);
-        post = post.body(payload);
-    } else {
-        post = post.header("signature", signature)
-        .body(message);
+    fn endpoint() -> &'static str {
+        "cool-stuff"
     }
 
-    let result = post.send();
-    let response = match result {
-        Ok(resp) => resp,
-        Err(_) => panic!("Something went awry!")
-    };
-    let json_result = response.json::<CoolnessResponse>();
-    let coolness_response: CoolnessResponse = match json_result {
-        Ok(cr) => cr,
-        Err(_) => panic!("Error serializing JSON")
-    };
+    fn execute(color: Color, sessionless: &Sessionless, input: Self::Input) -> anyhow::Result<Self::Output> {
+        let message = CoolPayload {
+            uuid: input.uuid,
+            coolness: "max",
+            timestamp: "right now",
+            signature: None,
+        };
 
-    if coolness_response.doubleCool == "double cool".to_string() {
-        let success = format!("Aww yeah! The {color} server thinks you're {0}!", coolness_response.doubleCool);
-        println!("{}", success.to_string().green());
-    } else {
-        let fail = "Oh no, something went wrong.".red();
-        println!("{}", fail.to_string());
+        let request_builder = Self::prepare(message, color, sessionless)?;
+        let response = Self::send::<CoolResponse>(request_builder)?;
+
+        if response.double_cool == "double cool" {
+            info!("Aww yeah! The {:?} server thinks you're {}!", color, response.double_cool);
+            Ok(())
+        } else {
+            Err(anyhow!(
+                "{} request - Response is not 'double cool', but: {}",
+                Self::endpoint(),
+                response.double_cool
+            ))
+        }
     }
 }
+
+#[derive(Debug, Serialize)]
+struct CoolPayload<'a> {
+    uuid: String,
+    coolness: &'a str,
+    timestamp: &'a str,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    signature: Option<String>,
+}
+
+impl Payload for CoolPayload<'_> {
+    fn update_signature(&mut self, signature: Option<Signature>) {
+        self.signature = signature.map(|sig| sig.to_hex())
+    }
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all="camelCase")]
+pub struct CoolResponse {
+    pub double_cool: String
+}
+
+impl Response for CoolResponse {}
