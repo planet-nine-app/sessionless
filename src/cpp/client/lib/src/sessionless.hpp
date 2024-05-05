@@ -2,6 +2,7 @@
 #define SESSIONLESS_HPP
 
 #include <array>
+#include <cstddef>
 
 static constexpr size_t SHA256_SIZE_BYTES = 32;
 static constexpr size_t PRIVATE_KEY_SIZE_BYTES = SHA256_SIZE_BYTES;
