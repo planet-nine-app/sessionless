@@ -1,6 +1,7 @@
 #include "sessionless.hpp"
 #include <secp256k1.h>
 #include <random>
+#include <ctime>
 #include <iostream>
 
 bool sessionless::generateKeys(Keys &keys)
