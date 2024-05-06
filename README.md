@@ -10,6 +10,8 @@
 *Sessionless* is an attempt to make authentication handling easier for developers and users, while also enabling interesting behavior not possible with traditional sessions.
 No emails, no passwords, and no sessions, just establish auth and get going.
 
+Sessionless is an authentication protocol, which can also be referred to as the SessionLess Authentication Protocol (SLAP).
+
 [Here is a simple video of what Sessionless can do.]
 
 With Sessionless, and any subesequent open source projects I start, I'm trying to make them accessible to all parts of the tech industry. 

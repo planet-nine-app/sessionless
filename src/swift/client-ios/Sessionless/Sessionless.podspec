@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Sessionless'
-  s.version          = '0.1.0'
+  s.version          = '0.10.1'
   s.summary          = 'A short description of Sessionless.'
 
 # This description is used to generate tags and improve search results.
@@ -29,6 +29,8 @@ TODO: Add long description of the pod here.
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '16.0'
+  s.tvos.deployment_target = '16.0'
+  s.macos.deployment_target = '10.12'
 
   s.source_files = 'Sessionless/Classes/**/*'
   
