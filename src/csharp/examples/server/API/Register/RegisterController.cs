@@ -15,8 +15,8 @@ namespace SessionlessExample.Server.Controllers
     [Route("/register")]
     public class RegisterController: ControllerBase
     {
-        Vault Vault;
-        Sessionless Sessionless;
+        Vault Vault?;
+        Sessionless Sessionless?;
         const string privPath = "./priv.key";
         const string pubPath = "./pub.key";
         static void VaultSaver(KeyPairHex pair) {

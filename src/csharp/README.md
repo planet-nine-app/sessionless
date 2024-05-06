@@ -2,7 +2,6 @@
 
 This is the C# implementation of the Sessionless protocol--a protocol for providing auth without user data like emails, passwords, or sessions.
 
-
 ## Usage
 
 ### Install
@@ -262,7 +261,6 @@ classDiagram
     +constructor(string, MessageSignatureHex, ECPublicKeyParameters)
     +constructor(SignedMessage, ECPublicKeyParameters)
   }
-
   SignedMessage <-- SignedMessageWithKey
   SignedMessage <-- SignedMessageWithECKey
 ```
