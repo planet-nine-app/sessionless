@@ -2,22 +2,22 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-		<LangVersion>12.0</LangVersion>
+		    <LangVersion>12.0</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-	    <RootNamespace>SessionlessNET</RootNamespace>
+	      <RootNamespace>SessionlessNET</RootNamespace>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
 
         <Title>Sessionless</Title>
-    	<Copyright>©2024 PlanetNineApp</Copyright>
+    	  <Copyright>©2024 PlanetNineApp</Copyright>
         <PackageProjectUrl>https://github.com/planet-nine-app/sessionless</PackageProjectUrl>
         <PackageRepositoryUrl>https://github.com/planet-nine-app/sessionless</PackageRepositoryUrl>
         <PackageTags>auth;authentication;identity;asymmetric;crypto;cryptography;</PackageTags>
-    	<Authors>PlanetNine;Galacticai</Authors>
-        <VersionPrefix>0.1.0</VersionPrefix>
-        <AssemblyVersion>0.1.0</AssemblyVersion>
-        <FileVersion>0.1.0</FileVersion>
+    	  <Authors>PlanetNine;Galacticai</Authors>
+        <VersionPrefix>0.1.1</VersionPrefix>
+        <AssemblyVersion>0.1.1</AssemblyVersion>
+        <FileVersion>0.1.1</FileVersion>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <NeutralLanguage>en-001</NeutralLanguage>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
