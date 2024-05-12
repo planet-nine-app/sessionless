@@ -5,7 +5,9 @@ async def do_cool_stuff(registration_tuple):
     print('registered!')
     print('Gonna just do blue for now')
 
-    uuid = registration_tuple[0].uuid
+    print(f'json looks like: {registration_tuple[0].json()}')
+
+    uuid = registration_tuple[0].json().uuid
     private_key = registration_tuple[1]
     public_key = registration_tuple[2]
     
@@ -25,7 +27,8 @@ async def do_cool_stuff(registration_tuple):
         "signature": signature
     }
 
-    response = requests.post('http://127.0.0.1:3001/cool-stuff', json=message) # update this to be dynamic
+    headers = {'content-type': 'application/json'}
+    response = requests.post('http://127.0.0.1:3001/cool-stuff', headers=headers, json=message) # update this to be dynamic
     
     print(f'response: {response}')
 
