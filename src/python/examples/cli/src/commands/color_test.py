@@ -1,4 +1,5 @@
 from src.requests.register import register
+from src.requests.do_cool_stuff import do_cool_stuff
 
 async def color_test(color, language):
     print(f'{color} and {language}')

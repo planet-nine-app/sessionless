@@ -1,9 +1,9 @@
 import asyncio
-from cli_command_parser import Command, SubCommand, Option, main
+from cli_command_parser import AsyncCommand, Command, SubCommand, Option, main
 from src.commands.color_test import color_test
 
 class Slapper(
-    Command, 
+    AsyncCommand, 
     description='Runs a single test against a single language/color'
 ):
     sub_command = SubCommand()
@@ -20,4 +20,6 @@ class ColorTest(
         
 
 if __name__ == '__main__':
-    asyncio.run(main())
+#    asyncio.run(Slapper.parse_and_run())
+#    Slapper.parse_and_run()
+    main()
