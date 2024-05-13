@@ -1,5 +1,5 @@
 from sessionless import SessionlessSecp256k1
-from Crypto.Hash import keccak
+# from Crypto.Hash import keccak
 import requests
 
 def saveKey(keyPair):
@@ -22,23 +22,8 @@ async def register(color, language):
 
     print(message_to_sign)
 
-    k = keccak.new(digest_bits=256)
-    k.update(message_to_sign.encode('ascii'))
-    print(k.hexdigest())
-    print(k.hexdigest())
-    # print k.hexdigest()
+    signature = await sessionless.sign(message_to_sign.encode('ascii'), get_key)
 
-    signature = await sessionless.sign(k.hexdigest(), get_key)
-    signature2 = await sessionless.sign(msg=k.hexdigest().encode('ascii'), getKey=get_key)
-#    signature2 = await sessionless.sign(message_to_sign.encode('utf-8'), get_key)
-
-    print(sessionless.verifySignature(signature, k.hexdigest(), public_key))
-    print(sessionless.verifySignature(signature2, k.hexdigest().encode('ascii'), public_key))
-
-
-    print(f'pubKey: {public_key}')
-    print(f'signature: {signature}')
-    print(f'signature2: {signature2}')
     message = {
         "pubKey": public_key,
         "enteredText": "Foo",
