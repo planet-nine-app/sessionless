@@ -5,9 +5,12 @@ async def do_cool_stuff(registration_tuple):
     print('registered!')
     print('Gonna just do blue for now')
 
-    print(f'json looks like: {registration_tuple[0].json()}')
+    json = registration_tuple[0].json()
 
-    uuid = registration_tuple[0].json().uuid
+    print(f'json looks like: {json}')
+    print(f'uuid: {json['uuid']}')
+
+    uuid = json['uuid']
     private_key = registration_tuple[1]
     public_key = registration_tuple[2]
     
@@ -18,7 +21,9 @@ async def do_cool_stuff(registration_tuple):
     def get_key():
         return private_key
 
-    signature = await sessionless.sign(f'{{"uuid":"{uuid}","coolness":"max","timestamp":"{timestamp}"}}', get_key)
+    message_to_sign = f'{{"uuid":"{uuid}","coolness":"max","timestamp":"{timestamp}"}}'
+
+    signature = await sessionless.sign(message_to_sign.encode('ascii'), get_key)
 
     message = {
         "uuid": uuid,
