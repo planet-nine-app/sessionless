@@ -1,6 +1,13 @@
 import secp256k1
 import pickle
 import uuid
+from Crypto.Hash import keccak
+
+class DigestableKeccak(): # I don't know if a class is the right way to do this
+    def digest(self, msg):
+        k = keccak.new(digest_bits=256)
+        k.update(msg)
+        return k
 
 class SessionlessSecp256k1():       
     def generateUUID(self):
@@ -22,10 +29,16 @@ class SessionlessSecp256k1():
         try:
             privateKey = getKey()
             if not isinstance(msg, bytes):
-                msg = pickle.dumps(msg)
+                msg = msg.encode('ascii')
             privateKeyObj = secp256k1.PrivateKey()
             privateKeyObj.deserialize(privateKey)
-            deserializedSig = privateKeyObj.ecdsa_sign(msg)
+   
+            digestable_keccak = DigestableKeccak()
+            print(msg[0])
+            print(msg[1])
+            raw_msg = digestable_keccak.digest(msg)
+            deserializedSig = privateKeyObj.ecdsa_sign(raw_msg.digest(), raw=True)
+#            deserializedSig = privateKeyObj.ecdsa_sign(msg, digest=digestable_keccak.digest)
             sig = privateKeyObj.ecdsa_serialize_compact(deserializedSig)
             return sig.hex()
         except Exception:
@@ -34,13 +47,17 @@ class SessionlessSecp256k1():
     def verifySignature(self, signature, msg, publicKey):
         try:
             if not isinstance(msg, bytes):
-                msg = pickle.dumps(msg)
+                msg = msg.encode('ascii')
             sig = bytes.fromhex(signature)
             publicKeyObj = secp256k1.PublicKey()
             publicKeyObj.deserialize(bytes.fromhex(publicKey))
-            
+
+            digestable_keccak = DigestableKeccak()
+            raw_msg = digestable_keccak.digest(msg)
             signature = publicKeyObj.ecdsa_deserialize_compact(sig)
-            return publicKeyObj.ecdsa_verify(msg, signature)
+
+#            return publicKeyObj.ecdsa_verify(msg, signature)
+            return publicKeyObj.ecdsa_verify(raw_msg.digest(), signature, raw=True)
         except Exception:
             raise ValueError("Error with parameters. Please ensure values are provided in correct format.")
     
