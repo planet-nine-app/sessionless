@@ -30,7 +30,7 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '16.0'
   s.tvos.deployment_target = '16.0'
-  s.macos.deployment_target = '10.12'
+  s.macos.deployment_target = '13.1'
 
   s.source_files = 'Sessionless/Classes/**/*'
   
