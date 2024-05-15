@@ -1,4 +1,5 @@
 # Generated build files
+/debug
 /target
 Cargo.lock
 bin/
