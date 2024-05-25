@@ -10,7 +10,6 @@ CMake and C++ compiler are required.
 
 ## Build the demo
 ```shell
-mkdir build
 cmake -B ./build -S .
 cd build
 make
