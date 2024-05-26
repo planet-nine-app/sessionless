@@ -31,12 +31,12 @@ int main(int argc, char *argv[])
     }
 
     std::cout << "public key -> "
-              << toHexString(keys.publicKey.data(), keys.publicKey.size()) << std::endl;
+              << toHexString(keys.publicKey, sizeof(keys.publicKey)) << std::endl;
     std::cout << "private key -> "
-              << toHexString(keys.privateKey.data(), keys.privateKey.size()) << std::endl;
+              << toHexString(keys.privateKey, sizeof(keys.privateKey)) << std::endl;
 
     const char *msg = "Here is a message";
-    Signature signature;
+    unsigned char signature[SIGNATURE_SIZE_BYTES];
     if (!sessionless::sign((unsigned char *)msg, sizeof(msg), keys.privateKey, signature))
     {
         std::cout << "Failed to sign message" << std::endl;
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     }
 
     std::cout << "Message -> " << msg << std::endl
-              << "Message signature -> " << toHexString(signature.data(), signature.size()) << std::endl;
+              << "Message signature -> " << toHexString(signature, sizeof(signature)) << std::endl;
 
     std::cout << "Verifying signature..." << std::endl;
     if (!sessionless::verifySignature(signature, keys.publicKey, (unsigned char *)msg, sizeof(msg)))

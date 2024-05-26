@@ -2,7 +2,9 @@
 #include <secp256k1.h>
 #include <random>
 #include <ctime>
-#include <iostream>
+
+// Creating context is expensive, create one global context
+static secp256k1_context *ctx = secp256k1_context_create(SECP256K1_CONTEXT_NONE);
 
 bool sessionless::generateKeys(Keys &keys)
 {
@@ -16,33 +18,27 @@ bool sessionless::generateKeys(Keys &keys)
         keys.privateKey[i] = rand() % 256;
     }
 
-    secp256k1_context *ctx = secp256k1_context_create(SECP256K1_CONTEXT_NONE);
-
     if (!secp256k1_context_randomize(ctx, seed))
     {
-        std::cout << "Failed to randomize context" << std::endl;
         return false;
     }
 
-    if (!secp256k1_ec_seckey_verify(ctx, keys.privateKey.data()))
+    if (!secp256k1_ec_seckey_verify(ctx, keys.privateKey))
     {
-        std::cout << "Failed to verify secret key" << std::endl;
         return false;
     }
 
     secp256k1_pubkey publicKeyStruct;
-    if (!secp256k1_ec_pubkey_create(ctx, &publicKeyStruct, keys.privateKey.data()))
+    if (!secp256k1_ec_pubkey_create(ctx, &publicKeyStruct, keys.privateKey))
     {
-        std::cout << "Failed to create public key" << std::endl;
         return false;
     }
 
-    size_t len = keys.publicKey.size();
-    secp256k1_ec_pubkey_serialize(ctx, keys.publicKey.data(), &len,
+    size_t len = PUBLIC_KEY_SIZE_BYTES;
+    secp256k1_ec_pubkey_serialize(ctx, keys.publicKey, &len,
                                   &publicKeyStruct, SECP256K1_EC_COMPRESSED);
     if (len != PUBLIC_KEY_SIZE_BYTES)
     {
-        std::cout << "Invalid public key size" << std::endl;
         return false;
     }
 
@@ -50,57 +46,50 @@ bool sessionless::generateKeys(Keys &keys)
 };
 
 bool sessionless::sign(const unsigned char *message,
-                       const size_t length,
-                       const PrivateKey privateKey,
-                       Signature &signature)
+                       const size_t msgLengthBytes,
+                       const unsigned char *privateKey,
+                       unsigned char *signature)
 {
     secp256k1_ecdsa_signature ecdsa_signature;
-    unsigned char msg_hash[SHA256_SIZE_BYTES];
+    unsigned char msgHash[SHA256_SIZE_BYTES];
     unsigned char tag[12] = "sessionless";
 
-    secp256k1_context *ctx = secp256k1_context_create(SECP256K1_CONTEXT_NONE);
+    int ret = secp256k1_tagged_sha256(ctx, msgHash, tag, sizeof(tag), message, msgLengthBytes);
 
-    int ret = secp256k1_tagged_sha256(ctx, msg_hash, tag, sizeof(tag), message, length);
-
-    if (!secp256k1_ecdsa_sign(ctx, &ecdsa_signature, msg_hash, privateKey.data(), NULL, NULL))
+    if (!secp256k1_ecdsa_sign(ctx, &ecdsa_signature, msgHash, privateKey, NULL, NULL))
     {
-        std::cout << "Failed ecdsa sign" << std::endl;
         return false;
     }
 
-    secp256k1_ecdsa_signature_serialize_compact(ctx, signature.data(), &ecdsa_signature);
+    secp256k1_ecdsa_signature_serialize_compact(ctx, signature, &ecdsa_signature);
 
     return true;
 };
 
-bool sessionless::verifySignature(Signature signature,
-                                  PublicKey publicKey,
+bool sessionless::verifySignature(const unsigned char *signature,
+                                  const unsigned char *publicKey,
                                   const unsigned char *message,
-                                  const size_t length)
+                                  const size_t msgLengthBytes)
 {
-    secp256k1_context *ctx = secp256k1_context_create(SECP256K1_CONTEXT_NONE);
-    unsigned char msg_hash[SHA256_SIZE_BYTES];
+    unsigned char msgHash[SHA256_SIZE_BYTES];
     const unsigned char tag[12] = "sessionless";
 
-    int ret = secp256k1_tagged_sha256(ctx, msg_hash, tag, sizeof(tag), message, length);
+    int ret = secp256k1_tagged_sha256(ctx, msgHash, tag, sizeof(tag), message, msgLengthBytes);
 
     secp256k1_pubkey pubkey;
-    if (!secp256k1_ec_pubkey_parse(ctx, &pubkey, publicKey.data(), publicKey.size()))
+    if (!secp256k1_ec_pubkey_parse(ctx, &pubkey, publicKey, PUBLIC_KEY_SIZE_BYTES))
     {
-        std::cout << "Failed to parse public key" << std::endl;
         return false;
     }
 
     secp256k1_ecdsa_signature sig;
-    if (!secp256k1_ecdsa_signature_parse_compact(ctx, &sig, signature.data()))
+    if (!secp256k1_ecdsa_signature_parse_compact(ctx, &sig, signature))
     {
-        std::cout << "Failed to parse signature" << std::endl;
         return false;
     }
 
-    if (!secp256k1_ecdsa_verify(ctx, &sig, msg_hash, &pubkey))
+    if (!secp256k1_ecdsa_verify(ctx, &sig, msgHash, &pubkey))
     {
-        std::cout << "Signature verification failed" << std::endl;
         return false;
     }
 

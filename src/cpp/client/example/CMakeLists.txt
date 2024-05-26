@@ -11,7 +11,7 @@ FetchContent_Declare(
   # For an external executable fetch content from the sessionless
   # git repo using options below instead of SOURCE_DIR
   # GIT_REPOSITORY git@github.com:planet-nine-app/sessionless.git
-  # GIT_TAG        main
+  # GIT_TAG        <tag or SHA>
   # SOURCE_SUBDIR  src/cpp/client/lib
 )
 FetchContent_MakeAvailable(sessionless)

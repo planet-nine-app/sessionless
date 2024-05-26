@@ -15,12 +15,16 @@ set(SECP256K1_BUILD_TESTS OFF)
 set(SECP256K1_BUILD_EXHAUSTIVE_TESTS OFF)
 set(SECP256K1_BUILD_BENCHMARK OFF)
 
+set(CMAKE_BUILD_TYPE Release)
+set(BUILD_SHARED_LIBS FALSE)
+
 FetchContent_MakeAvailable(${SECP256K1_LIB_NAME})
 
 #################################################
 # Sessionless library
 
 set(TARGET sessionless)
+set(CMAKE_BUILD_TYPE Release)
 project(${TARGET})
 set(CMAKE_CXX_STANDARD 17)
 add_library(${TARGET} STATIC src/sessionless.cpp)
