@@ -80,7 +80,6 @@ impl Sessionless {
     /// Constructs a signature for `message` using the context's secret key.
     pub fn sign(&self, message: impl AsRef<[u8]>) -> Signature {
         let message_hash = self.hash_message(message);
-println!("{}", message_hash);
         self.ctx.sign_ecdsa(&message_hash, &self.private_key)
     }
 
