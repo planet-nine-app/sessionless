@@ -1,6 +1,0 @@
-framework module Sessionless {
-  umbrella header "Sessionless-umbrella.h"
-
-  export *
-  module * { export * }
-}

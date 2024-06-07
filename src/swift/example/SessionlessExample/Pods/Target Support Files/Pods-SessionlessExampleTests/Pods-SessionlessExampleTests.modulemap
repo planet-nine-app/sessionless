@@ -1,6 +1,0 @@
-framework module Pods_SessionlessExampleTests {
-  umbrella header "Pods-SessionlessExampleTests-umbrella.h"
-
-  export *
-  module * { export * }
-}
