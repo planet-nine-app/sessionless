@@ -1,5 +1,0 @@
-#import <Foundation/Foundation.h>
-@interface PodsDummy_Pods_SessionlessExample_SessionlessExampleUITests : NSObject
-@end
-@implementation PodsDummy_Pods_SessionlessExample_SessionlessExampleUITests
-@end
