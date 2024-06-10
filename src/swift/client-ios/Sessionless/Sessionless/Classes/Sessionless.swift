@@ -11,7 +11,7 @@ import JavaScriptCore
 public class Sessionless {
     public struct Keys {
         public let publicKey: String
-        public let privateKey: String
+        let privateKey: String
         
         public init(publicKey: String, privateKey: String) {
             self.publicKey = publicKey

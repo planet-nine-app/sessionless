@@ -17,8 +17,8 @@ In general, everything is available in the standard package manager system of th
 
 #### Methods
 
-There are five methods that each implementation has.
-In addition there is an optional method based on how the platform stores sensitive data.
+There are four methods that each implementation has.
+In addition there are two optional method based on how the platform stores sensitive data.
 For the most part these optional methods are only available in client-side platforms like mobile, and consoles.
 
 The methods are as follows (see [API] for more details):
@@ -32,11 +32,11 @@ The methods are as follows (see [API] for more details):
 
 * `verifySignature` - verifies a signature with a public key
 * `generateUUID` - generates a uuidv4 uuid
-* `associate` - convenience method for verifying two signatures to associate a public key with another
 
 **Optional**
 
 * `getKeys` - on platforms where secure storage is well-defined we've implemented getKeys within Sessionless rather than having it passed into generateKeys.
+* `associate` - convenience method for verifying two signatures to associate a public key with another
 
 A typical registration is for a client to `generateKeys`, and then use those keys to `sign` a message, and send to the server.
 The server can then `verifySignature` on the payload received from the client, and grant a uuid with `generateUUID`.
