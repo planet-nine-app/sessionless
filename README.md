@@ -50,7 +50,7 @@ More will come, and if you make one feel free to make a pr to link it here.
 
 #### Want to learn more?
 
-There are links to more reading below, and some videos coming soon.
+There are links to more reading [for devs], and [for ux'ers], and some videos coming soon.
 
 #### A brief note from zach-planet-nine
 
@@ -65,8 +65,11 @@ This is very much a wip, and, as far as I know, not something that there's an es
 |--------------|-------------|-------------|
 | [README-DEV] | [README-UX] | coming soon |
 
+
 [README-DEV]: ./README-DEV.md
+[for devs]: ./README-DEV.md
 [README-UX]: ./README-UX.md
+[for ux'ers]: ./README-UX.md
 [API]: ./README-DEV.md#api
 [here]: https://www.github.com/planet-nine-app/continuebee
 [ht1]: ## "Many auth protocols are client-server, where the client supplies some secret information to authenticate requests.
