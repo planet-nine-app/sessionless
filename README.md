@@ -7,12 +7,52 @@
 
 ## Sessionless
 
-*Sessionless* is an attempt to make authentication handling easier for developers and users, while also enabling interesting behavior not possible with traditional sessions.
-No emails, no passwords, and no sessions, just establish auth and get going.
-
 Sessionless is an authentication protocol, which can also be referred to as the SessionLess Authentication Protocol (SLAP).
+It is meant to be a [general purpose][ht1] [transport-agnostic][ht2] [multi-language][ht3] [multi-platform][ht4] authentication protocol with no [shared-secret][ht5] or [personally identifying information][ht6] shared between participants. 
 
-[Here is a simple video of what Sessionless can do.]
+### Getting Started
+
+You will want to checkout the language, and if necessary the platform, you're interested in in the repo for installation steps.
+In general, everything is available in the standard package manager system of the given language (i.e. maven for java, and pip for python).
+
+#### Methods
+
+There are five methods that each implementation has.
+In addition there is an optional method based on how the platform stores sensitive data.
+For the most part these optional methods are only available in client-side platforms like mobile, and consoles.
+
+The methods are as follows (see [API] for more details):
+
+**Client**
+
+* `generateKeys` - generates a private/public key pair on the secp256k1 elliptical curve
+* `sign` - creates a signature of a message string with a private key
+
+**Server**
+
+* `verifySignature` - verifies a signature with a public key
+* `generateUUID` - generates a uuidv4 uuid
+* `associate` - convenience method for verifying two signatures to associate a public key with another
+
+**Optional**
+
+* `getKeys` - on platforms where secure storage is well-defined we've implemented getKeys within Sessionless rather than having it passed into generateKeys.
+
+A typical registration is for a client to `generateKeys`, and then use those keys to `sign` a message, and send to the server.
+The server can then `verifySignature` on the payload received from the client, and grant a uuid with `generateUUID`.
+
+#### Building with Sessionless
+
+Like https (I use the comparison simply for familiarity, and not try to say Sessionless is on the same tier), Sessionless is a protocol that you likely won't just use directly.
+Instead it's meant to be the protocol layer of an authentication _implementation_.
+One example implementation can be found [here].
+More will come, and if you make one feel free to make a pr to link it here.
+
+#### Want to learn more?
+
+There are links to more reading below, and some videos coming soon.
+
+#### A brief note from zach-planet-nine
 
 With Sessionless, and any subesequent open source projects I start, I'm trying to make them accessible to all parts of the tech industry. 
 Right now that means focusing on dev, UX, and product, but qa, analytics, customer success, etc. are all welcome.
@@ -27,5 +67,18 @@ This is very much a wip, and, as far as I know, not something that there's an es
 
 [README-DEV]: ./README-DEV.md
 [README-UX]: ./README-UX.md
-
-[Here is a simple video of what Sessionless can do.]: https://www.planetnineapp.com/sessionless-demo-1
+[API]: ./README-DEV.md#api
+[here]: https://www.github.com/planet-nine-app/continuebee
+[ht1]: ## "Many auth protocols are client-server, where the client supplies some secret information to authenticate requests.
+But there are other authentication needs, such as between processes on one machine, or server-server relationships. 
+Sessionless works for all of these."
+[ht2]: ## "Many auth protocols rely on https for encryption of tokens and jwts.
+Sessionless sends no sensitive data so it can be used through unencrypted transports like BLE, NFC, straight TCP, etc."
+[ht3]: ## "Long ago when I talked through this idea with a cryptography expert, he said the biggest barrier to adoption was consistent language support for a given cryptographic approach. 
+Luckily bitcoin and ethereum have led to widespread implementation of the secp256k1 elliptical curve. 
+If your language of choice isn't here yet, and you can track down secp256k1 in that language, let us know and we'll add it (or feel free to add it yourself!)"
+[ht4]: ## "Randomness and storage are the two things to figure out with cryptographic stuff, and those are largely platform dependent. 
+So we have typically made one implementation which works for servers in a language, and then other implementations which work for the clients."
+[ht5]: ## "A shared secret is anything that is known between a client and a server that, along with an identifier, is used to authenticate a user.
+The two most common shared secrets are passwords and sessions"
+[ht6]: ## "That's right. Not even email."
