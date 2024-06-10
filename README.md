@@ -81,4 +81,4 @@ If your language of choice isn't here yet, and you can track down secp256k1 in t
 So we have typically made one implementation which works for servers in a language, and then other implementations which work for the clients."
 [ht5]: ## "A shared secret is anything that is known between a client and a server that, along with an identifier, is used to authenticate a user.
 The two most common shared secrets are passwords and sessions"
-[ht6]: ## "That's right. Not even email."
+[ht6]: "That's right. Not even email."
