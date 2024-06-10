@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"scr_sessionless",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_sessionless",
+  "parent":{
+    "name":"Sessionless",
+    "path":"folders/Sessionless.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
