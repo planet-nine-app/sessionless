@@ -11,12 +11,12 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"",
-  "copyToTargets":64,
+  "copyToTargets":192,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"0.1.0",
   "files":[
-    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":64,"filename":"Sessionless.ext","final":"","functions":[
+    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":192,"filename":"Sessionless.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"slap_ctx_new","argCount":0,"args":[],"documentation":"","externalName":"slap_ctx_new","help":"","hidden":true,"kind":4,"name":"slap_ctx_new","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"slap_ctx_new_from_key","argCount":0,"args":[1,],"documentation":"","externalName":"slap_ctx_new_from_key","help":"","hidden":true,"kind":4,"name":"slap_ctx_new_from_key","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"slap_ctx_sign","argCount":0,"args":[2,1,],"documentation":"","externalName":"slap_ctx_sign","help":"","hidden":true,"kind":4,"name":"slap_ctx_sign","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
@@ -36,6 +36,7 @@
         {"name":"slap_uuid_new","path":"extensions/Sessionless/Sessionless.yy",},
       ],"origname":"","ProxyFiles":[
         {"$GMProxyFile":"","%Name":"sessionless.dll","name":"sessionless.dll","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":6,},
+        {"$GMProxyFile":"","%Name":"libsessionless.so","name":"libsessionless.so","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":7,},
       ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],
   "gradleinject":"",

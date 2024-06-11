@@ -15,7 +15,7 @@ This implementation consists of 2 parts for this moment:
 - [ ] iOS 
 - [ ] Android 
 - [ ] HTML5 
-- [ ] Ubuntu 
+- [X] Ubuntu _(Untested)_
 - [ ] PlayStation 4 
 - [ ] PlayStation 5 
 - [ ] Xbox One & Series X/S 
@@ -27,4 +27,4 @@ This implementation consists of 2 parts for this moment:
 If that's possible please keep the directory naming convention as "`lib-*`" when 
 adding new library for the GMS extension.
 
-It could be possible to add _macOS_, _Android_ and _Ubuntu_ support with the existing rust library.
+It could be possible to add _macOS_, _Android_ ~~and _Ubuntu_~~ support with the existing rust library.
