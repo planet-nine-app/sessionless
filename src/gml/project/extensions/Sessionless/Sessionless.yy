@@ -16,16 +16,16 @@
   "exportToGame":true,
   "extensionVersion":"0.1.0",
   "files":[
-    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":64,"filename":"sessionless.dll","final":"","functions":[
-        {"$GMExtensionFunction":"","%Name":"slap_ctx_new","argCount":0,"args":[],"documentation":"","externalName":"slap_ctx_new","help":"","hidden":true,"kind":1,"name":"slap_ctx_new","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
-        {"$GMExtensionFunction":"","%Name":"slap_ctx_new_from_key","argCount":0,"args":[1,],"documentation":"","externalName":"slap_ctx_new_from_key","help":"","hidden":true,"kind":1,"name":"slap_ctx_new_from_key","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
-        {"$GMExtensionFunction":"","%Name":"slap_ctx_sign","argCount":0,"args":[2,1,],"documentation":"","externalName":"slap_ctx_sign","help":"","hidden":true,"kind":1,"name":"slap_ctx_sign","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
-        {"$GMExtensionFunction":"","%Name":"slap_ctx_verify","argCount":0,"args":[2,1,1,1,],"documentation":"","externalName":"slap_ctx_verify","help":"","hidden":true,"kind":1,"name":"slap_ctx_verify","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
-        {"$GMExtensionFunction":"","%Name":"slap_ctx_get_key_public","argCount":0,"args":[2,],"documentation":"","externalName":"slap_ctx_get_key_public","help":"","hidden":true,"kind":1,"name":"slap_ctx_get_key_public","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
-        {"$GMExtensionFunction":"","%Name":"slap_ctx_get_key_private","argCount":0,"args":[2,],"documentation":"","externalName":"slap_ctx_get_key_private","help":"","hidden":true,"kind":1,"name":"slap_ctx_get_key_private","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
-        {"$GMExtensionFunction":"","%Name":"slap_uuid_new","argCount":0,"args":[],"documentation":"","externalName":"slap_uuid_new","help":"","hidden":true,"kind":1,"name":"slap_uuid_new","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
-        {"$GMExtensionFunction":"","%Name":"slap_ctx_remove","argCount":0,"args":[2,],"documentation":"","externalName":"slap_ctx_remove","help":"","hidden":true,"kind":1,"name":"slap_ctx_remove","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
-      ],"init":"","kind":1,"name":"","order":[
+    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":64,"filename":"Sessionless.ext","final":"","functions":[
+        {"$GMExtensionFunction":"","%Name":"slap_ctx_new","argCount":0,"args":[],"documentation":"","externalName":"slap_ctx_new","help":"","hidden":true,"kind":4,"name":"slap_ctx_new","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
+        {"$GMExtensionFunction":"","%Name":"slap_ctx_new_from_key","argCount":0,"args":[1,],"documentation":"","externalName":"slap_ctx_new_from_key","help":"","hidden":true,"kind":4,"name":"slap_ctx_new_from_key","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
+        {"$GMExtensionFunction":"","%Name":"slap_ctx_sign","argCount":0,"args":[2,1,],"documentation":"","externalName":"slap_ctx_sign","help":"","hidden":true,"kind":4,"name":"slap_ctx_sign","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
+        {"$GMExtensionFunction":"","%Name":"slap_ctx_verify","argCount":0,"args":[2,1,1,1,],"documentation":"","externalName":"slap_ctx_verify","help":"","hidden":true,"kind":4,"name":"slap_ctx_verify","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
+        {"$GMExtensionFunction":"","%Name":"slap_ctx_get_key_public","argCount":0,"args":[2,],"documentation":"","externalName":"slap_ctx_get_key_public","help":"","hidden":true,"kind":4,"name":"slap_ctx_get_key_public","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
+        {"$GMExtensionFunction":"","%Name":"slap_ctx_get_key_private","argCount":0,"args":[2,],"documentation":"","externalName":"slap_ctx_get_key_private","help":"","hidden":true,"kind":4,"name":"slap_ctx_get_key_private","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
+        {"$GMExtensionFunction":"","%Name":"slap_ctx_remove","argCount":0,"args":[2,],"documentation":"","externalName":"slap_ctx_remove","help":"","hidden":true,"kind":4,"name":"slap_ctx_remove","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
+        {"$GMExtensionFunction":"","%Name":"slap_uuid_new","argCount":0,"args":[],"documentation":"","externalName":"slap_uuid_new","help":"","hidden":true,"kind":4,"name":"slap_uuid_new","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
+      ],"init":"","kind":4,"name":"","order":[
         {"name":"slap_ctx_new","path":"extensions/Sessionless/Sessionless.yy",},
         {"name":"slap_ctx_new_from_key","path":"extensions/Sessionless/Sessionless.yy",},
         {"name":"slap_ctx_sign","path":"extensions/Sessionless/Sessionless.yy",},
@@ -34,10 +34,12 @@
         {"name":"slap_ctx_get_key_private","path":"extensions/Sessionless/Sessionless.yy",},
         {"name":"slap_ctx_remove","path":"extensions/Sessionless/Sessionless.yy",},
         {"name":"slap_uuid_new","path":"extensions/Sessionless/Sessionless.yy",},
-      ],"origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
+      ],"origname":"","ProxyFiles":[
+        {"$GMProxyFile":"","%Name":"sessionless.dll","name":"sessionless.dll","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":6,},
+      ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],
   "gradleinject":"",
-  "hasConvertedCodeInjection":false,
+  "hasConvertedCodeInjection":true,
   "helpfile":"",
   "HTML5CodeInjection":"",
   "html5Props":false,
