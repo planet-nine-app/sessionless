@@ -40,7 +40,8 @@ console.log(signature);
          .then(res => {
            res.body.color = color;
            return res.body;
-         });
+         })
+         .catch(err => console.log(`Error: ${err}`));
 };
 
 export default doCoolStuff;

@@ -13,7 +13,7 @@ const config = {
       signature: 'header'
     },
     bgWhite: {
-      serverURL: 'http://165.22.236.104',
+      serverURL: 'http://127.0.0.1:8080',
       signature: 'payload'
     },
     magenta: {

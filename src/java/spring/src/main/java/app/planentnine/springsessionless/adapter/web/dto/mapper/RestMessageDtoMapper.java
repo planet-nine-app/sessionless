@@ -7,11 +7,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class RestMessageDtoMapper {
     public Message map(RestMessageDto restMessageDto){
+        String content = String.format("{\"uuid\":\"%s\",\"coolness\":\"%s\",\"timestamp\":\"%s\"}", restMessageDto.uuid(), restMessageDto.coolness(), restMessageDto.timestamp());
         return new Message(
-                restMessageDto.userUuid(),
-                restMessageDto.content(),
+                restMessageDto.uuid(),
+                content,
                 restMessageDto.signature(),
-                null //TODO: implementation on uuid/timestamp
+                restMessageDto.timestamp()
         );
     }
 }

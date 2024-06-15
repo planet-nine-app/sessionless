@@ -9,6 +9,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.HashMap;
+import java.util.Map;
+
+class CoolnessResponse {
+  private final Boolean doubleCool;
+
+  public CoolnessResponse(Boolean isCool) {
+    this.doubleCool = isCool;
+  }
+}
+
 @Controller
 public class MessageController {
     
@@ -22,13 +33,18 @@ public class MessageController {
         this.messageDtoMapper = messageDtoMapper;
     }
     
-    @PostMapping("/do-cool-stuff")
-    public ResponseEntity<String> verifyMessage(@RequestBody RestMessageDto messageDto){
+    @PostMapping("/cool-stuff")
+    public ResponseEntity<Object> verifyMessage(@RequestBody RestMessageDto messageDto){
+System.out.println("down the rabbit hole we go.");
+System.out.println("Actually maybe not");
         boolean verified = verifyMessageUseCase.verifyMessage(messageDtoMapper.map(messageDto));
+            Map<String, Boolean> responseMap = new HashMap<>();
         if (verified) {
-            return ResponseEntity.accepted().body("The message content was verified successfully");
+            responseMap.put("doubleCool", true);
+            return ResponseEntity.accepted().body(responseMap);
         } else {
-            return ResponseEntity.badRequest().body("Invalid request parameters provided");
+            responseMap.put("doubleCool", false);
+            return ResponseEntity.accepted().body(responseMap);
         }
     }
 }

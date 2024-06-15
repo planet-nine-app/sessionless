@@ -52,7 +52,7 @@ public class Sessionless {
         return new String[]{privateKeyHex, publicKeyHex};
     }
     
-    public static String[] sign(String privateKey, String message) {
+    public static String sign(String privateKey, String message) {
         ECNamedCurveParameterSpec ecNamedCurveParameterSpec =
                 ECNamedCurveTable.getParameterSpec("secp256k1");
         ECDomainParameters domain =
@@ -71,10 +71,10 @@ public class Sessionless {
         byte[] messageHash = keccakMessageHash(message);
         BigInteger[] signature = signer.generateSignature(messageHash);
         
-        return new String[]{signature[0].toString(16), signature[1].toString(16)};
+        return String.format("%s%s", signature[0].toString(16), signature[1].toString(16));
     }
     
-    public static boolean verifySignature(String publicKey, String[] signature, String message) {
+    public static boolean verifySignature(String publicKey, String signature, String message) {
         BigInteger publicKeyFormatted = new BigInteger(publicKey, 16);
         ECNamedCurveParameterSpec ecNamedCurveParameterSpec =
                 ECNamedCurveTable.getParameterSpec("secp256k1");
@@ -92,12 +92,14 @@ public class Sessionless {
         
         MessageDigest digest = new Keccak.Digest256();
         byte[] messageHash = digest.digest(message.getBytes());
+
+        String[] splitSignature;
         
-        return signer.verifySignature(messageHash, new BigInteger(signature[0], 16), new BigInteger(signature[1], 16));
+        return signer.verifySignature(messageHash, new BigInteger(signature.substring(0, 32), 16), new BigInteger(signature.substring(32, 64), 16));
     }
     
-    public static boolean associate(String primaryPublicKey, String[] primarySignature, String primaryMessage,
-                                    String secondaryPublicKey, String[] secondarySignature, String secondaryMessage) {
+    public static boolean associate(String primaryPublicKey, String primarySignature, String primaryMessage,
+                                    String secondaryPublicKey, String secondarySignature, String secondaryMessage) {
         return verifySignature(primaryPublicKey, primarySignature, primaryMessage)
                 && verifySignature(secondaryPublicKey, secondarySignature, secondaryMessage);
     }
