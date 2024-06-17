@@ -3358,8 +3358,9 @@ const random = require('ethereum-cryptography/random.js');
 const bytesToHex = utils.bytesToHex;
 const getRandomBytesSync = random.getRandomBytesSync;
     
-    const utf8ToBytes = (str) => {
-      return Uint8Array.from(Array.from(str).map(letter => letter.charCodeAt(0)));
+    const utf8ToBytes = (stri) => {
+    //  const str = stri.slice(0, 32);
+      return Uint8Array.from(Array.from(stri).map(letter => letter.charCodeAt(0)));
     };
 
 let getKeysFromDisk;
@@ -3367,7 +3368,6 @@ let getKeysFromDisk;
 const AsyncFunction = (async () => {}).constructor;
 
 const generateKeys = (privateKey) => {
-    console.log("clling generate keys");
     let publicKey;
     try {
         publicKey = secp256k1.getPublicKey(privateKey);
@@ -3389,52 +3389,44 @@ const getKeys = async () => {
     return getKeysFromDisk instanceof AsyncFunction ? await getKeysFromDisk() : getKeysFromDisk();
   }
 };
-    
-        
+
 const sign = (message, privateKey) => {
-    console.log(message);
-    const messageHash = keccak256(utf8ToBytes(message));
-    console.log("messageHash vvvvvvv");
-    console.log(bytesToHex(messageHash));
-        try {
-        const sig = secp256k1.sign(messageHash, privateKey);
-        console.log(sig.r);
-        console.log(sig.s);
-        const signature = sig.r.toString(16) + sig.s.toString(16);
-        return signature;
-    } catch (err) {
-        console.log(err);
-    }
-};
-        
-const verifySignature = (sig, message, publicKey) => {
   const messageHash = keccak256(utf8ToBytes(message));
-  let signature = {
-    r: sig.substring(0, 64),
-    s: sig.substring(64)
-  };
-        
-  let hex = signature.r;
-  if (hex.length % 2) {
-    hex = '0' + hex;
-  }
-        
-  const bn = BigInt('0x' + hex);
+    console.log(messageHash);
+  const signatureAsBigInts = secp256k1.sign(messageHash, privateKey);
+  const signature = signatureAsBigInts.toCompactHex();
+  return signature;
+};
 
-  signature.r = bn;
+const verifySignature = (sig, message, pubKey) => {
+    const messageHash = keccak256(utf8ToBytes(message));
+    
+      let signature = {
+        r: sig.substring(0, 64),
+        s: sig.substring(64)
+      };
 
-  let hex2 = signature.s;
-  if (hex2.length % 2) {
-    hex2 = '0' + hex2;
-  }
+      let hex = signature.r;
+      if (hex.length % 2) {
+        hex = '0' + hex;
+      }
 
-  const bn2 = BigInt('0x' + hex2);
+      const bn = BigInt('0x' + hex);
 
-  signature.r = bn;
-  signature.s = bn2;
+      signature.r = bn;
 
-  const res = secp256k1.verify(signature, messageHash, publicKey);
-  return res;
+      let hex2 = signature.s;
+      if (hex2.length % 2) {
+        hex2 = '0' + hex2;
+      }
+
+      const bn2 = BigInt('0x' + hex2);
+
+      signature.r = bn;
+      signature.s = bn2;
+
+      const res = secp256k1.verify(signature, messageHash, pubKey);
+      return res;
 };
 
 const generateUUID = () => {

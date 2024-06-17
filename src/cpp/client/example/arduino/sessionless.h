@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <stdint.h>
+#include <string>
 
 #define SHA256_SIZE_BYTES 32
 #define PRIVATE_KEY_SIZE_BYTES SHA256_SIZE_BYTES
@@ -17,18 +18,15 @@ struct Keys
 
 namespace sessionless
 {
-    //bool generateKeys(Keys &keys);
-    int generateKeys(Keys &keys);
+    bool generateKeys(Keys &keys);
 
-    bool sign(const unsigned char *message,
-              const size_t msgLengthBytes,
+    bool sign(std::string message,
               const unsigned char *privateKey,
               unsigned char *signature);
 
     bool verifySignature(const unsigned char *signature,
                          const unsigned char *publicKey,
-                         const unsigned char *message,
-                         const size_t msgLengthBytes);
+                         std::string message);
 };
 
 #endif
