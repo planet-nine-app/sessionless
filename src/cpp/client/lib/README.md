@@ -1,49 +1,82 @@
-# Sessionless C/C++ Library
 
-## Dependencies
-* [secp256k1](https://github.com/bitcoin-core/secp256k1)
+### Updated `CMakeLists.txt`
 
-  > _**NOTE:**_ when using CMake the dependencies are downloaded automatically
+cmake_minimum_required(VERSION 3.16)
 
-## Environment Setup
-CMake and a C++ compiler are required.
+# Define flags for building for Pico and Arduino
+option(BUILD_FOR_PICO "Build for Raspberry Pi Pico" OFF)
+option(BUILD_FOR_ARDUINO "Build for Arduino" OFF)
 
-### Additional Setup for Building on Raspberry Pi Pico
+if(BUILD_FOR_PICO)
+    # Set the Pico SDK path (update this path to match your setup)
+    if(NOT DEFINED PICO_SDK_PATH)
+        set(PICO_SDK_PATH "C:/path/to/pico-sdk")
+    endif()
 
-If you are building for the Raspberry Pi Pico, you need to set up the following additional dependencies:
+    # Include the Pico SDK
+    include(${PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
-1. **Install Python3:**
-  - Download and install Python3 from [python.org](https://www.python.org/downloads/).
+    # Initialize the Pico SDK
+    pico_sdk_init()
+endif()
 
-2. **Install ARM GCC Compiler:**
-  - Download and install the ARM GCC compiler. You can get it from the [Arm Developer website](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm).
+# Project name and settings
+project(sessionless)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
-3. **Set Up the Pico SDK:**
-  - Clone the Pico SDK repository:
-    ```sh
-    git clone -b master https://github.com/raspberrypi/pico-sdk.git
-    ```
+#################################################
+# secp256k1 library
 
-4. **Set Environment Variables:**
-  - Set the `PICO_SDK_PATH` environment variable to point to the location where you cloned the Pico SDK.
-  - Ensure the ARM GCC compiler and Python3 are in your system's PATH.
+set(SECP256K1_LIB_NAME secp256k1)
+include(FetchContent)
+FetchContent_Declare(
+  ${SECP256K1_LIB_NAME}
+  GIT_REPOSITORY https://github.com/bitcoin-core/secp256k1.git
+  GIT_TAG        v0.4.1
+)
 
-   Example for setting environment variables on Windows:
-    ```sh
-    set PICO_SDK_PATH=C:\path\to\pico-sdk
-    set PATH=%PATH%;C:\path\to\arm-gcc\bin;C:\path\to\python3
-    ```
+set(SECP256K1_BUILD_TESTS OFF)
+set(SECP256K1_BUILD_EXHAUSTIVE_TESTS OFF)
+set(SECP256K1_BUILD_BENCHMARK OFF)
 
-   Example for setting environment variables on Unix-like systems:
-    ```sh
-    export PICO_SDK_PATH=/path/to/pico-sdk
-    export PATH=$PATH:/path/to/arm-gcc/bin:/path/to/python3
-    ```
+set(CMAKE_BUILD_TYPE Release)
+set(BUILD_SHARED_LIBS FALSE)
 
-## Build the Demo
+FetchContent_MakeAvailable(${SECP256K1_LIB_NAME})
 
-### Standard Build
-```shell
-cmake -B ./build -S .
-cd build
-make
+#################################################
+# Sessionless library
+
+if(BUILD_FOR_PICO)
+    add_executable(sessionless
+        src/sessionless.cpp
+    )
+
+    target_include_directories(sessionless PUBLIC src)
+    target_link_libraries(sessionless PRIVATE ${SECP256K1_LIB_NAME} pico_stdlib)
+
+    # Enable USB output, disable UART output
+    pico_enable_stdio_usb(sessionless 1)
+    pico_enable_stdio_uart(sessionless 0)
+
+    # Create map/bin/hex/uf2 files
+    pico_add_extra_outputs(sessionless)
+
+elseif(BUILD_FOR_ARDUINO)
+    add_executable(sessionless
+        src/sessionless.cpp
+    )
+
+    target_include_directories(sessionless PUBLIC src)
+    target_link_libraries(sessionless PRIVATE ${SECP256K1_LIB_NAME})
+
+    # Add Arduino specific configurations here if necessary
+
+else()
+    set(TARGET sessionless)
+    set(CMAKE_BUILD_TYPE Release)
+    add_library(${TARGET} STATIC src/sessionless.cpp)
+    target_include_directories(${TARGET} PUBLIC src)
+    target_link_libraries(${TARGET} PRIVATE ${SECP256K1_LIB_NAME})
+endif()
