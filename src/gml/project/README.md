@@ -35,3 +35,6 @@ Returns the context's private key as a hex string.
 
 ### `Clean()`
 Deallocates the context object.
+
+## 1.0 release
+Full release will be ready when support is added and tested for the basic platforms such as `Windows`, `iOS`, `Android`, `HTML5` and `Ubuntu`.
