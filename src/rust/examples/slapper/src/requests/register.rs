@@ -16,8 +16,8 @@ impl Request for RegisterRequest {
 
     fn execute(color: Color, sessionless: &Sessionless, _: Self::Input) -> anyhow::Result<Self::Output> {
         let message = RegisterPayload {
-            pubKey: sessionless.public_key().to_hex(),
-            enteredText: "Foo",
+            pub_key: sessionless.public_key().to_hex(),
+            entered_text: "Foo",
             timestamp: "right now",
             signature: None,
         };
@@ -30,9 +30,10 @@ impl Request for RegisterRequest {
 }
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all="camelCase")]
 struct RegisterPayload<'a> {
-    pubKey: String,
-    enteredText: &'a str,
+    pub_key: String,
+    entered_text: &'a str,
     timestamp: &'a str,
     #[serde(skip_serializing_if = "Option::is_none")]
     signature: Option<String>,
