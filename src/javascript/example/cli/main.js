@@ -1,8 +1,9 @@
 import { program } from 'commander';
-//import colorTest from './src/commands/color-test.js';
-import colorTest from './src/commands/rainbow-test.js';
+import colorTest from './src/commands/color-test.js';
+import rainbowTest from './src/commands/rainbow-test.js';
 import lotsTest from './src/commands/lots-of-users-test.js';
 import config from './config/local.js';
+import chalk from 'chalk';
 
 program
   .name('sessionless-cli-example')
@@ -37,10 +38,10 @@ program
   });
 
 program
-  .command('rainbow')
+  .command('rainbow-test')
   .description('Test all available colors')
   .action(async (options) => {
-    console.log(chalk.red('Unimplemented'));
+    console.log(chalk.green('Starting test...'));
     await rainbowTest();
   });
 

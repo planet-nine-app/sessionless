@@ -22,7 +22,7 @@ const register = async (color) => {
     timestamp: new Date().getTime() + ''
   };
 
-console.log(JSON.stringify(message));
+// console.log(JSON.stringify(message));
 
   let signature = await sessionless.sign(JSON.stringify(message));
 

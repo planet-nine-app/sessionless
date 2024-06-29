@@ -15,8 +15,8 @@ namespace SessionlessExample.Server.Controllers
     [Route("/register")]
     public class RegisterController: ControllerBase
     {
-        Vault Vault?;
-        Sessionless Sessionless?;
+        Vault Vault;
+        Sessionless Sessionless;
         const string privPath = "./priv.key";
         const string pubPath = "./pub.key";
         static void VaultSaver(KeyPairHex pair) {
@@ -42,8 +42,9 @@ namespace SessionlessExample.Server.Controllers
             var message = JsonSerializer.Serialize<RegisterModel>(input);
 
             SignedMessage signedMessage = new SessionlessNET.Models.SignedMessage(message, signature);
+                        SignedMessageWithKey signedMessageWithKey = new SessionlessNET.Models.SignedMessageWithKey(signedMessage, input.pubKey);
 
-            if(!Sessionless.VerifySignature(signedMessage, input.pubKey)) {
+            if(!Sessionless.VerifySignature(signedMessageWithKey)) {
                 return Problem("Auth error");
             }
 

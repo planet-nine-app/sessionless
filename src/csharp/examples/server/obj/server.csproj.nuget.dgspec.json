@@ -70,7 +70,7 @@
       }
     },
     "/Users/zachbabb/Work/planet-nine/sessionless/src/csharp/Sessionless/SessionlessNET.csproj": {
-      "version": "1.0.0",
+      "version": "0.1.1",
       "restore": {
         "projectUniqueName": "/Users/zachbabb/Work/planet-nine/sessionless/src/csharp/Sessionless/SessionlessNET.csproj",
         "projectName": "SessionlessNET",
