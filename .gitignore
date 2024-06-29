@@ -4,5 +4,7 @@ node_modules
 src/javascript/example/client-expo/ios
 src/javascript/example/server/users.json
 
+Debug
+
 *.zip
 
