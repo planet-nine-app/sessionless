@@ -15,7 +15,7 @@
           }
         }
       },
-      "SessionlessNET/1.0.0": {
+      "SessionlessNET/0.1.1": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
@@ -51,7 +51,7 @@
         "packageIcon.png"
       ]
     },
-    "SessionlessNET/1.0.0": {
+    "SessionlessNET/0.1.1": {
       "type": "project",
       "path": "../../Sessionless/SessionlessNET.csproj",
       "msbuildProject": "../../Sessionless/SessionlessNET.csproj"
@@ -59,7 +59,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "SessionlessNET >= 1.0.0"
+      "SessionlessNET >= 0.1.1"
     ]
   },
   "packageFolders": {

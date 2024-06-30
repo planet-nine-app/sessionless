@@ -2,23 +2,28 @@ const config = {
   colors: {
     blue: {
       serverURL: 'http://127.0.0.1:3001',
-      signature: 'payload'
+      signature: 'payload',
+      language: 'javascript'
     },
     green: {
       serverURL: 'http://127.0.0.1:3002',
-      signature: 'payload'
+      signature: 'payload',
+      language: 'typescript'
     },
     red: {
       serverURL: 'http://127.0.0.1:3000', 
-      signature: 'header'
+      signature: 'header',
+      language: 'rust'
     },
-    bgWhite: {
-      serverURL: 'http://165.22.236.104',
-      signature: 'payload'
-    },
+/*    cyan: {
+      serverURL: 'http://127.0.0.1:8080',
+      signature: 'payload',
+      language: 'java'
+    },*/
     magenta: {
       serverURL: 'http://127.0.0.1:5139',
-      signature: 'header'
+      signature: 'header',
+      language: 'csharp'
     }
   },
   languages: {

@@ -43,17 +43,15 @@ namespace SessionlessExample.Server.Controllers;
                         
             var postedSignature = Request.Headers["Signature"];
 
-            if(postedSignature is null) {
-                return Problem("No signature");
-            }
-
             MessageSignatureHex signature = new(postedSignature);
 
             var message = JsonSerializer.Serialize<DoCoolStuffModel>(input);
 
             SignedMessage signedMessage = new SessionlessNET.Models.SignedMessage(message, signature);
 
-            if(!Sessionless.VerifySignature(signedMessage, user.pubKey)) {
+            SignedMessageWithKey signedMessageWithKey = new SessionlessNET.Models.SignedMessageWithKey(signedMessage, user.pubKey);
+
+            if(!Sessionless.VerifySignature(signedMessageWithKey)) {
                 return Problem("Auth error");
             }
 

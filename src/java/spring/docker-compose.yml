@@ -1,5 +1,3 @@
-version: "3.8"
-
 name: "sessionless-backend"
 services:
   sessionless_api:

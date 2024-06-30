@@ -30,6 +30,7 @@ impl Request for RegisterRequest {
 }
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all="camelCase")]
 struct RegisterPayload<'a> {
     pub_key: String,
     entered_text: &'a str,
