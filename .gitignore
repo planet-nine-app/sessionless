@@ -8,3 +8,5 @@ Debug
 
 *.zip
 
+project.nuget.cache
+users.json
