@@ -22,7 +22,7 @@ public class MessageService implements VerifyMessageUseCase {
         User user = loadUserByUserUuidPort.loadByUserUuid(message.userUuid())
                 .orElseThrow(() -> new RuntimeException("User with id: " + message.userUuid() + "could not be found from message"));
         String publicKey = user.publicKey();
-        String signature = message.signature();
+        String[] signature = message.signature();
         String messageContent = message.content();
         return Sessionless.verifySignature(publicKey, signature, messageContent);
     }

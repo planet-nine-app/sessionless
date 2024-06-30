@@ -10,7 +10,7 @@ public class RestUserDtoMapper {
         return new User(
                 null,
                 null, //TODO move
-                restUserDto.pubKey(),
+                restUserDto.publicKey(),
                 null
         );
     }

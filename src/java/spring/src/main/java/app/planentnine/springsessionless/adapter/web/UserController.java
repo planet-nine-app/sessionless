@@ -32,12 +32,10 @@ public class UserController {
     
     @PostMapping("/register")
     public ResponseEntity<Object> createUser(@RequestBody RestUserDto restUserDto) {
-System.out.println("about to check pub key validity");
-System.out.println(restUserDto.pubKey());
-        if (isValidPublicKey(restUserDto.pubKey()) && ) {
+        if (isValidPublicKey(restUserDto.publicKey())) {
             User user = createUserUseCase.createUser(userDtoMapper.map(restUserDto));
             Map<String, String> responseMap = new HashMap<>();
-            responseMap.put("uuid", user.userUuid().toString());
+            responseMap.put("userUuid", user.userUuid().toString());
             return ResponseEntity.accepted().body(responseMap);
         } else {
             return ResponseEntity.badRequest().body("Invalid request parameters provided");
@@ -45,26 +43,19 @@ System.out.println(restUserDto.pubKey());
     }
     
     private boolean isValidPublicKey(String publicKey) {
-System.out.println("Does this even get called?");
         try {
-System.out.println("oof");
-System.out.println(publicKey);
             BigInteger publicKeyFormatted = new BigInteger(publicKey, 16);
-System.out.println("foo");
             ECNamedCurveParameterSpec ecNamedCurveParameterSpec =
                     ECNamedCurveTable.getParameterSpec("secp256k1");
             
-System.out.println("bar");
             org.bouncycastle.math.ec.ECPoint publicKeyPoint =
                     ecNamedCurveParameterSpec.getCurve().decodePoint(publicKeyFormatted.toByteArray());
             
-System.out.println("baz");
             if (publicKeyPoint != null && publicKeyPoint.isValid()) {
                 return true;
             }
         } catch (Exception e) {
-            //System.out.println("Invalid Key format"); //TODO throw to log
-            System.out.println("gogogogogogo");
+            System.out.println("Invalid Key format"); //TODO throw to log
         }
         return false;
     }

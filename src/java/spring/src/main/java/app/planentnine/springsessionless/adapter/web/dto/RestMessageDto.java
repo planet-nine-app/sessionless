@@ -7,5 +7,5 @@ import java.util.UUID;
 
 @Builder
 @Jacksonized
-public record RestMessageDto(UUID uuid, String coolness, String timestamp, String signature) {
+public record RestMessageDto(UUID userUuid, String content, String[] signature) {
 }
