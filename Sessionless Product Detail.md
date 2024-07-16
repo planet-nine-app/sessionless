@@ -22,7 +22,7 @@ There are multiple problems with this set up:
 	For example, setting up a payment processor like Stripe requires obtaining an API token and Key and connecting it to your product’s server. These keys can be compromised, creating security risks, and obtaining your key if it is lost is often impossible, which means starting the process from scratch.
 - Storage of secret information is platform dependent
 - API Key creation is also platform dependent for randomness
-- Offers limited language support based on each auth approach limiting usage to programs that use that language
+- Language support for a given auth approach might be limited, locking companies into a particular tech stack
 - Requires users to be connected to the internet
 
 **Solution**
