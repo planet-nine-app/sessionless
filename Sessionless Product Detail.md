@@ -3,21 +3,17 @@
 **Introduction & Base Definitions**
 
 
-Authentication protocols (auth protocols) are gatekeepers that verify the identity of a person to give them access to specific programs or data. They include a set of rules or procedures that govern how data is transmitted across electronic devices. The most common uses of auth protocols are passwords, but others include one-time-passwords, biometrics, and magic links. 
+Authentication protocols (auth protocols) are gatekeepers that verify the identity of a person to give them access to specific programs or data. They include a set of rules or procedures that govern how data is transmitted across electronic devices. The most common uses of auth protocols are passwords, but others include one-time-passwords, biometrics, and magic links. [Click here for more information on identification and authentication.] (https://www.okta.com/identity-101/identification-vs-authentication/#:~:text=Identification%20is%20the%20act%20of,access%20to%20systems%20or%20privileges) 
 
 - An Application Programming Interface (API) is  a software intermediary that allows two  applications to share data with each other
-- An API Key is  a unique code that identifies an application or user
-- An API Token is a piece of code that contains information about a user and is used to secure access to an API
+- An API Key is  a unique code that identifies and authorizes an application or user
+- An API Token is a piece of code that contains information about what privileges or sessions a user has access to
 - Encryption is the process of turning data into code to prevent unauthorized access
+[For more information on API Keys and Tokens, see here] (https://www.gomomento.com/blog/api-keys-vs-tokens-whats-the-difference/)
 
 **Problem Statement**
 
-Many auth protocols are client-server, where the client supplies some secret information (usually name and email address with a password) to authenticate requests.
-
-There are multiple problems with this set up:
-- Requires users to enter in personally identifiable information which can be hacked presenting legal risks 
-- Requires encryption to prevent sensitive data leaks using https which slows and limits authentication opportunities (can’t connect to anything other than standard computers)
-- Ignores other authentication needs such as between processes on one machine, or server-server relationships. 
+Many auth protocols are client-server, where the client supplies some secret information (usually name and email address with a password) to authenticate requests. Encryption protocols, like https, provide some protection against data leaks, but they limit authentication opportunities (https for example, can't be used to connect embedded devices).
 
 	For example, setting up a payment processor like Stripe requires obtaining an API token and Key and connecting it to your product’s server. These keys can be compromised, creating security risks, and obtaining your key if it is lost is often impossible, which means starting the process from scratch.
 - Storage of secret information is platform dependent
