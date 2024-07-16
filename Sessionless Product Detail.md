@@ -12,7 +12,7 @@ Authentication protocols (auth protocols) are gatekeepers that verify the identi
 
 **Problem Statement**
 
-Many auth protocols are client-server, where the client supplies some secret information (usually name and email address) to authenticate requests.
+Many auth protocols are client-server, where the client supplies some secret information (usually name and email address with a password) to authenticate requests.
 
 There are multiple problems with this set up:
 - Requires users to enter in personally identifiable information which can be hacked presenting legal risks 
