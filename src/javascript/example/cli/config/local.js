@@ -6,6 +6,11 @@ const config = {
       language: 'javascript'
     },
     green: {
+      serverURL: 'http://127.0.0.1:5000',
+      signature: 'payload',
+      language: 'python'
+    },
+    yellow: {
       serverURL: 'http://127.0.0.1:3002',
       signature: 'payload',
       language: 'typescript'
@@ -28,10 +33,11 @@ const config = {
   },
   languages: {
     javascript: 'blue',
-    typescript: 'green',
+    typescript: 'yellow',
     rust: 'red',
     java: 'bgWhite',
-    csharp: 'magenta'
+    csharp: 'magenta',
+    python: 'green'
   }
 };
 
