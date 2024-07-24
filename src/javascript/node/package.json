@@ -1,10 +1,11 @@
 {
   "name": "sessionless-node",
-  "version": "0.0.9",
+  "version": "0.10.1",
   "description": "Node implementation of the sessionless protocol",
   "main": "sessionless.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "rollup": "npx rollup --format=cjs --file=sessionless.cjs -- sessionless.js "
   },
   "exports": {
     "import": "./sessionless.js",
@@ -18,6 +19,8 @@
   },
   "type": "module",
   "devDependencies": {
+    "chai": "^5.1.0",
+    "mocha": "^10.4.0",
     "rollup": "^4.12.0"
   }
 }

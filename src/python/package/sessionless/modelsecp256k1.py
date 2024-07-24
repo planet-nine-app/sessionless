@@ -1,58 +1,68 @@
 import secp256k1
 import pickle
 import uuid
-import inspect
+from Crypto.Hash import keccak
 
+class DigestableKeccak(): # I don't know if a class is the right way to do this
+    def digest(self, msg):
+        k = keccak.new(digest_bits=256)
+        k.update(msg)
+        return k
 
-class SessionlessSecp256k1():
-    
-    def __init__(self, get_keys):
-        self.get_keys = get_keys
-        
-    def generate_UUID(self):
+class SessionlessSecp256k1():       
+    def generateUUID(self):
         return uuid.uuid4().hex
     
-    def generate_keys(self, save_key):
+    def generateKeys(self, saveKeys):
         try: 
-            if callable(save_key):
-                private_key_obj = secp256k1.PrivateKey()
-                private_key = private_key_obj.serialize()
-                public_key = private_key_obj.pubkey.serialize().hex()
-                return private_key, public_key
+            if not callable(saveKeys):
+                raise Exception
+            privateKeyObj = secp256k1.PrivateKey()
+            privateKey = privateKeyObj.serialize()
+            publicKey = privateKeyObj.pubkey.serialize().hex()
+            saveKeys({"privateKey": privateKey, "publicKey": publicKey})
+            return privateKey, publicKey
         except Exception:
             raise TypeError("No default secure storage in python. Please provide a callable method to store private key.")
     
-    async def sign(self, msg):
+    async def sign(self, msg, getKey):
         try:
+            privateKey = getKey()
             if not isinstance(msg, bytes):
-                msg = pickle.dumps(msg)
-            if inspect.iscoroutinefunction(self.get_keys):
-                private_key_hex = await self.get_keys()
-            else: 
-                private_key_hex = self.get_keys()
-            private_key = secp256k1.PrivateKey()
-            assert private_key.deserialize(private_key_hex) == private_key.private_key
-            deserialized_sig = private_key.ecdsa_sign(msg)
-            sig = private_key.ecdsa_serialize_compact(deserialized_sig)
+                msg = msg.encode('ascii')
+            privateKeyObj = secp256k1.PrivateKey()
+            privateKeyObj.deserialize(privateKey)
+   
+            digestable_keccak = DigestableKeccak()
+            print(msg[0])
+            print(msg[1])
+            raw_msg = digestable_keccak.digest(msg)
+            deserializedSig = privateKeyObj.ecdsa_sign(raw_msg.digest(), raw=True)
+#            deserializedSig = privateKeyObj.ecdsa_sign(msg, digest=digestable_keccak.digest)
+            sig = privateKeyObj.ecdsa_serialize_compact(deserializedSig)
             return sig.hex()
         except Exception:
-            raise ValueError("Error with parameters. Please ensure values are provided in correct format.")
+            raise ValueError("Value not provided in correct format.")
         
-    def verify_signature(self, signature, msg, public_key_hex):
+    def verifySignature(self, signature, msg, publicKey):
         try:
             if not isinstance(msg, bytes):
-                msg = pickle.dumps(msg)
+                msg = msg.encode('ascii')
             sig = bytes.fromhex(signature)
-            public_key = secp256k1.PublicKey()
-            assert public_key.deserialize(bytes.fromhex(public_key_hex)) == public_key.public_key
-            
-            signature = public_key.ecdsa_deserialize_compact(sig)
-            return public_key.ecdsa_verify(msg, signature)
+            publicKeyObj = secp256k1.PublicKey()
+            publicKeyObj.deserialize(bytes.fromhex(publicKey))
+
+            digestable_keccak = DigestableKeccak()
+            raw_msg = digestable_keccak.digest(msg)
+            signature = publicKeyObj.ecdsa_deserialize_compact(sig)
+
+#            return publicKeyObj.ecdsa_verify(msg, signature)
+            return publicKeyObj.ecdsa_verify(raw_msg.digest(), signature, raw=True)
         except Exception:
             raise ValueError("Error with parameters. Please ensure values are provided in correct format.")
     
-    def associate(self, primary_sig, primary_msg, primary_public_key, secondary_sig, secondary_msg, secondary_public_key ):
+    def associate(self, primarySignature, primaryMsg, primaryPublicKey, secondarySignature, secondaryMsg, secondaryPublicKey ):
         try:
-            return (self.verify_signature(primary_sig, primary_msg, primary_public_key) and self.verify_signature(secondary_sig, secondary_msg, secondary_public_key))
+            return (self.verifySignature(primarySignature, primaryMsg, primaryPublicKey) and self.verifySignature(secondarySignature, secondaryMsg, secondaryPublicKey))
         except Exception:
             raise ValueError("Error with parameters. Please ensure values are provided in correct format.")

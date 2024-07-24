@@ -1,0 +1,13 @@
+[package]
+name = "sessionless-gms"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "sessionless"
+crate-type = ["cdylib"]
+
+[dependencies]
+async_load = { version = "1.0.3", features = ["extension"] }
+sessionless = { version = "0.1.1", features = ["uuid"] }
+lazy_static = "1.4.0"

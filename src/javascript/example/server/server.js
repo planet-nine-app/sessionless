@@ -16,6 +16,18 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+/**
+ * Uncomment this when debugging what client implementations are sending
+ */
+//app.use(express.raw({ type: '*/*', limit: '10mb' }));
+/*app.use((req) => {
+  console.log(req.body.toString('utf-8'));
+});*/
+
+app.get('/', (req, res, next) => {
+  console.log(req.socket.remoteAddress);
+});
+
 app.use(expressSession({
   secret: 'foo bar baz',
   cookie: {
@@ -59,6 +71,7 @@ const handleWebRegistration = async (req, res) => {
 app.use(bodyParser.json());
 
 app.post('/register', async (req, res) => {
+console.log(req.body);
   const payload = req.body;
   const signature = payload.signature;
 
@@ -73,8 +86,14 @@ app.post('/register', async (req, res) => {
     enteredText: payload.enteredText, 
     timestamp: payload.timestamp 
   });
+console.log(message);
+console.log(signature);
+console.log(pubKey);
 
-  if(sessionless.verifySignature(signature, message, pubKey)) {
+const verified = await sessionless.verifySignature(signature, message, pubKey);
+console.log('verified: ' + verified);
+
+  if(await sessionless.verifySignature(signature, message, pubKey)) {
     const uuid = sessionless.generateUUID();
     await saveUser(uuid, pubKey);
     const user = {
@@ -85,14 +104,21 @@ app.post('/register', async (req, res) => {
     res.send(user);
   } else {
     console.log(chalk.red('unverified!'));
+    res.send({error: 'auth error'});
   }
 });
 
 app.post('/cool-stuff', async (req, res) => {
+console.log(req.body);
   const payload = req.body;
-  const message = JSON.stringify({ coolness: payload.coolness, timestamp: payload.timestamp });
-  const publicKey = getUserPublicKey(payload.uuid); 
+  const message = JSON.stringify({ uuid: payload.uuid, coolness: payload.coolness, timestamp: payload.timestamp });
+console.log(req.body);
+  const publicKey = getUser(payload.uuid).pubKey; 
   const signature = payload.signature || (await webSignature(req, message));
+
+console.log(message);
+console.log(signature);
+console.log(publicKey);
 
   if(sessionless.verifySignature(signature, message, publicKey)) {
     return res.send({

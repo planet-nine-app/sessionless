@@ -3,9 +3,7 @@ using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto.Signers;
 using Org.BouncyCastle.Math;
-using Org.BouncyCastle.Math.EC;
 using Org.BouncyCastle.Security;
-using Org.BouncyCastle.Utilities.Encoders;
 using SessionlessNET.Impl.Exceptions;
 using SessionlessNET.Models;
 using SessionlessNET.Util;
@@ -36,6 +34,7 @@ public class Sessionless(IVault vault) : ISessionless {
 
 
     public KeyPairHex? GetKeys() => Vault.Get();
+
 
     public MessageSignatureHex Sign(string message) {
         var privateHex = GetKeys()?.PrivateKey
@@ -71,33 +70,23 @@ public class Sessionless(IVault vault) : ISessionless {
     public bool VerifySignature(SignedMessage signedMessage) {
         var publicHex = GetKeys()?.PublicKey
             ?? throw new KeyPairNotFoundException();
-        if (publicHex != signedMessage.PublicKey) return false;
-        return VerifySignature(signedMessage, publicHex);
+        var withKey = signedMessage.WithKey(publicHex);
+        return VerifySignature(withKey);
     }
-    public bool VerifySignature(SignedMessage signedMessage, string publicKeyHex) {
-        if (!publicKeyHex.IsBytes()) {
-            throw new HexFormatRequiredException(nameof(publicKeyHex));
-        }
-        if (publicKeyHex != signedMessage.PublicKey) return false;
-        // public hex to bytes
-        byte[] publicBytes = Hex.Decode(publicKeyHex);
-        // public bytes to key object
-        ECDomainParameters curve = KeyUtils.Defaults.DomainParameters;
-        ECPoint qPoint = curve.Curve.DecodePoint(publicBytes);
-        var publicKey = new ECPublicKeyParameters(qPoint, curve);
-        return VerifySignature(signedMessage, publicKey);
+
+    public bool VerifySignature(SignedMessageWithKey signedMessage) {
+        return VerifySignature(signedMessage.ToEC());
     }
-    public bool VerifySignature(SignedMessage signedMessage, ECPublicKeyParameters publicKey) {
+
+    public bool VerifySignature(SignedMessageWithECKey signedMessage) {
         // signature hex to bigint
-        var signature = signedMessage.Signature.ToInt();
+        var signatureInt = signedMessage.Signature.ToInt();
         // message string to keccak256 hash
-        byte[] messageHash = signedMessage.Message
-            .HashKeccak256()
-            .Take(32).ToArray();
+        byte[] messageHash = signedMessage.Message.HashKeccak256();
         // verify
         var verifier = new ECDsaSigner();
-        verifier.Init(false, publicKey);
-        return verifier.VerifySignature(messageHash, signature.R, signature.S);
+        verifier.Init(false, signedMessage.PublicKey);
+        return verifier.VerifySignature(messageHash, signatureInt.R, signatureInt.S);
     }
 
     public bool Associate(params SignedMessage[] messages) {
