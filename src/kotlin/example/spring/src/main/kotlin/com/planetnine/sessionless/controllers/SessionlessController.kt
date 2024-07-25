@@ -103,7 +103,7 @@ class SessionlessController {
             val enteredText: String?, val timestamp: Long?,
     )
 
-    @PutMapping("/register")
+    @PostMapping("/register")
     fun register(
             req: HttpServletRequest,
             @RequestBody body: RegisterReqBody
