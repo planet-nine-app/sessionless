@@ -71,9 +71,9 @@ object KeyUtils {
     // }
 
     @Throws(
-        java.security.cert.CertificateEncodingException::class,
-        IllegalStateException::class,
-        RuntimeException::class
+            java.security.cert.CertificateEncodingException::class,
+            IllegalStateException::class,
+            RuntimeException::class
     )
     @Suppress("DEPRECATION") //? this works... but it's deprecated.. I didn't find another way
     fun generateSelfSignedCertificate(pair: KeyPair): X509Certificate {
@@ -168,8 +168,8 @@ object KeyUtils {
         if (!this.isBytes()) throw HexFormatRequiredException("(this)")
         val privateInt = BigInteger(this, 16)
         return ECPrivateKeyParameters(
-            privateInt,
-            Defaults.parameterSpec.domainParameters
+                privateInt,
+                Defaults.parameterSpec.domainParameters
         )
     }
 
@@ -179,7 +179,7 @@ object KeyUtils {
         val paramSpec = Defaults.parameterSpec
         val publicKeyPoint = paramSpec.curve.decodePoint(publicInt.toByteArray())
         return ECPublicKeyParameters(
-            publicKeyPoint, paramSpec.domainParameters
+                publicKeyPoint, paramSpec.domainParameters
         )
     }
 
@@ -198,8 +198,8 @@ object KeyUtils {
 
         // compressed/uncompressed point
         val isEvenY = rawY
-            .mod(BigInteger("2"))
-            .equals(BigInteger.ZERO)
+                .mod(BigInteger("2"))
+                .equals(BigInteger.ZERO)
         val prefix = if (isEvenY) "02" else "03"
 
         // absolute raw x to hex
