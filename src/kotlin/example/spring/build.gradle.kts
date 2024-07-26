@@ -26,7 +26,8 @@ dependencies {
     implementation("org.bouncycastle:bcprov-jdk18on:1.77")
     implementation("org.json:json:20240303")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-
+    implementation("org.reactivestreams:reactive-streams:1.0.4")
+    implementation("org.springframework.boot:spring-boot-starter-webflux:3.3.2")
 }
 
 tasks.withType<KotlinCompile> {
