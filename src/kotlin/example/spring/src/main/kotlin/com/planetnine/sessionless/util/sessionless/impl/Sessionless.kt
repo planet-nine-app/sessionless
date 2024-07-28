@@ -24,8 +24,8 @@ import java.util.UUID
 sealed class Sessionless(override val vault: IVault) : ISessionless {
     /** [ISessionless.WithKeyStore] implementation with [Sessionless] as superclass */
     class WithKeyStore(override val vault: KeyStoreVault) :
-            Sessionless(vault),
-            ISessionless.WithKeyStore {
+        Sessionless(vault),
+        ISessionless.WithKeyStore {
 
         override fun generateKeys(keyAccessInfo: KeyAccessInfo): KeyPair {
             val pair = KeyUtils.generateKeyPair()
@@ -40,7 +40,7 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         }
 
         override fun getKeys(keyAccessInfo: KeyAccessInfo): KeyPair =
-                vault.get(keyAccessInfo)
+            vault.get(keyAccessInfo)
 
         override fun sign(message: String, keyAccessInfo: KeyAccessInfo): MessageSignatureHex {
             val privateKey = getKeys(keyAccessInfo).private
@@ -48,8 +48,8 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         }
 
         override fun verifySignature(
-                signedMessage: SignedMessage,
-                keyAccessInfo: KeyAccessInfo
+            signedMessage: SignedMessage,
+            keyAccessInfo: KeyAccessInfo
         ): Boolean {
             val publicKey = getKeys(keyAccessInfo).public
             val withKey = signedMessage.withKey(publicKey)
@@ -59,8 +59,8 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
 
     /** [ISessionless.WithCustomVault] implementation with [Sessionless] as superclass */
     class WithCustomVault(override val vault: ICustomVault) :
-            Sessionless(vault),
-            ISessionless.WithCustomVault {
+        Sessionless(vault),
+        ISessionless.WithCustomVault {
 
         override fun generateKeys(): KeyPairHex {
             val pair = KeyUtils.generateKeyPair()
@@ -81,7 +81,7 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         override fun sign(message: String): MessageSignatureHex {
             // throw if not found (caller should not call this before generating keys)
             val privateString = getKeys()?.privateKey
-                    ?: throw KeyPairNotFoundException()
+                ?: throw KeyPairNotFoundException()
             val privateKey = privateString.toECPrivateKey(KeyUtils.Defaults.parameterSpec)
             return sign(message, privateKey)
         }
@@ -105,7 +105,7 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
     }
 
     override fun verifySignature(signedMessage: SignedMessageWithKey): Boolean =
-            verifySignature(signedMessage.toEC())
+        verifySignature(signedMessage.toEC())
 
     override fun verifySignature(signedMessage: SignedMessageWithECKey): Boolean {
         val signer = ECDSASigner().apply {
@@ -114,9 +114,9 @@ sealed class Sessionless(override val vault: IVault) : ISessionless {
         val messageHash = signedMessage.message.hashKeccak256()
         val signatureInt = signedMessage.signature.toInt()
         return signer.verifySignature(
-                messageHash,
-                signatureInt.r,
-                signatureInt.s
+            messageHash,
+            signatureInt.r,
+            signatureInt.s
         )
     }
 

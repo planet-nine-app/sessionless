@@ -40,7 +40,8 @@ open class MessageSignatureHex(
         }
     }
 
-    constructor(rsHex: String, partSize: Int = 64)
+    constructor(rsHex: String) : this(rsHex, 64)
+    constructor(rsHex: String, partSize: Int)
             : this(rsHex.substring(0, partSize), rsHex.substring(partSize)) {
         if (rsHex.length != partSize * 2) {
             throw IllegalArgumentException("Length must be $partSize hex characters")
