@@ -11,10 +11,10 @@ import jakarta.annotation.PostConstruct
 import jakarta.servlet.http.HttpServletRequest
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.io.File
@@ -80,16 +80,22 @@ class SessionlessController {
     private var currentPrivateKey = ""
     private fun webSignature(req: HttpServletRequest, message: String): MessageSignatureHex? {
         val privateKeyString = req.session.getAttribute("user") as? String
-                ?: return null
+            ?: return null
         currentPrivateKey = privateKeyString
         val privateKey = privateKeyString.toECPrivateKey()
         return sessionless.sign(message, privateKey)
     }
 
-    data class RegisterResponse(val uuid: String, val welcomeMessage: String)
+    data class RegisterResponse(
+        val uuid: String? = null,
+        val welcomeMessage: String? = null,
+        val color: String = "purple",
+        val error: String? = null
+    )
+
     data class RegisterReqBody(
-            val signature: MessageSignatureHex?, val pubKey: String?,
-            val enteredText: String?, val timestamp: Long?,
+        val signature: MessageSignatureHex?, val pubKey: String?,
+        val enteredText: String?, val timestamp: Long?,
     )
 
     private suspend fun handleWebRegistration(req: HttpServletRequest): ResponseEntity<RegisterResponse> {
@@ -103,16 +109,23 @@ class SessionlessController {
     }
 
 
-    @PostMapping("/register")
+    @PostMapping(
+        "/register",
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
     suspend fun register(
-            req: HttpServletRequest,
-            @RequestBody body: RegisterReqBody
+        @RequestBody body: RegisterReqBody,
+        req: HttpServletRequest
     ): ResponseEntity<RegisterResponse> {
         val signature = body.signature
-                ?: return handleWebRegistration(req)
-        val pubKey = body.pubKey ?: return ResponseEntity.badRequest().body(null)
-        val timestamp = body.timestamp ?: return ResponseEntity.badRequest().body(null)
-        val enteredText = body.enteredText ?: return ResponseEntity.badRequest().body(null)
+            ?: return handleWebRegistration(req)
+        val pubKey = body.pubKey ?: return ResponseEntity.badRequest()
+            .body(RegisterResponse(error = "Missing pubKey"))
+        val timestamp = body.timestamp ?: return ResponseEntity.badRequest()
+            .body(RegisterResponse(error = "Missing timestamp"))
+        val enteredText = body.enteredText ?: return ResponseEntity.badRequest()
+            .body(RegisterResponse(error = "Missing enteredText"))
 
         val message = JSONObject().apply {
             put("pubKey", pubKey)
@@ -122,8 +135,9 @@ class SessionlessController {
 
         val verified = sessionless.verifySignature(SignedMessageWithKey(message, signature, pubKey))
         if (!verified) {
-            println("Signature verification failed!")
-            return ResponseEntity.status(401).body(null)
+            println("======== Signature error")
+            return ResponseEntity.status(401)
+                .body(RegisterResponse(error = "Signature verification failed!"))
         }
 
         val uuid = sessionless.generateUUID()
@@ -134,14 +148,18 @@ class SessionlessController {
 
     data class CoolStuffResponse(val doubleCool: String?, val error: String?)
     data class CoolStuffReqBody(
-            val uuid: String, val signature: MessageSignatureHex?,
-            val timestamp: Long, val coolness: String,
+        val uuid: String, val signature: MessageSignatureHex?,
+        val timestamp: Long, val coolness: String,
+        val color: String = "purple"
     )
 
-    @PutMapping("/cool-stuff")
-    fun coolStuff(req: HttpServletRequest, @RequestBody body: CoolStuffReqBody): ResponseEntity<CoolStuffResponse> {
+    @PostMapping("/cool-stuff")
+    fun coolStuff(
+        @RequestBody body: CoolStuffReqBody,
+        req: HttpServletRequest
+    ): ResponseEntity<CoolStuffResponse> {
         val pubKey = getUserPublicKey(body.uuid)
-                ?: return ResponseEntity.status(404).body(CoolStuffResponse(null, "User not found"))
+            ?: return ResponseEntity.status(404).body(CoolStuffResponse(null, "User not found"))
 
         val message = JSONObject().apply {
             put("coolness", body.coolness)
@@ -151,8 +169,9 @@ class SessionlessController {
         // from body, or from session
         // or error
         val signature =
-                body.signature ?: webSignature(req, message)
-                ?: return ResponseEntity.internalServerError().body(CoolStuffResponse(null, "Signature error"))
+            body.signature ?: webSignature(req, message)
+            ?: return ResponseEntity.internalServerError()
+                .body(CoolStuffResponse(null, "Signature error"))
 
         val verified = sessionless.verifySignature(SignedMessageWithKey(message, signature, pubKey))
         return if (verified)
