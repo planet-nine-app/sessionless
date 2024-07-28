@@ -21,6 +21,7 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.7.3") // Need this guy too, because why would coroutines just need one dependency?
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.session:spring-session-core:3.2.2")
     implementation("org.bouncycastle:bcprov-jdk18on:1.77")
