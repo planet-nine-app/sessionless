@@ -36,7 +36,7 @@ class SessionlessController {
     }
 
     companion object {
-        const val USERS_FILE_PATH = "./users.json"
+        const val USERS_FILE_PATH = "users.json"
 
         private var users = JSONObject()
 
@@ -50,8 +50,10 @@ class SessionlessController {
             } else {
                 usersString = usersFile.readText()
             }
-            val json = JSONObject(usersString)
-            json.put(uuid, pubKey)
+            val json = JSONObject(usersString).apply {
+                put(uuid, pubKey)
+            }
+            println(usersFile.absolutePath)
             users = json
             usersFile.writeText(json.toString())
         }
@@ -127,11 +129,11 @@ class SessionlessController {
         val enteredText = body.enteredText ?: return ResponseEntity.badRequest()
             .body(RegisterResponse(error = "Missing enteredText"))
 
-        val message = JSONObject().apply {
-            put("pubKey", pubKey)
-            put("enteredText", enteredText)
-            put("timestamp", timestamp)
-        }.toString()
+        //! the order is mandatory
+        // JsonObject does not respect the entries' order
+        // so here's the brute force method
+        val message =
+            "{\"pubKey\":\"$pubKey\",\"enteredText\":\"$enteredText\",\"timestamp\":\"$timestamp\"}"
 
         val verified = sessionless.verifySignature(SignedMessageWithKey(message, signature, pubKey))
         if (!verified) {
@@ -148,9 +150,8 @@ class SessionlessController {
 
     data class CoolStuffResponse(val doubleCool: String?, val error: String?)
     data class CoolStuffReqBody(
-        val uuid: String, val signature: MessageSignatureHex?,
-        val timestamp: Long, val coolness: String,
-        val color: String = "purple"
+        val uuid: String, val signature: MessageSignatureHex? = null,
+        val timestamp: Long? = null, val coolness: String? = null
     )
 
     @PostMapping("/cool-stuff")
@@ -161,10 +162,8 @@ class SessionlessController {
         val pubKey = getUserPublicKey(body.uuid)
             ?: return ResponseEntity.status(404).body(CoolStuffResponse(null, "User not found"))
 
-        val message = JSONObject().apply {
-            put("coolness", body.coolness)
-            put("timestamp", body.timestamp)
-        }.toString()
+        val message =
+            "{\"uuid\":\"${body.uuid}\",\"coolness\":\"${body.coolness}\",\"timestamp\":\"${body.timestamp}\"}"
 
         // from body, or from session
         // or error
