@@ -1,7 +1,8 @@
-package com.planetnine.sessionless.util.sessionless.impl
+package com.planetnine.sessionless.impl
 
-import com.planetnine.sessionless.util.sessionless.models.vaults.IKeyStoreVault
-import com.planetnine.sessionless.util.sessionless.util.KeyUtils
+import com.planetnine.sessionless.impl.exceptions.KeyPairNotFoundException
+import com.planetnine.sessionless.models.vaults.IKeyStoreVault
+import com.planetnine.sessionless.util.KeyUtils
 import java.security.KeyPair
 import java.security.KeyStore
 import java.security.PrivateKey
@@ -32,14 +33,14 @@ class KeyStoreVault(override val keyStore: KeyStore) : IKeyStoreVault {
         )
     }
 
-    @Throws(
-        java.security.KeyStoreException::class,
-        java.security.NoSuchAlgorithmException::class,
-        java.security.UnrecoverableKeyException::class
-    )
+    @Throws(KeyPairNotFoundException::class)
     override fun get(accessInfo: KeyAccessInfo): KeyPair {
-        val privateKey = keyStore.getKey(accessInfo.alias, accessInfo.password) as PrivateKey
-        val publicKey = keyStore.getCertificate(accessInfo.alias).publicKey
-        return KeyPair(publicKey, privateKey)
+        try {
+            val privateKey = keyStore.getKey(accessInfo.alias, accessInfo.password) as PrivateKey
+            val publicKey = keyStore.getCertificate(accessInfo.alias).publicKey
+            return KeyPair(publicKey, privateKey)
+        } catch (e: Exception) {
+            throw KeyPairNotFoundException(e.message)
+        }
     }
 }

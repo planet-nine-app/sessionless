@@ -1,10 +1,13 @@
-package com.planetnine.sessionless.util.sessionless.util
- 
-import com.planetnine.sessionless.util.sessionless.impl.KeyPairHex
+package com.planetnine.sessionless.util
+
+import com.planetnine.sessionless.impl.KeyPairHex
+import com.planetnine.sessionless.impl.exceptions.HexFormatRequiredException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.bouncycastle.asn1.x509.X509Name
 import org.bouncycastle.crypto.params.ECDomainParameters
+import org.bouncycastle.crypto.params.ECPrivateKeyParameters
+import org.bouncycastle.crypto.params.ECPublicKeyParameters
 import org.bouncycastle.jce.ECNamedCurveTable
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec
@@ -19,7 +22,7 @@ import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.NoSuchAlgorithmException
 import java.security.NoSuchProviderException
-import java.security.PrivateKey
+import java.security.PublicKey
 import java.security.SecureRandom
 import java.security.Security
 import java.security.Signature
@@ -60,11 +63,12 @@ object KeyUtils {
     val ECNamedCurveParameterSpec.domainParameters
         get() = ECDomainParameters(this.curve, this.g, this.n, this.h)
 
-    fun PrivateKey.generatePrivateKeySpec(
-        parameterSpec: ECParameterSpec = Defaults.parameterSpec
-    ): ECPrivateKeySpec {
-        return ECPrivateKeySpec((this as ECPrivateKey).s, parameterSpec)
-    }
+    //! Useful but unused ...
+    // fun PrivateKey.generatePrivateKeySpec(
+    //     parameterSpec: ECParameterSpec = Defaults.parameterSpec
+    // ): ECPrivateKeySpec {
+    //     return ECPrivateKeySpec((this as ECPrivateKey).s, parameterSpec)
+    // }
 
     @Throws(
         java.security.cert.CertificateEncodingException::class,
@@ -160,6 +164,30 @@ object KeyUtils {
         return this.s.toString(16)
     }
 
+    fun String.toECPrivateKeyParameters(): ECPrivateKeyParameters {
+        if (!this.isBytes()) throw HexFormatRequiredException("(this)")
+        val privateInt = BigInteger(this, 16)
+        return ECPrivateKeyParameters(
+            privateInt,
+            Defaults.parameterSpec.domainParameters
+        )
+    }
+
+    fun String.toECPublicKeyParameters(): ECPublicKeyParameters {
+        if (!this.isBytes()) throw HexFormatRequiredException("(this)")
+        val publicInt = BigInteger(this, 16)
+        val paramSpec = Defaults.parameterSpec
+        val publicKeyPoint = paramSpec.curve.decodePoint(publicInt.toByteArray())
+        return ECPublicKeyParameters(
+            publicKeyPoint, paramSpec.domainParameters
+        )
+    }
+
+    fun PublicKey.toECPublicParameters(): ECPublicKeyParameters {
+        val ec = this as ECPublicKey
+        val hex = ec.toHex()
+        return hex.toECPublicKeyParameters()
+    }
 
     /** Convert [ECPublicKey] hex [String] of length 66 chars
      * - compression prefix + left padding of 0s */
@@ -183,4 +211,5 @@ object KeyUtils {
         // with prefix: 66 chars
         return "$prefix$publicHexPadded"
     }
+
 }

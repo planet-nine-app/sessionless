@@ -1,6 +1,6 @@
-package com.planetnine.sessionless.util.sessionless.models.vaults
+package com.planetnine.sessionless.models.vaults
 
-import com.planetnine.sessionless.util.sessionless.impl.KeyAccessInfo
+import com.planetnine.sessionless.impl.KeyAccessInfo
 import java.security.KeyPair
 import java.security.KeyStore
 import java.security.cert.Certificate
