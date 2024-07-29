@@ -4,6 +4,7 @@
   "description": "a cli for testing sessionless",
   "main": "main.js",
   "scripts": {
+    "start-kotlin": "node main.js test --color purple",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
