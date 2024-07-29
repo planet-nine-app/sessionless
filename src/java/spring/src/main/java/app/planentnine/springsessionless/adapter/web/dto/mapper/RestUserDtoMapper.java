@@ -6,12 +6,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RestUserDtoMapper {
+    public RestUserDto map(User user){
+        return new RestUserDto(
+                user.userUUID(),
+                user.publicKey()
+        );
+    }
+    
     public User map(RestUserDto restUserDto){
         return new User(
                 null,
-                null, //TODO move
-                restUserDto.publicKey(),
-                null
+                null,
+                restUserDto.pubKey()
         );
     }
 }

@@ -7,3 +7,6 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
+
+message:
+  valid-window-in-seconds: 600

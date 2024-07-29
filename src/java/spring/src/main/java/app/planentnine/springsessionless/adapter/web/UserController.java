@@ -1,18 +1,18 @@
 package app.planentnine.springsessionless.adapter.web;
 
+import app.planentnine.springsessionless.adapter.web.dto.RestCreateUserDto;
 import app.planentnine.springsessionless.adapter.web.dto.RestUserDto;
+import app.planentnine.springsessionless.adapter.web.dto.mapper.RestMessageDtoMapper;
 import app.planentnine.springsessionless.adapter.web.dto.mapper.RestUserDtoMapper;
 import app.planentnine.springsessionless.application.domain.User;
+import app.planentnine.springsessionless.application.domain.exception.ValidationException;
 import app.planentnine.springsessionless.application.port.incoming.CreateUserUseCase;
-import org.bouncycastle.jce.ECNamedCurveTable;
-import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,42 +22,33 @@ public class UserController {
     
     private final CreateUserUseCase createUserUseCase;
     private final RestUserDtoMapper userDtoMapper;
+    private final RestMessageDtoMapper messageDtoMapper;
     
     @Autowired
     public UserController(CreateUserUseCase createUserUseCase,
-                          RestUserDtoMapper restUserDtoMapper) {
+                          RestUserDtoMapper restUserDtoMapper,
+                          RestMessageDtoMapper restMessageDtoMapper) {
         this.createUserUseCase = createUserUseCase;
         this.userDtoMapper = restUserDtoMapper;
+        this.messageDtoMapper = restMessageDtoMapper;
     }
     
     @PostMapping("/register")
-    public ResponseEntity<Object> createUser(@RequestBody RestUserDto restUserDto) {
-        if (isValidPublicKey(restUserDto.publicKey())) {
-            User user = createUserUseCase.createUser(userDtoMapper.map(restUserDto));
-            Map<String, String> responseMap = new HashMap<>();
-            responseMap.put("userUuid", user.userUuid().toString());
-            return ResponseEntity.accepted().body(responseMap);
-        } else {
-            return ResponseEntity.badRequest().body("Invalid request parameters provided");
-        }
-    }
-    
-    private boolean isValidPublicKey(String publicKey) {
+    public ResponseEntity<Object> createUser(@RequestBody RestCreateUserDto createUserDto) {
         try {
-            BigInteger publicKeyFormatted = new BigInteger(publicKey, 16);
-            ECNamedCurveParameterSpec ecNamedCurveParameterSpec =
-                    ECNamedCurveTable.getParameterSpec("secp256k1");
+            RestUserDto userDto = RestUserDto.builder()
+                    .uuid(null)
+                    .pubKey(createUserDto.pubKey())
+                    .build();
             
-            org.bouncycastle.math.ec.ECPoint publicKeyPoint =
-                    ecNamedCurveParameterSpec.getCurve().decodePoint(publicKeyFormatted.toByteArray());
             
-            if (publicKeyPoint != null && publicKeyPoint.isValid()) {
-                return true;
-            }
-        } catch (Exception e) {
-            System.out.println("Invalid Key format"); //TODO throw to log
+            User user = createUserUseCase.createUser(messageDtoMapper.maptToMessage(createUserDto), userDtoMapper.map(userDto));
+            Map<String, String> responseMap = new HashMap<>();
+            responseMap.put("uuid", user.userUUID().toString());
+            return ResponseEntity.accepted().body(responseMap);
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body(e.getErrors());
         }
-        return false;
     }
     
 }

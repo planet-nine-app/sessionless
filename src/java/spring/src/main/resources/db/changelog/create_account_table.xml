@@ -13,9 +13,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="public_key" type="varchar(255)"/>
-            <column name="date_created" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
         </createTable>
     </changeSet>
 

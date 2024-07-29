@@ -27,19 +27,20 @@ repositories {
     mavenLocal()
 }
 
+
 ext {
+    bouncyCastleVersion = '1.77'
     liquibaseVersion = '4.24.0'
     lombokVersion = '1.18.32'
     mybatisSpringBootVersion = '3.0.2'
-    postgresqlVersion = '42.6.0'
+    postgresqlVersion = '42.7.2'
+    sessionlessVersion = '0.1.0'
     springBootVersion = '3.2.4'
 }
 
 dependencies {
-    //Remove with Sessionless
-    implementation 'org.bouncycastle:bcprov-jdk18on:1.77'
-    implementation 'commons-codec:commons-codec:1.15'
-    implementation 'org.apache.commons:commons-lang3:3.0'
+    implementation "com.all-thing.libs.sessionless:sessionless:${sessionlessVersion}"
+    implementation "org.bouncycastle:bcprov-jdk18on:${bouncyCastleVersion}"
     //
     implementation "org.liquibase:liquibase-core:${liquibaseVersion}"
     implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:${mybatisSpringBootVersion}"

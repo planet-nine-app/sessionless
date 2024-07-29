@@ -20,11 +20,11 @@ const config = {
       signature: 'header',
       language: 'rust'
     },
-/*    cyan: {
+    cyan: {
       serverURL: 'http://127.0.0.1:8080',
       signature: 'payload',
       language: 'java'
-    },*/
+    },
     magenta: {
       serverURL: 'http://127.0.0.1:5139',
       signature: 'header',

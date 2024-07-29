@@ -10,17 +10,15 @@ public class PostgresUserEntityMapper {
         return new User(
                 postgresUserEntity.getId(),
                 postgresUserEntity.getUserUuid(),
-                postgresUserEntity.getPublicKey(),
-                postgresUserEntity.getDateCreated()
+                postgresUserEntity.getPublicKey()
         );
     }
     
     public PostgresUserEntity map(User user){
         return PostgresUserEntity.builder()
-                .id(user.id())
-                .userUuid(user.userUuid())
+                .id(user.userUUID())
+                .userUuid(user.userUUID())
                 .publicKey(user.publicKey())
-                .dateCreated(user.dateCreated())
                 .build();
     }
 }
