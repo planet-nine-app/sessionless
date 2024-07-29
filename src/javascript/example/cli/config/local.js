@@ -1,37 +1,37 @@
 const config = {
   colors: {
-    blue: {
-      serverURL: "http://127.0.0.1:3001",
-      signature: "payload",
-      language: "javascript",
+    red: {
+      serverURL: "http://127.0.0.1:3000",
+      signature: "header",
+      language: "rust",
     },
-    green: {
-      serverURL: "http://127.0.0.1:5000",
-      signature: "payload",
-      language: "python",
+    orange: {
+      serverURL: 'http://127.0.0.1:8080',
+      signature: 'payload',
+      language: 'java'
     },
     yellow: {
       serverURL: "http://127.0.0.1:3002",
       signature: "payload",
       language: "typescript",
     },
-    red: {
-      serverURL: "http://127.0.0.1:3000",
-      signature: "header",
-      language: "rust",
+    green: {
+      serverURL: "http://127.0.0.1:5000",
+      signature: "payload",
+      language: "python",
     },
-    cyan: {
-      serverURL: 'http://127.0.0.1:8080',
-      signature: 'payload',
-      language: 'java'
+    blue: {
+      serverURL: "http://127.0.0.1:3001",
+      signature: "payload",
+      language: "javascript",
     },
-    magenta: {
+    indigo: {
       serverURL: "http://127.0.0.1:5139",
       signature: "header",
       language: "csharp",
     },
-    purple: {
-      serverURL: "http://localhost:8080",
+    violet: {
+      serverURL: "http://localhost:8082",
       signature: "payload",
       language: "kotlin",
     },

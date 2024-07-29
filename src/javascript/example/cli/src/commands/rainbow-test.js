@@ -3,6 +3,10 @@ import register from '../requests/register.js';
 import doCoolStuff from '../requests/do-cool-stuff.js';
 import config from '../../config/local.js';
 
+chalk.orange = chalk.rgb(255, 136, 0);
+chalk.indigo = chalk.rgb(100, 0, 100);
+chalk.violet = chalk.rgb(205, 0, 205);
+
 const colorTest = async (color, language) => {
   try {
     const registerResponse = await register(color);
