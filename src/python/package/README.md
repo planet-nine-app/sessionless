@@ -4,6 +4,10 @@
 
 ## About
 
+[*Sessionless*](https://www.github.com/planet-nine-app/sessionless) is a multi-language implementation of public-key cryptography.
+It's trying to be like the cordless drill or sewing machine of authentication--a tool everyone can have in their house t
+o help them make things.
+
 [Sessionless](https://sessionless.org/) is an open-source authentication protocol that uses the cryptography employed by Bitcoin and Ethereum to authenticate messages sent between a client and a server. Within this protocol, you create and store a private key on the client and then use that key to sign messages; the server then verifies those messages via the public key associated with the client. When you verify a message you also certify its provenance. Sessions are wholly unnecessary because no other secret needs to be shared between client and server.
 
 ## Getting Started 

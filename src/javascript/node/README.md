@@ -1,5 +1,9 @@
 # Sessionless
 
+[*Sessionless*](https://www.github.com/planet-nine-app/sessionless) is a multi-language implementation of public-key cryptography.
+It's trying to be like the cordless drill or sewing machine of authentication--a tool everyone can have in their house t
+o help them make things.
+
 This is the node implementation of the Sessionless protocol--a protocol for providing auth without user data like emails, passwords, or sessions.
 For examples of various server implementations, please see [here][examples].
 
