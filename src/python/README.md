@@ -12,6 +12,9 @@ Currently available in pip.
 
 ### Methods
 
+* NOTE * These are pseudocode methods. 
+Please check documentation in Pip for the actual method signatures.
+
 Function | What it does
 :--------|:------------|
 `generateKeys(saveKeys?: keys => void, getKeys?: () => Keys)` | Generates a private/public keypair and stores it in the platform's secure storage. Takes an optional `saveKeys` function for platforms that don't have clear-cut secure storage. 
