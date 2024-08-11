@@ -14,7 +14,7 @@ So a standard `npm i sessionless-node` should work for you.
 ### Methods
 
 Function | What it does
-:--------|:------------
+:--------|:------------|
 `generateKeys(saveKeys?: keys => void, getKeys?: () => Keys)` | Generates a private/public keypair and stores it in the platform's secure storage. Takes an optional `saveKeys` function for platforms that don't have clear-cut secure storage. 
 `getKeys()` | Gets keys from secure storage.
 `sign(message: String)` | Signs a message with the user's private key.
