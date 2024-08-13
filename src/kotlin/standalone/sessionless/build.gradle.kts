@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version "2.0.0"
-    `java-library`
-    `maven-publish`
+    id("java-library")
+    id("maven-publish")
 }
 
 group = "com.planetnineapp.sessionless-kt"
@@ -32,5 +32,51 @@ tasks.jar {
             "Implementation-Title" to project.name,
             "Implementation-Version" to project.version
         ))
+    }
+}
+
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["kotlin"]) // Use 'kotlin' if it's a Kotlin project
+
+            artifactId = "sessionless-kt" // Set the artifact ID
+
+            pom {
+                name.set("SLAP (Sessionless Authentication Protocol)") // Set a descriptive name
+                description.set("Native Kotlin library for Sessionless Authentication Protocol (SLAP) which works for client-server protocols, as well as for auth between local applications") // Add a description
+                url.set("https://github.com/planetnineapps/sessionless") // Provide a project URL (optional)
+
+                licenses {
+                    license {
+                        name.set("The MIT License (MIT)")
+                        url.set("https://github.com/planet-nine-app/sessionless/blob/main/LICENSE")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("galacticai")
+                        name.set("Galacticai")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/planet-nine-app/sessionless.git")
+                    developerConnection.set("scm:git:ssh://github.com/planet-nine-app/sessionless.git")
+                    url.set("https://github.com/planet-nine-app/sessionless")
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "mavencentral"
+            url = uri("https://my-maven-repo.com/releases") // Replace with your repository URL
+            credentials {
+                username = env.MAVEN_USERNAME
+                password = env.MAVEN_PASSWORD
+            }
+        }
     }
 }
