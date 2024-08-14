@@ -74,8 +74,8 @@ publishing {
             name = "mavencentral"
             url = uri("https://my-maven-repo.com/releases") // Replace with your repository URL
             credentials {
-                username = env.MAVEN_USERNAME
-                password = env.MAVEN_PASSWORD
+                username = "NOT IMPLEMENTED" // env.MAVEN_USERNAME
+                password = "NOT IMPLEMENTED" // env.MAVEN_PASSWORD
             }
         }
     }
