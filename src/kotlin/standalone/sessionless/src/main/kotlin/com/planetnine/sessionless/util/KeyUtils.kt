@@ -136,12 +136,9 @@ object KeyUtils {
     /** Checks whether a [Char] is one of the hex characters.
      * - Allowed characters: 0-9 a-f A-F
      * @return `true` if the character is a hex digit. */
-    fun Char.isHex(): Boolean {
-        val c = this.code
-        return c in '0'.code..'9'.code
-                || c in 'a'.code..'f'.code
-                || c in 'A'.code..'F'.code
-    }
+    fun Char.isHex() =
+        this in '0'..'9' || this in 'a'..'f' || this in 'A'..'F'
+
 
     /** Checks whether a [String] is made up of hex [Char]s.
      * - Allowed characters: 0-9 a-f A-F
