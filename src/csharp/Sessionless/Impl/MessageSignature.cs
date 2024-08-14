@@ -27,7 +27,8 @@ public record MessageSignatureInt : IMessageSignature {
             ) { }
 
     /// <summary> Convert to <see cref="MessageSignatureHex"/> </summary>
-    public MessageSignatureHex ToHex() => new(this);
+//    public MessageSignatureHex ToHex() => new(this);
+    public MessageSignatureHex ToHex() => new(R.ToString(16), S.ToString(16));
 
 
     /// <summary> Explicit caster to <see cref="MessageSignatureHex"/> </summary> 
@@ -52,7 +53,7 @@ public record MessageSignatureHex : IMessageSignature {
 
     public MessageSignatureHex(MessageSignatureInt signatureInt)
             : this(
-                signatureInt.S.ToString(16),
+                signatureInt.R.ToString(16),
                 signatureInt.S.ToString(16)
             ) { }
 
@@ -61,16 +62,22 @@ public record MessageSignatureHex : IMessageSignature {
     /// <br/> Like: R......S...... </param>
     /// <param name="partSize"> size of each part (<see cref="RHex"/> and <see cref="SHex"/>) </param>
     /// <exception cref="ArgumentException"/>
+
     public MessageSignatureHex(string rsHex, int partSize = 64)
-                : this(rsHex[..partSize], rsHex[partSize..]) {
-        int requiredSize = partSize * 2;
-        if (rsHex.Length != requiredSize) {
-            throw new ArgumentException($"{nameof(rsHex)} length must be {requiredSize}");
-        }
+{
+    int requiredSize = partSize * 2;
+    if (rsHex.Length != requiredSize)
+    {
+        throw new ArgumentException($"{nameof(rsHex)} length must be {requiredSize}");
     }
 
+    RHex = rsHex.Substring(0, partSize);
+    SHex = rsHex.Substring(partSize);
+}
+
     /// <summary> Convert to <see cref="MessageSignatureInt"/> </summary>
-    public MessageSignatureInt ToInt() => new(this);
+//    public MessageSignatureInt ToInt() => new(this);
+    public MessageSignatureInt ToInt() => new(new BigInteger(RHex, 16), new BigInteger(SHex, 16));
 
     /// <summary> Explicit caster to <see cref="MessageSignatureInt"/> </summary> 
     public static explicit operator MessageSignatureInt(MessageSignatureHex signatureHex)

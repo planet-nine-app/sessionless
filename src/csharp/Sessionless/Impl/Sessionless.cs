@@ -1,7 +1,7 @@
-﻿using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Digests;
+﻿using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto.Signers;
+using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Security;
 using SessionlessNET.Impl.Exceptions;
@@ -55,16 +55,79 @@ public class Sessionless(IVault vault) : ISessionless {
     }
 
     public MessageSignatureHex Sign(string message, ECPrivateKeyParameters privateKey) {
-        var paramWithRandom = new ParametersWithRandom(privateKey, new SecureRandom());
         // init signer
         var signer = new ECDsaSigner(new HMacDsaKCalculator(new Sha256Digest()));
-        signer.Init(true, paramWithRandom);
+        signer.Init(true, privateKey);
+        // message string to keccak256 hash
+        byte[] messageHash = message.HashKeccak256();
+        // sign
+
+        BigInteger curveOrder = privateKey.Parameters.N;
+        BigInteger halfCurveOrder = curveOrder.ShiftRight(1);
+
+        while (true)
+        {
+            BigInteger[] signature = signer.GenerateSignature(messageHash);
+            BigInteger r = signature[0];
+            BigInteger s = signature[1];
+
+            if (r.CompareTo(halfCurveOrder) <= 0)
+            {
+                // Ensure S is the lower of S and -S
+                if (s.CompareTo(halfCurveOrder) > 0)
+                {
+                    s = curveOrder.Subtract(s);
+                }
+
+                BigInteger[] actualSignature = { r, s };
+                return new MessageSignatureInt(actualSignature).ToHex();
+            }
+        }
+
+//        BigInteger[] signature = signer.GenerateSignature(messageHash);
+//        return new MessageSignatureInt(signature).ToHex();
+    }
+
+/*    public MessageSignatureHex Sign(string message, ECPrivateKeyParameters privateKey) {
+        // init signer
+        var signer = new ECDsaSigner(new HMacDsaKCalculator(new Sha256Digest()));
+        signer.Init(true, privateKey);
         // message string to keccak256 hash
         byte[] messageHash = message.HashKeccak256();
         // sign
         BigInteger[] signature = signer.GenerateSignature(messageHash);
         return new MessageSignatureInt(signature).ToHex();
+    }*/
+
+/*    public MessageSignatureHex Sign(string message, ECPrivateKeyParameters privateKey) {
+    var signer = new ECDsaSigner(new HMacDsaKCalculator(new Sha256Digest()));
+    signer.Init(true, privateKey);
+    
+    byte[] messageHash = message.HashKeccak256();
+    Console.WriteLine($"Message Hash: {BitConverter.ToString(messageHash).Replace("-", "")}");
+    
+    BigInteger[] signature = signer.GenerateSignature(messageHash);
+    Console.WriteLine($"R: {signature[0].ToString(16)}");
+    Console.WriteLine($"S: {signature[1].ToString(16)}");
+    
+    // Ensure low S
+    if (signature[1].CompareTo(privateKey.Parameters.N.ShiftRight(1)) > 0)
+    {
+        signature[1] = privateKey.Parameters.N.Subtract(signature[1]);
+        Console.WriteLine($"Adjusted S: {signature[1].ToString(16)}");
     }
+    
+    var result = new MessageSignatureInt(signature).ToHex();
+    Console.WriteLine($"Final Signature: {result}");
+    
+    // Immediate verification
+    //var verifier = new ECDsaSigner();
+    //verifier.Init(false, privateKey.Parameters.G.Multiply(privateKey.D));
+    //bool verified = verifier.VerifySignature(messageHash, signature[0], signature[1]);
+    //Console.WriteLine($"Immediate Verification: {verified}");
+    
+    return result;
+}*/
 
 
     public bool VerifySignature(SignedMessage signedMessage) {
