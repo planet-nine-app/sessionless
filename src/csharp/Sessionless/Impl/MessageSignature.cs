@@ -52,7 +52,7 @@ public record MessageSignatureHex : IMessageSignature {
 
     public MessageSignatureHex(MessageSignatureInt signatureInt)
             : this(
-                signatureInt.S.ToString(16),
+                signatureInt.R.ToString(16),
                 signatureInt.S.ToString(16)
             ) { }
 
