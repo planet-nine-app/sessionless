@@ -1,6 +1,10 @@
 # Sessionless Spring Server Implementation
 This project is a deployable spring server for the sessionless protocol
 
+See protocol [repository](https://github.com/Daniel-J-Mason/sessionless-protocol).
+
+Maven/gradle package can be found [here](https://central.sonatype.com/artifact/com.all-thing.libs.sessionless/sessionless).
+
 ---
 
 ## Endpoints
