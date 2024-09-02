@@ -1,6 +1,10 @@
 # Sessionless
 
-Rust implementation of the [Sessionless](https://github.com/planet-nine-app/sessionless) protocol.
+[*Sessionless*](https://www.github.com/planet-nine-app/sessionless) is a multi-language implementation of public-key cryptography.
+It's trying to be like the cordless drill or sewing machine of authentication--a tool everyone can have in their house t
+o help them make things.
+
+Rust implementation of the [Sessionless](https://sessionless.org) protocol.
 
 > Sessionless is an authentication protocol that uses the cryptography employed by Bitcoin and Ethereum to authenticate messages sent between a client and a server.
 

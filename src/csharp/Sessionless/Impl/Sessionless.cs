@@ -13,14 +13,17 @@ namespace SessionlessNET.Impl;
 /// <summary> <see cref="ISessionless"/> implementation </summary>
 /// <param name="vault"> The way to store and retrieve <see cref="KeyPairHex"/>s </param>
 public class Sessionless(IVault vault) : ISessionless {
+    /// <inheritdoc/>
     public IVault Vault { get; } = vault;
-
+    /// <inheritdoc/>
     public string GenerateUUID() => Guid.NewGuid().ToString();
+    /// <inheritdoc/>
     public KeyPairHex GenerateKeys() {
         var pair = KeyUtils.GenerateKeyPair();
         return StoreHexPair(pair);
     }
 
+    /// <inheritdoc/>
     public async Task<KeyPairHex> GenerateKeysAsync() {
         var pair = await KeyUtils.GenerateKeyPairAsync();
         return StoreHexPair(pair);
@@ -32,16 +35,17 @@ public class Sessionless(IVault vault) : ISessionless {
         return simple;
     }
 
-
+    /// <inheritdoc/>
     public KeyPairHex? GetKeys() => Vault.Get();
 
-
+    /// <inheritdoc/>
     public MessageSignatureHex Sign(string message) {
         var privateHex = GetKeys()?.PrivateKey
             ?? throw new KeyPairNotFoundException();
         return Sign(message, privateHex);
     }
 
+    /// <inheritdoc/>
     public MessageSignatureHex Sign(string message, string privateKeyHex) {
         if (!privateKeyHex.IsBytes()) {
             throw new HexFormatRequiredException(nameof(privateKeyHex));
@@ -54,6 +58,7 @@ public class Sessionless(IVault vault) : ISessionless {
         return Sign(message, privateKey);
     }
 
+    /// <inheritdoc/>
     public MessageSignatureHex Sign(string message, ECPrivateKeyParameters privateKey) {
         // init signer
         var signer = new ECDsaSigner(new HMacDsaKCalculator(new Sha256Digest()));
@@ -85,6 +90,8 @@ public class Sessionless(IVault vault) : ISessionless {
         }
     }
 
+
+    /// <inheritdoc/>
     public bool VerifySignature(SignedMessage signedMessage) {
         var publicHex = GetKeys()?.PublicKey
             ?? throw new KeyPairNotFoundException();
@@ -92,10 +99,12 @@ public class Sessionless(IVault vault) : ISessionless {
         return VerifySignature(withKey);
     }
 
+    /// <inheritdoc/>
     public bool VerifySignature(SignedMessageWithKey signedMessage) {
         return VerifySignature(signedMessage.ToEC());
     }
 
+    /// <inheritdoc/>
     public bool VerifySignature(SignedMessageWithECKey signedMessage) {
         // signature hex to bigint
         var signatureInt = signedMessage.Signature.ToInt();
@@ -107,6 +116,7 @@ public class Sessionless(IVault vault) : ISessionless {
         return verifier.VerifySignature(messageHash, signatureInt.R, signatureInt.S);
     }
 
+    /// <inheritdoc/>
     public bool Associate(params SignedMessage[] messages) {
         if (messages.Length < 2) {
             throw new ArgumentException($"{nameof(messages)} length must be greater or equal to 2");

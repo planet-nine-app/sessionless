@@ -133,13 +133,30 @@ object KeyUtils {
         return withContext(context) { generateKeyPair() }
     }
 
-    /** Check if a [String] is comprised of only even hex characters
-     * - Length must be even
-     * - Allowed characters: 0-9 a-f A-F */
+    /** Checks whether a [Char] is one of the hex characters.
+     * - Allowed characters: 0-9 a-f A-F
+     * @return `true` if the character is a hex digit. */
+    fun Char.isHex() =
+        this in '0'..'9' || this in 'a'..'f' || this in 'A'..'F'
+
+
+    /** Checks whether a [String] is made up of hex [Char]s.
+     * - Allowed characters: 0-9 a-f A-F
+     * @see Char.isHex
+     * @return `true` if the string contains only hex digits. */
+    fun String.isHex() = this.all { it.isHex() }
+
+    /** Check if the [String] contains only hex characters and has an even length (bytes as strings).
+     * - Even length of the [String].
+     * - Allowed characters: 0-9 a-f A-F
+     * @see Char.isHex
+     * @see String.isHex
+     * @return `true` if the string represents bytes in hex format. */
     fun String.isBytes(): Boolean {
         if (this.length % 2 != 0) return false
-        return Regex("^[0-9a-fA-F]+$").matches(this)
+        return this.isHex()
     }
+
 
     /** Convert [KeyPair] to [ECPublicKey]/[ECPrivateKey] hex [String]s
      * @see ECPrivateKey.toHex
