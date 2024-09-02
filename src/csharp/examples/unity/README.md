@@ -1,6 +1,6 @@
 # Sessionless in Unity
 
-To add Sessionless to your Unity project, copy these .dlls to the /Assets/Plugins folder of your Unity project. 
+To add Sessionless to your Unity project, copy these .dlls (these can be built from source too from the Sessionless dir using `dotnet build SessionlessNET.csproj` to the /Assets/Plugins folder of your Unity project.
 You can then do stuff like:
 
 ```csharp
