@@ -37,7 +37,7 @@ const getKeys = async () => {
 };
 
 const sign = async (message) => {
-  const { privateKey } = await getKeys();
+  const { privateKey } = await sessionless.getKeys();
   const messageHash = keccak256(utf8ToBytes(message));
   const signatureAsBigInts = secp256k1.sign(messageHash, privateKey);
   const signature = signatureAsBigInts.toCompactHex();

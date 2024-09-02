@@ -27,8 +27,7 @@ public record MessageSignatureInt : IMessageSignature {
             ) { }
 
     /// <summary> Convert to <see cref="MessageSignatureHex"/> </summary>
-//    public MessageSignatureHex ToHex() => new(this);
-    public MessageSignatureHex ToHex() => new(R.ToString(16), S.ToString(16));
+    public MessageSignatureHex ToHex() => new(this);
 
 
     /// <summary> Explicit caster to <see cref="MessageSignatureHex"/> </summary> 
@@ -76,8 +75,7 @@ public record MessageSignatureHex : IMessageSignature {
 }
 
     /// <summary> Convert to <see cref="MessageSignatureInt"/> </summary>
-//    public MessageSignatureInt ToInt() => new(this);
-    public MessageSignatureInt ToInt() => new(new BigInteger(RHex, 16), new BigInteger(SHex, 16));
+    public MessageSignatureInt ToInt() => new(this);
 
     /// <summary> Explicit caster to <see cref="MessageSignatureInt"/> </summary> 
     public static explicit operator MessageSignatureInt(MessageSignatureHex signatureHex)
