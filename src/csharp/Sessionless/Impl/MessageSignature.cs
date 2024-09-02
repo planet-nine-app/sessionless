@@ -61,13 +61,18 @@ public record MessageSignatureHex : IMessageSignature {
     /// <br/> Like: R......S...... </param>
     /// <param name="partSize"> size of each part (<see cref="RHex"/> and <see cref="SHex"/>) </param>
     /// <exception cref="ArgumentException"/>
+
     public MessageSignatureHex(string rsHex, int partSize = 64)
-                : this(rsHex[..partSize], rsHex[partSize..]) {
-        int requiredSize = partSize * 2;
-        if (rsHex.Length != requiredSize) {
-            throw new ArgumentException($"{nameof(rsHex)} length must be {requiredSize}");
-        }
+{
+    int requiredSize = partSize * 2;
+    if (rsHex.Length != requiredSize)
+    {
+        throw new ArgumentException($"{nameof(rsHex)} length must be {requiredSize}");
     }
+
+    RHex = rsHex.Substring(0, partSize);
+    SHex = rsHex.Substring(partSize);
+}
 
     /// <summary> Convert to <see cref="MessageSignatureInt"/> </summary>
     public MessageSignatureInt ToInt() => new(this);

@@ -12,7 +12,6 @@ internal static partial class MathUtils {
             .Equals(BCMath.BigInteger.Zero);
     }
 
-
     /// <summary> Checks whether a <see cref="char"/> is one of the hex characters
     /// <list type="bullet"><item> Allowed characters: 0-9 a-f A-F </item></list>
     /// </summary>
@@ -39,7 +38,6 @@ internal static partial class MathUtils {
         if (str.Length % 2 != 0) return false;
         return IsHex(str);
     }
-
 
     /// <summary> Convert a <see cref="BCMath.BigInteger"/> to hex <see cref="string"/> </summary>
     internal static string ToHex(this BCMath.BigInteger bi) {

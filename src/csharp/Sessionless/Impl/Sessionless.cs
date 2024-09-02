@@ -1,7 +1,7 @@
-﻿using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Digests;
+﻿using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto.Signers;
+using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Security;
 using SessionlessNET.Impl.Exceptions;
@@ -60,16 +60,36 @@ public class Sessionless(IVault vault) : ISessionless {
 
     /// <inheritdoc/>
     public MessageSignatureHex Sign(string message, ECPrivateKeyParameters privateKey) {
-        var paramWithRandom = new ParametersWithRandom(privateKey, new SecureRandom());
         // init signer
         var signer = new ECDsaSigner(new HMacDsaKCalculator(new Sha256Digest()));
-        signer.Init(true, paramWithRandom);
+        signer.Init(true, privateKey);
         // message string to keccak256 hash
         byte[] messageHash = message.HashKeccak256();
         // sign
-        BigInteger[] signature = signer.GenerateSignature(messageHash);
-        return new MessageSignatureInt(signature).ToHex();
+
+        BigInteger curveOrder = privateKey.Parameters.N;
+        BigInteger halfCurveOrder = curveOrder.ShiftRight(1);
+
+        while (true)
+        {
+            BigInteger[] signature = signer.GenerateSignature(messageHash);
+            BigInteger r = signature[0];
+            BigInteger s = signature[1];
+
+            if (r.CompareTo(halfCurveOrder) <= 0)
+            {
+                // Ensure S is the lower of S and -S
+                if (s.CompareTo(halfCurveOrder) > 0)
+                {
+                    s = curveOrder.Subtract(s);
+                }
+
+                BigInteger[] actualSignature = { r, s };
+                return new MessageSignatureInt(actualSignature).ToHex();
+            }
+        }
     }
+
 
     /// <inheritdoc/>
     public bool VerifySignature(SignedMessage signedMessage) {
