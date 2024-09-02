@@ -45,7 +45,7 @@ The server can then `verifySignature` on the payload received from the client, a
 
 Like https (I use the comparison simply for familiarity, and not try to say Sessionless is on the same tier), Sessionless is a protocol that you likely won't just use directly.
 Instead it's meant to be the protocol layer of an authentication _implementation_.
-One example implementation can be found [here].
+One example implementation can be found [here][here].
 More will come, and if you make one feel free to make a pr to link it here.
 
 #### Want to learn more?
@@ -61,17 +61,18 @@ Trust me, there's plenty of work to go around.
 To this end, I'm going to try my best to provide domain-specific documentation as an entry point. 
 This is very much a wip, and, as far as I know, not something that there's an established pattern for so all feedback welcome.
 
-| Dev          | UX          | Product     |
-|--------------|-------------|-------------|
-| [README-DEV] | [README-UX] | coming soon |
+| Dev          | UX          | Product       |
+|--------------|-------------|---------------|
+| [README-DEV] | [README-UX] | [README-PROD] |
 
 
 [README-DEV]: ./README-DEV.md
 [for devs]: ./README-DEV.md
 [README-UX]: ./README-UX.md
 [for ux'ers]: ./README-UX.md
+[README-PROD]: ./README-PROD.md
 [API]: ./README-DEV.md#api
-[here]: https://www.github.com/planet-nine-app/continuebee
+[here]: https://www.github.com/planet-nine-app/allyabase
 [ht1]: ## "Many auth protocols are client-server, where the client supplies some secret information to authenticate requests.
 But there are other authentication needs, such as between processes on one machine, or server-server relationships. 
 Sessionless works for all of these."
