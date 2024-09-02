@@ -83,52 +83,7 @@ public class Sessionless(IVault vault) : ISessionless {
                 return new MessageSignatureInt(actualSignature).ToHex();
             }
         }
-
-//        BigInteger[] signature = signer.GenerateSignature(messageHash);
-//        return new MessageSignatureInt(signature).ToHex();
     }
-
-/*    public MessageSignatureHex Sign(string message, ECPrivateKeyParameters privateKey) {
-        // init signer
-        var signer = new ECDsaSigner(new HMacDsaKCalculator(new Sha256Digest()));
-        signer.Init(true, privateKey);
-        // message string to keccak256 hash
-        byte[] messageHash = message.HashKeccak256();
-        // sign
-        BigInteger[] signature = signer.GenerateSignature(messageHash);
-        return new MessageSignatureInt(signature).ToHex();
-    }*/
-
-/*    public MessageSignatureHex Sign(string message, ECPrivateKeyParameters privateKey) {
-    var signer = new ECDsaSigner(new HMacDsaKCalculator(new Sha256Digest()));
-    signer.Init(true, privateKey);
-    
-    byte[] messageHash = message.HashKeccak256();
-    Console.WriteLine($"Message Hash: {BitConverter.ToString(messageHash).Replace("-", "")}");
-    
-    BigInteger[] signature = signer.GenerateSignature(messageHash);
-    Console.WriteLine($"R: {signature[0].ToString(16)}");
-    Console.WriteLine($"S: {signature[1].ToString(16)}");
-    
-    // Ensure low S
-    if (signature[1].CompareTo(privateKey.Parameters.N.ShiftRight(1)) > 0)
-    {
-        signature[1] = privateKey.Parameters.N.Subtract(signature[1]);
-        Console.WriteLine($"Adjusted S: {signature[1].ToString(16)}");
-    }
-    
-    var result = new MessageSignatureInt(signature).ToHex();
-    Console.WriteLine($"Final Signature: {result}");
-    
-    // Immediate verification
-    //var verifier = new ECDsaSigner();
-    //verifier.Init(false, privateKey.Parameters.G.Multiply(privateKey.D));
-    //bool verified = verifier.VerifySignature(messageHash, signature[0], signature[1]);
-    //Console.WriteLine($"Immediate Verification: {verified}");
-    
-    return result;
-}*/
-
 
     public bool VerifySignature(SignedMessage signedMessage) {
         var publicHex = GetKeys()?.PublicKey
