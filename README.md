@@ -41,6 +41,25 @@ The methods are as follows (see [API] for more details):
 A typical registration is for a client to `generateKeys`, and then use those keys to `sign` a message, and send to the server.
 The server can then `verifySignature` on the payload received from the client, and grant a uuid with `generateUUID`.
 
+#### Languages supported
+
+The following languages are currently supported:
+
+* [JavaScript][javascript]
+* [TypeScript][typescript]
+* [Rust][rust]
+* [Java][java]
+* [Kotlin][kotlin]
+* [Python][python]
+* [Swift][swift]
+* [C#][c#]
+* [C++][c++]
+
+Of these nine, seven have server examples (sorry vapor, and c++, haven't gotten to you just yet). 
+And those server examples can all be run if you've installed every runtime under the sun, and then you can run the rainbow test.
+
+![The rainbow test of all the servers utilizing the same sessionless protocol](https://www.github.com/planet-nine-app/sessionless/blob/main/rainbowtest.gif)
+
 #### Building with Sessionless
 
 Like https (I use the comparison simply for familiarity, and not try to say Sessionless is on the same tier), Sessionless is a protocol that you likely won't just use directly.
@@ -73,6 +92,16 @@ This is very much a wip, and, as far as I know, not something that there's an es
 [README-PROD]: ./README-PROD.md
 [API]: ./README-DEV.md#api
 [here]: https://www.github.com/planet-nine-app/allyabase
+[javascript]: ./src/javascript/README.md
+[typescript]: ./src/javascript/README.md
+[rust]: ./src/rust/README.md
+[java]: ./src/java/README.md
+[kotlin]: ./src/kotlin/README.md
+[python]: ./src/python/README.md
+[swift]: ./src/swift/README.md
+[c#]: ./src/csharp/README.md
+[c++]: ./src/cpp/README.md
+
 [ht1]: ## "Many auth protocols are client-server, where the client supplies some secret information to authenticate requests.
 But there are other authentication needs, such as between processes on one machine, or server-server relationships. 
 Sessionless works for all of these."
