@@ -58,7 +58,7 @@ The following languages are currently supported:
 Of these nine, seven have server examples (sorry vapor, and c++, haven't gotten to you just yet). 
 And those server examples can all be run if you've installed every runtime under the sun, and then you can run the rainbow test.
 
-![The rainbow test of all the servers utilizing the same sessionless protocol](https://www.github.com/planet-nine-app/sessionless/blob/main/rainbowtest.gif)
+![The rainbow test of all the servers utilizing the same sessionless protocol](https://github.com/planet-nine-app/sessionless/blob/main/rainbowtest.gif)
 
 #### Building with Sessionless
 
