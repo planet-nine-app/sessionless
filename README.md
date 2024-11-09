@@ -73,7 +73,7 @@ There are links to more reading [for devs], and [for ux'ers], and some videos co
 
 #### A brief note from zach-planet-nine
 
-With Sessionless, and any subesequent open source projects I start, I'm trying to make them accessible to all parts of the tech industry. 
+With Sessionless, and any subsequent open source projects I start, I'm trying to make them accessible to all parts of the tech industry. 
 Right now that means focusing on dev, UX, and product, but qa, analytics, customer success, etc. are all welcome.
 Trust me, there's plenty of work to go around.
 
