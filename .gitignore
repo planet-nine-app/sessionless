@@ -11,3 +11,7 @@ Debug
 project.nuget.cache
 users.json
 users.txt
+
+*.pem
+*.bin
+*.txt

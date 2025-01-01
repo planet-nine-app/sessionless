@@ -15,6 +15,7 @@ Currently available as a crate.
 | Function                                                                                              | What it does                                              |
 |:------------------------------------------------------------------------------------------------------|:----------------------------------------------------------|
 | `Sessionless::new()`                                                                                  | Generates new context object with private/public keypair. |
+| `Sessionless::from_private_key(private_key)`                                                                          | Generates new context object with specified private/public keypair. |
 | `Sessionless::public_key(&self)`                                                                      | Returns the public key.                                   |
 | `Sessionless::private_key(&self)`                                                                     | Returns the private key.                                  |
 | `Sessionless::sign(&self, message: impl AsRef<[u8]>)`                                                 | Signs a message with the user's private key.              |
