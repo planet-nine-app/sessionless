@@ -1,0 +1,21 @@
+# Gemfile for Sessionless Ruby Implementation
+
+source 'https://rubygems.org'
+
+ruby '>= 2.6.10'
+
+# Core dependency for ECDSA cryptography
+gem 'ecdsa', '~> 1.2.0'
+
+# Optional: for better JSON handling if needed
+gem 'json', '~> 2.0'
+
+# Development and testing dependencies
+group :development, :test do
+  gem 'rspec', '~> 3.12'
+  gem 'rspec-core', '~> 3.12'
+  gem 'rake', '~> 13.0'
+end
+
+# Optional: for better random number generation on older Ruby versions
+gem 'securerandom', '~> 0.2' if RUBY_VERSION < '3.0'
